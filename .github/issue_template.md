@@ -1,7 +1,25 @@
-## Issue Overview
+## 📌 Issue Description
+Please provide a clear and concise description of the issue.
 
-Provide a brief summary of the issue, including the motivation for addressing it, the problems it presents, and any features required to resolve it.
+## ✅ Steps to Reproduce
+1. Go to '...'
+2. Click on '...'
+3. Scroll down to '...'
+4. See the error
 
-## Proposed Solutions or Ideas
+## 🛠️ Expected Behavior
+Describe what you expected to happen.
 
-Outline your proposed solution or share any ideas you have for discussing or resolving the issue.
+## ❌ Actual Behavior
+Describe what actually happened.
+
+## 🌍 Environment
+- **OS:** [e.g., Windows 10, macOS Monterey]
+- **Browser:** [e.g., Chrome 100, Firefox 98]
+- **Device:** [e.g., Laptop, Mobile]
+
+## 📷 Screenshots (if applicable)
+Add screenshots or screen recordings to help explain the issue.
+
+## 💡 Additional Comments
+Add any other context, logs, or re
