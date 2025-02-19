@@ -20,3 +20,5 @@ If applicable, suggest how to fix the issue or describe a feature improvement.
 
 ## 📌 Additional Notes
 Any extra details or relevant information.
+
+## Before apply please read this guide: https://github.com/FutureMindsTeam/starklotto/issues/23
