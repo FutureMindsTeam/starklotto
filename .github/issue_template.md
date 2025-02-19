@@ -1,7 +1,22 @@
-## Issue Overview
 
-Provide a brief summary of the issue, including the motivation for addressing it, the problems it presents, and any features required to resolve it.
+## ✨ Issue Request
 
-## Proposed Solutions or Ideas
+## 📌 Description
+Provide a clear and concise description of the issue.
 
-Outline your proposed solution or share any ideas you have for discussing or resolving the issue.
+## 🛠️ Steps to Reproduce (if applicable)
+1. 🔹 Step 1
+2. 🔹 Step 2
+3. 🔹 Step 3
+
+## 🖼️ Screenshots (if applicable)
+Attach screenshots or videos to illustrate the issue.
+
+## 🎯 Expected Behavior
+Describe what you expected to happen.
+
+## 🚀 Suggested Solution / Feature Request
+If applicable, suggest how to fix the issue or describe a feature improvement.
+
+## 📌 Additional Notes
+Any extra details or relevant information.
