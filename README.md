@@ -13,23 +13,51 @@ StarkLotto is a decentralized lottery game built on **Starknet**, designed to of
 
 Before you begin, make sure you have the following requirements installed:
 
-- [Node.js](https://nodejs.org/) (version 18+)
-- [Scarb](https://github.com/software-mansion/scarb) (to compile Cairo)
+| Herramienta          | Versión recomendada |
+|----------------------|--------------------|
+| **Node.js**         | >= v18.17          |
+| **Yarn**            | v1 o v2+           |
+| **Git**             | Última versión     |
+| **Rust**            | Última versión     |
+| **asdf**            | Última versión     |
+| **Extensión Cairo** | 1.0 (VSCode)       |
 
 ## 🔧 Installation
 
-Clone the repository and enter the project directory:
+Follow these steps to set up and run the project:
 
+### 1️⃣ Clone the repository
 ```sh
 git clone https://github.com/FutureMindsTeam/starklotto.git
 cd starklotto
 ```
+📌 **Note**: If you wish to contribute, please create a branch off of `Dev` before committing changes.
+```bash
+  git checkout -b feature/your-branch Dev
+```
 
+### 2️⃣ Install dependencies
 Install the project dependencies with:
 
-```sh
-npm install
+```bash
+  yarn install
 ```
+
+### 3️⃣ Start the local network
+```bash
+yarn chain
+```
+
+### 4️⃣ Deploy the contracts
+```bash
+yarn deploy
+```
+
+### 5️⃣ Start the web application
+```bash
+yarn start
+```
+Next, open your browser and visit: [http://localhost:3000](http://localhost:3000)
 
 ## ⚡ Usage
 
@@ -44,12 +72,22 @@ scarb build
 
 ## 📝 Contributions
 
-Contributions are welcome! To contribute:
+If you want to contribute, follow these steps:
+
 1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-new`).
-3. Make your changes and commit (`git commit -m 'Add new feature'`).
-4. Push your branch (`git push origin feature-new`).
-5. Open a Pull Request.
+2. Create a branch off of `Dev`:
+```bash
+git checkout -b feature/new-feature Dev
+```
+3. Make your changes and commit:
+```bash
+git commit -m "Description of change"
+```
+4. Push your changes to your fork:
+```bash
+git push origin feature/new-feature
+```
+5. Open a Pull Request to the `Dev` branch.
 
 ## 🤝 Contact
 
