@@ -4,6 +4,8 @@ Please provide a summary of the changes and the reason behind them.
 ## 🎯 Motivation and Context 
 Explain why this change is necessary and what problem it solves.
 
+Closes #
+
 ## 🛠️ How to Test the Change (if applicable) 
 Describe the steps to test your changes:
 1. 🔹 Step 1
