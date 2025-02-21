@@ -18,7 +18,7 @@ const ScaffoldStarkApp = ({ children }: { children: React.ReactNode }) => {
         <ThemeProvider enableSystem>
           <ScaffoldStarkAppWithProviders>
             <Header />
-            <main className="flex-grow container mx-auto px-4 py-8">
+            <main className="flex-grow container mx-auto md:px-4 py-4 md:py-8">
               {children}
             </main>
             {/* <Footer /> */}

@@ -17,16 +17,16 @@ const ScaffoldStarkApp = ({ children }: { children: React.ReactNode }) => {
   const isDarkMode = resolvedTheme === "dark";
   return (
     <>
-      <div className="flex relative flex-col min-h-screen bg-main">
+      <div className="flex relative flex-col min-h-screen ">
         {isDarkMode ? (
           <>
-            <div className="circle-gradient-dark w-[330px] h-[330px]"></div>
-            <div className="circle-gradient-blue-dark w-[330px] h-[330px]"></div>
+            <div className="md:block hidden circle-gradient-dark w-[330px] h-[330px]"></div>
+            <div className="md:block hidden circle-gradient-blue-dark w-[330px] h-[330px]"></div>
           </>
         ) : (
           <>
-            <div className="circle-gradient w-[330px] h-[330px]"></div>
-            <div className="circle-gradient-blue w-[330px] h-[630px]"></div>
+            <div className="md:block hidden circle-gradient w-[330px] h-[330px]"></div>
+            <div className="md:block hidden circle-gradient-blue w-[330px] h-[630px]"></div>
           </>
         )}
         <Header />
