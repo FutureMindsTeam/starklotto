@@ -126,7 +126,7 @@ const ContactUsPage = () => {
 
         <button
           type="submit"
-          className="bg-gradient-to-r from-[#3A0909] to-[#000000] text-white py-2 px-4 rounded uppercase"
+          className="bg-gradient-to-r from-[#3A0909] to-[#000000] text-xs text-white py-4 px-10 rounded-full uppercase"
           disabled={isSubmitting || isSubmitted}
         >
           {isSubmitting ? "Sending..." : isSubmitted ? "Sent!" : "Send Message"}
