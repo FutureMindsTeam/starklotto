@@ -66,15 +66,15 @@ const ContactUsPage = () => {
 
   return (
     <div className="text-white text-center py-20">
-      <h1 className="text-4xl font-bold">Contact Us</h1>
-      <p className="mt-4 text-lg">Have any questions? Reach out to us!</p>
+      <h1 className="text-4xl font-bold uppercase md:normal-case">Contact Us</h1>
+      <p className="mt-4 text-lg uppercase">Have any questions? Reach out to us!</p>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mt-8 max-w-md mx-auto bg-[#1A1A1A] p-4 rounded"
       >
         <div className="mb-4">
           <label
-            className="flex items-center text-left mb-2"
+            className="flex items-center text-left mb-2 uppercase"
             htmlFor="fullName"
           >
             Full Name
@@ -91,7 +91,7 @@ const ContactUsPage = () => {
         </div>
 
         <div className="mb-4">
-          <label className="flex items-center text-left mb-2" htmlFor="email">
+          <label className="flex items-center text-left mb-2 uppercase" htmlFor="email">
             Email Address
             <EnvelopeIcon className="h-5 w-5 text-white ml-2" />
           </label>
@@ -108,7 +108,7 @@ const ContactUsPage = () => {
         </div>
 
         <div className="mb-4">
-          <label className="flex items-center text-left mb-2" htmlFor="message">
+          <label className="flex items-center text-left mb-2 uppercase" htmlFor="message">
             Your Message
             <PencilSquareIcon className="h-5 w-5 text-white ml-2" />
           </label>
@@ -126,7 +126,7 @@ const ContactUsPage = () => {
 
         <button
           type="submit"
-          className="bg-gradient-to-r from-[#3A0909] to-[#000000] text-white py-2 px-4 rounded"
+          className="bg-gradient-to-r from-[#3A0909] to-[#000000] text-white py-2 px-4 rounded uppercase"
           disabled={isSubmitting || isSubmitted}
         >
           {isSubmitting ? "Sending..." : isSubmitted ? "Sent!" : "Contact Us"}
