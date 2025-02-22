@@ -8,15 +8,7 @@
 }
 
 body {
-  margin: 0;
-  padding: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #3a0909 0%, #000000 100%);
-  background-attachment: fixed;
-  background-size: cover;
-  font-family: "Inter", sans-serif;
-  color: white;
-  overflow: hidden;
 }
 
 h1,

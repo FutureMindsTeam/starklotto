@@ -1,7 +1,3 @@
-"use client";
-
-import React from "react";
-import Link from "next/link";
 import { Cog8ToothIcon, CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { useTargetNetwork } from "~~/hooks/scaffold-stark/useTargetNetwork";
 import { useGlobalState } from "~~/services/store/store";
@@ -10,13 +6,18 @@ import { Faucet } from "~~/components/scaffold-stark/Faucet";
 import { FaucetSepolia } from "~~/components/scaffold-stark/FaucetSepolia";
 import { BlockExplorerSepolia } from "./scaffold-stark/BlockExplorerSepolia";
 import { BlockExplorer } from "./scaffold-stark/BlockExplorer";
+import Link from "next/link";
 
+/**
+ * Site footer
+ */
 export const Footer = () => {
   const nativeCurrencyPrice = useGlobalState(
     (state) => state.nativeCurrencyPrice,
   );
   const { targetNetwork } = useTargetNetwork();
 
+  // NOTE: workaround - check by name also since in starknet react devnet and sepolia has the same chainId
   const isLocalNetwork =
     targetNetwork.id === devnet.id && targetNetwork.network === devnet.network;
   const isSepoliaNetwork =
@@ -27,44 +28,58 @@ export const Footer = () => {
     targetNetwork.network === mainnet.network;
 
   return (
-    <footer className="w-full bg-transparent backdrop-blur-md shadow-lg fixed bottom-0 z-50">
-      <div className="container mx-auto py-6 px-8 flex flex-col md:flex-row items-center justify-between">
-        {/* Información del Proyecto */}
-        <div className="text-center md:text-left mb-4 md:mb-0">
-          <h3 className="text-lg font-semibold text-white">STARKLOTTO</h3>
-          <p className="text-sm text-gray-300">
-            The most innovative decentralized lottery on the Starknet
-            blockchain.
-          </p>
+    <div className="min-h-0 py-5 px-1 mb-11 lg:mb-0 bg-base-100">
+      <div>
+        <div className="fixed flex justify-between items-center w-full z-10 p-4 bottom-0 left-0 pointer-events-none">
+          <div className="flex flex-col md:flex-row gap-2 pointer-events-auto">
+            {isSepoliaNetwork && (
+              <>
+                <FaucetSepolia />
+                <BlockExplorerSepolia />
+              </>
+            )}
+            {isLocalNetwork && (
+              <>
+                <Faucet />
+              </>
+            )}
+            {isMainnetNetwork && (
+              <>
+                <BlockExplorer />
+              </>
+            )}
+            <Link
+              href={"/configure"}
+              passHref
+              className="btn btn-sm font-normal gap-1 cursor-pointer border border-[#32BAC4] shadow-none"
+            >
+              <Cog8ToothIcon className="h-4 w-4 text-[#32BAC4]" />
+              <span>Configure Contracts</span>
+            </Link>
+            {nativeCurrencyPrice > 0 && (
+              <div>
+                <div className="btn btn-sm font-normal gap-1 cursor-auto border border-[#32BAC4] shadow-none">
+                  <CurrencyDollarIcon className="h-4 w-4 text-[#32BAC4]" />
+                  <span>{nativeCurrencyPrice}</span>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-
-        {/* Enlaces y Botones */}
-        <div className="flex items-center space-x-4">
-          {isSepoliaNetwork && (
-            <>
-              <FaucetSepolia />
-              <BlockExplorerSepolia />
-            </>
-          )}
-          {isLocalNetwork && <Faucet />}
-          {isMainnetNetwork && <BlockExplorer />}
-
-          <Link
-            href="/configure"
-            passHref
-            className="btn btn-sm font-normal gap-1 cursor-pointer border border-[#32BAC4] shadow-none text-white"
-          >
-            <Cog8ToothIcon className="h-4 w-4 text-[#32BAC4]" />
-            <span>Configure Contracts</span>
-          </Link>
-
-          {nativeCurrencyPrice > 0 && (
-            <div className="btn btn-sm font-normal gap-1 cursor-auto border border-[#32BAC4] shadow-none text-white">
-              <CurrencyDollarIcon className="h-4 w-4 text-[#32BAC4]" />
-              <span>{nativeCurrencyPrice}</span>
+      </div>
+      <div className="w-full">
+        <ul className="menu menu-horizontal w-full">
+          <div className="flex justify-center items-center gap-2 text-sm w-full">
+            <div className="text-center">
+              <a
+                href="https://github.com/Scaffold-Stark/scaffold-stark-2"
+                target="_blank"
+                rel="noreferrer"
+                className="link"
+              >
+                Fork me
+              </a>
             </div>
-          )}
-        </div>
 
         {/* Enlaces de Redes Sociales */}
         <div className="flex items-center space-x-4 mt-4 md:mt-0">
@@ -97,13 +112,6 @@ export const Footer = () => {
           </Link>
         </div>
       </div>
-
-      {/* Derechos de Autor */}
-      <div className="w-full text-center py-2 bg-transparent text-gray-400 text-sm">
-        © {new Date().getFullYear()} StarkLotto. Todos los derechos reservados.
-      </div>
-    </footer>
+    </div>
   );
 };
-
-export default Footer;
