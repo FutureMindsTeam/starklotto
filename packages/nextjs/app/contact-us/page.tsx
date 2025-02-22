@@ -83,7 +83,7 @@ const ContactUsPage = () => {
           <input
             type="text"
             {...register("name")}
-            className="w-full p-2 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none"
+            className="w-full p-2 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none rounded-[0.5rem]"
             placeholder="YOUR NAME"
             disabled={isSubmitting || isSubmitted}
           />
@@ -98,7 +98,7 @@ const ContactUsPage = () => {
           <input
             type="email"
             {...register("email")}
-            className="w-full p-2 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none"
+            className="w-full p-2 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none rounded-[0.5rem]"
             placeholder="YOUR@EMAIL.COM"
             disabled={isSubmitting || isSubmitted}
           />
@@ -114,7 +114,7 @@ const ContactUsPage = () => {
           </label>
           <textarea
             {...register("message")}
-            className="w-full p-2 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none"
+            className="w-full p-2 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none rounded-[0.5rem]"
             rows={4}
             placeholder="YOUR MESSAGE..."
             disabled={isSubmitting || isSubmitted}
