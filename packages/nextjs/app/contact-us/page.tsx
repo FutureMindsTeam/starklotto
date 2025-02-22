@@ -66,7 +66,7 @@ const ContactUsPage = () => {
 
   return (
     <div className="text-white text-center py-20 px-10 md:px-0">
-      <h1 className="text-xl font-bold uppercase sm:text-[2rem] md:text-[4rem]">Contact Us</h1>
+      <h1 className="mt-6 md:mt-10 text-xl font-bold uppercase sm:text-[2rem] md:text-[4rem]">Contact Us</h1>
       <p className="m-4 md:m-8 text-[1.125rem] md:text-[2rem] uppercase text-[#CECDCD]">Have any questions? Reach out to us!</p>
       <form
         onSubmit={handleSubmit(onSubmit)}
