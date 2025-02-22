@@ -65,12 +65,12 @@ const ContactUsPage = () => {
   }, [isSubmitted, submitError, reset]);
 
   return (
-    <div className="text-white text-center py-20">
+    <div className="text-white text-center py-20 px-10 md:px-0">
       <h1 className="text-4xl font-bold uppercase md:normal-case">Contact Us</h1>
       <p className="mt-4 text-lg uppercase">Have any questions? Reach out to us!</p>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mt-8 max-w-md mx-auto bg-[#1A1A1A] p-4 rounded"
+        className="mt-10 max-w-md mx-auto bg-[#1A1A1A] p-10 md:p-8 rounded-[1rem]"
       >
         <div className="mb-4">
           <label
