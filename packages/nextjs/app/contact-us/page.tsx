@@ -74,7 +74,7 @@ const ContactUsPage = () => {
       >
         <div className="mb-6 md:mb-8">
           <label
-            className="flex text-left mb-2 uppercase"
+            className="flex text-left mb-2 uppercase font-semibold"
             htmlFor="fullName"
           >
             Full Name
@@ -91,7 +91,7 @@ const ContactUsPage = () => {
         </div>
 
         <div className="mb-6 md:mb-8">
-          <label className="flex text-left mb-2 uppercase" htmlFor="email">
+          <label className="flex text-left mb-2 uppercase font-semibold" htmlFor="email">
             Email Address
             <EnvelopeIcon className="h-5 w-5 text-white ml-2 mb-4 md:mb-6" />
           </label>
@@ -108,7 +108,7 @@ const ContactUsPage = () => {
         </div>
 
         <div className="mb-2 md:mb-6">
-          <label className="flex text-left mb-2 uppercase" htmlFor="message">
+          <label className="flex text-left mb-2 uppercase font-semibold" htmlFor="message">
             Your Message
             <PencilSquareIcon className="h-5 w-5 text-white ml-2 mb-4 md:mb-6" />
           </label>
