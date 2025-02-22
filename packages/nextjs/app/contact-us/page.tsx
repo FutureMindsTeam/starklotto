@@ -129,7 +129,7 @@ const ContactUsPage = () => {
           className="bg-gradient-to-r from-[#3A0909] to-[#000000] text-white py-2 px-4 rounded uppercase"
           disabled={isSubmitting || isSubmitted}
         >
-          {isSubmitting ? "Sending..." : isSubmitted ? "Sent!" : "Contact Us"}
+          {isSubmitting ? "Sending..." : isSubmitted ? "Sent!" : "Send Message"}
         </button>
       </form>
       {submitError && <p className="text-red-500 mt-4">{submitError}</p>}
