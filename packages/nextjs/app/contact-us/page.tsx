@@ -72,33 +72,33 @@ const ContactUsPage = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="mt-10 max-w-md mx-auto bg-[#1A1A1A] p-10 md:p-8 rounded-[1rem]"
       >
-        <div className="mb-4">
+        <div className="mb-6 md:mb-8">
           <label
             className="flex items-center text-left mb-2 uppercase"
             htmlFor="fullName"
           >
             Full Name
-            <UserIcon className="h-5 w-5 text-white ml-2" />
+            <UserIcon className="h-5 w-5 text-white ml-2 mb-4 md:mb-6" />
           </label>
           <input
             type="text"
             {...register("name")}
-            className="w-full p-2 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none rounded-[0.5rem]"
+            className="w-full p-3 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none rounded-[0.5rem]"
             placeholder="YOUR NAME"
             disabled={isSubmitting || isSubmitted}
           />
           {errors.name && <p className="text-red-500">{errors.name.message}</p>}
         </div>
 
-        <div className="mb-4">
+        <div className="mb-6 md:mb-8">
           <label className="flex items-center text-left mb-2 uppercase" htmlFor="email">
             Email Address
-            <EnvelopeIcon className="h-5 w-5 text-white ml-2" />
+            <EnvelopeIcon className="h-5 w-5 text-white ml-2 mb-4 md:mb-6" />
           </label>
           <input
             type="email"
             {...register("email")}
-            className="w-full p-2 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none rounded-[0.5rem]"
+            className="w-full p-3 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none rounded-[0.5rem]"
             placeholder="YOUR@EMAIL.COM"
             disabled={isSubmitting || isSubmitted}
           />
@@ -107,14 +107,14 @@ const ContactUsPage = () => {
           )}
         </div>
 
-        <div className="mb-4">
+        <div className="mb-2 md:mb-6">
           <label className="flex items-center text-left mb-2 uppercase" htmlFor="message">
             Your Message
-            <PencilSquareIcon className="h-5 w-5 text-white ml-2" />
+            <PencilSquareIcon className="h-5 w-5 text-white ml-2 mb-4 md:mb-6" />
           </label>
           <textarea
             {...register("message")}
-            className="w-full p-2 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none rounded-[0.5rem]"
+            className="w-full p-3 border border-gray-300 rounded bg-[#2A2A2A] text-white text-sm border-none rounded-[0.5rem]"
             rows={4}
             placeholder="YOUR MESSAGE..."
             disabled={isSubmitting || isSubmitted}
