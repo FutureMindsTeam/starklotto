@@ -66,7 +66,7 @@ const ContactUsPage = () => {
   }, [isSubmitted, submitError, reset]);
 
   return (
-    <div className="text-white text-center py-20 px-10 md:px-0">
+    <div className="text-white text-center py-20 px-8 md:px-0">
       <h1 className="mt-6 md:mt-10 text-xl font-bold uppercase sm:text-[2rem] md:text-[4rem]">Contact Us</h1>
       <p className="m-4 md:m-8 text-[0.725rem] md:text-[1rem] uppercase text-[#CECDCD]">Have any questions? Reach out to us!</p>
       <form
