@@ -17,6 +17,7 @@ package-lock.json
 
 .env.local
 .env
+.env.example
 
 
 .github/ISSUE_TEMPLATE/
