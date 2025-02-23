@@ -35,3 +35,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+.github/ISSUE_TEMPLATE/
+
+
+.github/PULL_REQUEST_TEMPLATE/
