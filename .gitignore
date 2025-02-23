@@ -13,3 +13,13 @@ package-lock.json
 !.yarn/versions
 .eslintcache
 .DS_Store
+
+
+.env.local
+.env
+
+
+.github/ISSUE_TEMPLATE/
+
+
+.github/PULL_REQUEST_TEMPLATE/
