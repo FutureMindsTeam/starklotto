@@ -4,8 +4,8 @@ import CurrentJackpot from "./_components/CurrentJackpot";
 
 const HowItWorksPage = () => {
   return (
-    <div className="min-h-screen text-white">
-      <div className="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="min-h-screen   text-white">
+      <div className="container  mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
         <div className="flex flex-col">
           <HowItWorks />
           <UpcomingDraws />
