@@ -12,11 +12,19 @@ const CurrentJackpot = () => {
   };
 
   return (
-    <div className="flex flex-col items-center text-white px-6 py-16 rounded-lg shadow-lg">
-      <Image src="/jackpot.png" alt="Trophy" width={512} height={402} />
+    <div className="flex flex-col items-center text-white px-6 py-4 md:py-16 rounded-lg shadow-lg">
+      <Image
+        src="/jackpot.svg"
+        alt="Trophy"
+        width={512}
+        height={402}
+        className=" mb-4  hidden md:block "
+      />
 
-      <h2 className="text-3xl font-bold mb-4">🔥 CURRENT JACKPOT 🔥</h2>
-      <p className="text-xl mb-4 text-yellow-500 font-bold">
+      <h2 className=" text-lg md:text-3xl font-normal md:font-bold mb-1 md:mb-4">
+        🔥 CURRENT JACKPOT 🔥
+      </h2>
+      <p className=" font-normal text-lg  md:text-xl  md:mb-4 text-yellow-500 md:font-bold">
         15 ETH + NFT EXCLUSIVE
       </p>
       <button
@@ -26,7 +34,7 @@ const CurrentJackpot = () => {
         PARTICIPATE NOW
       </button>
       <div className="mt-4">
-        <Image src="/trophy.png" alt="Trophy" width={191} height={191} />
+        <Image src="/trophy.svg" alt="Trophy" width={191} height={191} />
       </div>
     </div>
   );
