@@ -13,7 +13,7 @@ import Link from "next/link";
  */
 export const Footer = () => {
   const nativeCurrencyPrice = useGlobalState(
-    (state) => state.nativeCurrencyPrice
+    (state) => state.nativeCurrencyPrice,
   );
   const { targetNetwork } = useTargetNetwork();
 
@@ -81,8 +81,8 @@ export const Footer = () => {
               </a>
             </div>
           </div>
-        </ul> {/* Closing ul here */}
-
+        </ul>{" "}
+        {/* Closing ul here */}
         {/* Social Media Links */}
         <div className="flex items-center space-x-4 mt-4 md:mt-0">
           <Link
