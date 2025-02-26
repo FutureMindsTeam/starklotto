@@ -91,7 +91,7 @@ export const GetTicketUserForm = ({
               !isFetching
                 ? "bg-green-500 hover:bg-green-600 animate-bounce"
                 : "bg-gray-500 cursor-not-allowed"
-            } text-white -semibold rounded-full shadow-lg transition`}
+            } text-white font-semibold rounded-full shadow-lg transition`}
           >
             {isFetching && (
               <span className="loading loading-spinner loading-xs"></span>
@@ -103,7 +103,7 @@ export const GetTicketUserForm = ({
 
       {data !== null && data !== undefined && (
         <>
-          <h1 className="text-center text-2xl -bold">
+          <h1 className="text-center text-2xl font-bold">
             Tickets Found: {ticketsId.length}
           </h1>
           {ticketsId.length > 0 ? (
