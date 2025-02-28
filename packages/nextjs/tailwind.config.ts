@@ -10,6 +10,7 @@ const config: Config = {
     themes: [
       {
         mytheme: {
+          
           primary: "#000000",
 
           secondary: "#0B192C",
@@ -27,6 +28,7 @@ const config: Config = {
           warning: "#1E3E62",
 
           error: "#FF6500",
+ 
         },
       },
     ],
@@ -46,7 +48,7 @@ const config: Config = {
   plugins: [require("daisyui")],
 };
 export default config;
-
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
@@ -55,6 +57,7 @@ module.exports = {
   ],
   plugins: [require("daisyui")],
   darkTheme: "dark",
+  // DaisyUI theme colors
   daisyui: {
     themes: [
       {
