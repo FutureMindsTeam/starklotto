@@ -113,10 +113,14 @@ module.exports = {
         "pulse-fast": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       backgroundImage: {
-        "gradient-light": "linear-gradient(270deg, #000000 -17.42%, #0B192C 109.05%)",
-        "gradient-dark": "var(--gradient, linear-gradient(90deg, #1E3E62 0%, #FF6500 100%))",
-        "gradient-vertical": "linear-gradient(180deg, #000000 0%, #FF6500 100%)",
-        "gradient-icon": "var(--gradient, linear-gradient(90deg, #0B192C 0%, #1E3E62 100%))",
+        "gradient-light":
+          "linear-gradient(270deg, #000000 -17.42%, #0B192C 109.05%)",
+        "gradient-dark":
+          "var(--gradient, linear-gradient(90deg, #1E3E62 0%, #FF6500 100%))",
+        "gradient-vertical":
+          "linear-gradient(180deg, #000000 0%, #FF6500 100%)",
+        "gradient-icon":
+          "var(--gradient, linear-gradient(90deg, #0B192C 0%, #1E3E62 100%))",
       },
     },
   },
