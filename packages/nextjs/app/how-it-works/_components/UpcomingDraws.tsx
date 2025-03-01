@@ -51,7 +51,7 @@ const UpcomingDraws = () => {
   ];
 
   return (
-    <div className="py-12 px-4">
+    <div className=" hidden md:block py-12 px-4">
       <h2 className="text-4xl font-bold mb-6">UPCOMING DRAWS</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-700 bg-gray-800 rounded-lg shadow-lg">

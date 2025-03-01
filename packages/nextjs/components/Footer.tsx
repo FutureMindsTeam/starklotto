@@ -80,8 +80,10 @@ export const Footer = () => {
                 Fork me
               </a>
             </div>
-
-        {/* Enlaces de Redes Sociales */}
+          </div>
+        </ul>{" "}
+        {/* Closing ul here */}
+        {/* Social Media Links */}
         <div className="flex items-center space-x-4 mt-4 md:mt-0">
           <Link
             href="https://github.com/future-minds7"
