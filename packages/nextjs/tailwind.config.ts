@@ -10,6 +10,7 @@ const config: Config = {
     themes: [
       {
         mytheme: {
+
           primary: "#794BFC",
 
           secondary: "F4F1FD",
@@ -27,12 +28,34 @@ const config: Config = {
           warning: "#00ff00",
 
           error: "#ff0000",
+          
+          primary: "#000000",
+
+          secondary: "#0B192C",
+
+          accent: "#1E3E62",
+
+          neutral: "#FF6500",
+
+          "base-100": "#ffffff",
+
+          info: "#000000",
+
+          success: "#0B192C",
+
+          warning: "#1E3E62",
+
+          error: "#FF6500",
         },
       },
     ],
   },
   theme: {
     extend: {
+      fontFamily: {
+        montserrat: ["Montserrat", "sans-serif"],
+      },
+
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -57,14 +80,14 @@ module.exports = {
     themes: [
       {
         light: {
-          primary: "#93BBFB",
-          "primary-content": "#2A3655",
-          secondary: "#8B45FD",
-          "secondary-content": "#7800FF",
-          accent: "#93BBFB",
-          "accent-content": "#212638",
-          neutral: "#212638",
-          "neutral-content": "#ffffff",
+          primary: "#000000",
+          "primary-content": "#0B192C",
+          secondary: "#1E3E62",
+          "secondary-content": "#FF6500",
+          accent: "#000000",
+          "accent-content": "#0B192C",
+          neutral: "#1E3E62",
+          "neutral-content": "#FF6500",
           "base-100": "#ffffff",
           "base-200": "#f4f8ff",
           "base-300": "#ffffff",
@@ -131,6 +154,12 @@ module.exports = {
           ".contract-content": {
             background: "white",
           },
+          "base-content": "#000000",
+          info: "#0B192C",
+          success: "#1E3E62",
+          warning: "#FF6500",
+          error: "#FF6500",
+          "--rounded-btn": "9999rem",
         },
       },
       {
@@ -210,12 +239,32 @@ module.exports = {
             background:
               "linear-gradient(113.34deg, rgba(43, 34, 67, 0.6) 20.48%, rgba(37, 55, 81, 0.6) 99.67%)",
           },
+          primary: "#000000",
+          "primary-content": "#0B192C",
+          secondary: "#1E3E62",
+          "secondary-content": "#FF6500",
+          accent: "#000000",
+          "accent-content": "#0B192C",
+          neutral: "#1E3E62",
+          "neutral-content": "#FF6500",
+          "base-100": "#1E3E62",
+          "base-200": "#0B192C",
+          "base-300": "#000000",
+          "base-content": "#FF6500",
+          info: "#0B192C",
+          success: "#1E3E62",
+          warning: "#FF6500",
+          error: "#FF6500",
+          "--rounded-btn": "9999rem",
         },
       },
     ],
   },
   theme: {
     extend: {
+      fontFamily: {
+        montserrat: ["Montserrat", "sans-serif"],
+      },
       boxShadow: {
         center: "0 0 12px -2px rgb(0 0 0 / 0.05)",
       },
@@ -224,13 +273,15 @@ module.exports = {
       },
       backgroundImage: {
         "gradient-light":
-          "linear-gradient(270deg, #A7ECFF -17.42%, #E8B6FF 109.05%)",
+          "linear-gradient(270deg, #000000 -17.42%, #0B192C 109.05%)",
         "gradient-dark":
-          "var(--gradient, linear-gradient(90deg, #42D2F1 0%, #B248DD 100%))",
+          "var(--gradient, linear-gradient(90deg, #1E3E62 0%, #FF6500 100%))",
         "gradient-vertical":
-          "linear-gradient(180deg, #3457D1 0%, #8A45FC 100%)",
+          "linear-gradient(180deg, #000000 0%, #FF6500 100%)",
         "gradient-icon":
+
           "var(--gradient, linear-gradient(90deg, #42D2F1 0%, #B248DD 100%))",
+          "var(--gradient, linear-gradient(90deg, #0B192C 0%, #1E3E62 100%))",
       },
     },
   },

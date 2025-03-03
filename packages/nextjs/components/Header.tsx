@@ -32,7 +32,6 @@ export const Header = () => {
     router.push("/profile");
   };
 
-  // Detectar scroll para cambiar el fondo
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -45,11 +44,44 @@ export const Header = () => {
   return (
     <header
       className={`w-full fixed top-0 z-50 transition-all duration-500 ${
-        isScrolled ? "bg-gray-900 bg-opacity-80 shadow-lg" : "bg-transparent"
+        isScrolled ? "bg-opacity-80 shadow-lg" : "bg-transparent"
       }`}
     >
-      <nav className="container mx-auto flex items-center justify-between py-4 px-6 md:px-8">
-        {/* Logo */}
+      {/* Mobile and Tablet Navigation */}
+      <nav className="lg:hidden flex items-center justify-between py-4 px-4 md:px-6">
+        {/* Hamburger Menu Button */}
+        <button
+          onClick={toggleMenu}
+          className="text-white focus:outline-none"
+        >
+          {isMenuOpen ? (
+            <XMarkIcon className="h-6 w-6 md:h-8 md:w-8" />
+          ) : (
+            <Bars3Icon className="h-6 w-6 md:h-8 md:w-8" />
+          )}
+        </button>
+
+        {/* Center Logo */}
+        <Link href="/" passHref>
+          <div className="flex items-center justify-center">
+            <Image
+              src="/Starklotto.png"
+              alt="StarkLotto Logo"
+              width={80}
+              height={80}
+              className="rounded-full w-24 h-24 md:w-24 md:h-24"
+            />
+          </div>
+        </Link>
+
+        {/* Wallet Icon */}
+        <div className="scale-75 md:scale-90">
+          <CustomConnectButton isHeader={true} />
+        </div>
+      </nav>
+
+      {/* Desktop Navigation */}
+      <nav className="hidden lg:flex container mx-auto items-center justify-between py-4 px-6 lg:px-8">
         <Link href="/" passHref>
           <div className="flex items-center gap-2 cursor-pointer">
             <Image
@@ -62,14 +94,13 @@ export const Header = () => {
           </div>
         </Link>
 
-        {/* Desktop Navigation */}
-        <ul className="hidden md:flex space-x-8">
+        <ul className="flex space-x-4 lg:space-x-8">
           {menuLinks.map(({ label, href }) => (
             <li key={href}>
               <Link
                 href={href}
                 passHref
-                className="text-white hover:text-yellow-400 transition duration-300"
+                className="text-white text-sm lg:text-base hover:text-yellow-400 transition duration-300"
               >
                 {label}
               </Link>
@@ -77,62 +108,36 @@ export const Header = () => {
           ))}
         </ul>
 
-        {/* Icons */}
-        <div className="hidden md:flex items-center space-x-4">
-          {/*           <button className="p-2 bg-transparent hover:bg-gray-700 rounded-full transition">
-            <CustomConnectButton isHeader={true} />
-          </button> */}
-          <button className="mb-6 px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-full shadow-lg hover:opacity-90 transition">
+        <div className="flex items-center space-x-4">
+          <button className="mb-6 px-4 lg:px-6 py-2 lg:py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-full shadow-lg hover:opacity-90 transition">
             <CustomConnectButton isHeader={true} />
           </button>
           <button
             className="p-2 bg-transparent hover:bg-gray-700 rounded-full transition"
             onClick={handleProfileClick}
           >
-            <UserIcon className="h-6 w-6 text-white" />
+            <UserIcon className="h-5 w-5 lg:h-6 lg:w-6 text-white" />
           </button>
         </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          onClick={toggleMenu}
-          className="md:hidden p-2 text-white focus:outline-none"
-        >
-          {isMenuOpen ? (
-            <XMarkIcon className="h-8 w-8" />
-          ) : (
-            <Bars3Icon className="h-8 w-8" />
-          )}
-        </button>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile and Tablet Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-gray-900 bg-opacity-90 shadow-lg">
-          <ul className="flex flex-col items-center space-y-4 py-4">
+        <div className="lg:hidden bg-gray-900 bg-opacity-90 shadow-lg">
+          <ul className="flex flex-col items-center space-y-3 md:space-y-4 py-4">
             {menuLinks.map(({ label, href }) => (
               <li key={href}>
                 <Link
                   href={href}
                   passHref
                   onClick={toggleMenu}
-                  className="text-white text-lg hover:text-yellow-400 transition duration-300"
+                  className="text-white text-base md:text-lg hover:text-yellow-400 transition duration-300"
                 >
                   {label}
                 </Link>
               </li>
             ))}
           </ul>
-
-          {/* Icons for Mobile */}
-          <div className="flex justify-center space-x-6 py-4">
-            <button className="p-2 bg-transparent hover:bg-gray-700 rounded-full transition">
-              <WalletIcon className="h-6 w-6 text-white" />
-            </button>
-            <button className="p-2 bg-transparent hover:bg-gray-700 rounded-full transition">
-              <UserIcon className="h-6 w-6 text-white" />
-            </button>
-          </div>
         </div>
       )}
     </header>

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -9,6 +11,10 @@
 
 body {
   min-height: 100vh;
+
+  /* added for testing */
+  font-family: "Montserrat", serif;
+
 }
 
 h1,
@@ -29,8 +35,10 @@ p {
 
 html {
   @apply overflow-y-scroll overflow-x-hidden;
-  -ms-overflow-style: none; /* para IE y Edge */
-  scrollbar-width: none; /* para Firefox */
+  -ms-overflow-style: none;
+  /* para IE y Edge */
+  scrollbar-width: none;
+  /* para Firefox */
 }
 
 body {
@@ -142,6 +150,7 @@ body {
     position: absolute;
     top: -1px;
   }
+
   .trapeze::before {
     content: "";
     position: absolute;
@@ -160,6 +169,7 @@ body {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -174,6 +184,7 @@ body {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -191,6 +202,7 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+
 /*  Prizes Page */
 
 table {
