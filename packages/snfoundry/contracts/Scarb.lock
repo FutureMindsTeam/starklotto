@@ -7,6 +7,7 @@ version = "0.2.0"
 dependencies = [
  "openzeppelin_access",
  "openzeppelin_token",
+ "openzeppelin_upgrades",
  "openzeppelin_utils",
  "snforge_std",
 ]
@@ -47,6 +48,12 @@ dependencies = [
  "openzeppelin_introspection",
  "openzeppelin_utils",
 ]
+
+[[package]]
+name = "openzeppelin_upgrades"
+version = "0.20.0"
+source = "registry+https://scarbs.xyz/"
+checksum = "sha256:15fdd63f6b50a0fda7b3f8f434120aaf7637bcdfe6fd8d275ad57343d5ede5e1"
 
 [[package]]
 name = "openzeppelin_utils"
