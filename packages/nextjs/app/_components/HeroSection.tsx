@@ -12,6 +12,7 @@ function HeroSection() {
     router.push("/play");
   };
 
+  
   const handleExplorePrizes = () => {
     router.push("/prizes");
   };
