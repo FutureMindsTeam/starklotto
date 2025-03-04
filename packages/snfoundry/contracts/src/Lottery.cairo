@@ -69,7 +69,7 @@ trait ILottery<TContractState> {
     ) -> Ticket;
     fn GetTicketCurrentId(self: @TContractState) -> u64;
     fn GetWinningNumbers(self: @TContractState, drawId: u64) -> Array<u16>;
-//=======================================================================================
+    //=======================================================================================
 
 }
 
@@ -527,25 +527,25 @@ mod Lottery {
 
         numbers
     }
-// fn GenerateRandomNumbers() -> Array<u16> {
+    // fn GenerateRandomNumbers() -> Array<u16> {
 //     TODO: We need to use VRF de Pragma Oracle to generate random numbers
 
-//     now we are generating random numbers for testing
+    //     now we are generating random numbers for testing
 //     let mut numbers = ArrayTrait::new();
 //     let blockTimestamp = get_block_timestamp();
 //     let blockHash = get_block_hash();
 
-//     seed is the combination of the block timestamp and the block hash
+    //     seed is the combination of the block timestamp and the block hash
 //     let seed = blockTimestamp + blockHash;
 
-//     generate 4 unique numbers between 0-99
+    //     generate 4 unique numbers between 0-99
 //     let mut usedNumbers: Felt252Dict<bool> = Default::default();
 //     let mut count = 0;
 
-//     while count < 4 {
+    //     while count < 4 {
 //         let number = (seed + count) % 100;
 
-//         check if the number is already used
+    //         check if the number is already used
 //         if !usedNumbers.contains(number) {
 //             numbers.append(number);
 //             usedNumbers.insert(number, true);
@@ -553,6 +553,6 @@ mod Lottery {
 //         }
 //     }
 
-//     numbers
+    //     numbers
 // }
 }
