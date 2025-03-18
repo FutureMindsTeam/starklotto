@@ -14,11 +14,11 @@ export const metadata: Metadata = {
 const ScaffoldStarkApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body className="bg-gradient-to-r from-[#3A0909] to-[#000000] min-h-screen flex flex-col">
+      <body className="bg-[#0D0D0D] min-h-screen flex flex-col">
         <ThemeProvider enableSystem>
           <ScaffoldStarkAppWithProviders>
-            <Header />
-            <main className="flex-grow container mx-auto px-4 py-8">
+            {/* <Header /> */}
+            <main className="flex-grow container mx-auto">
               {children}
             </main>
             {/* <Footer /> */}

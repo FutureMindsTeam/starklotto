@@ -43,7 +43,7 @@ function Header() {
         </div>
         <div className="pt-8">
           <p className="mb-4">Share Your Experience</p>
-          <SocialLinks />
+          {/* <SocialLinks /> */}
         </div>
       </div>
 
