@@ -29,7 +29,7 @@ const ScaffoldStarkApp = ({ children }: { children: React.ReactNode }) => {
             <div className="circle-gradient-blue w-[330px] h-[630px]"></div>
           </>
         )}
-        <Header />
+        {/* <Header /> */}
         <main className="relative flex flex-col flex-1">{children}</main>
         {/*         <Footer /> */}
       </div>

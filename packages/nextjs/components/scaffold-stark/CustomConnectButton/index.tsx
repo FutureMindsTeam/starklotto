@@ -58,25 +58,27 @@ export const CustomConnectButton: React.FC<CustomConnectButtonProps> = ({
 
   return (
     <>
-      <div className="flex flex-col items-center max-sm:mt-2">
-        <Balance
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 px-3 py-2 bg-[#0B1221] border border-[#1d3a6d] rounded-xl">
+          <Balance
+            address={accountAddress as Address}
+            className="min-h-0 h-auto text-[#00FFA3]"
+          />
+          <span className="text-xs text-[#00FFA3]">
+            {chain.name}
+          </span>
+        </div>
+        <AddressInfoDropdown
           address={accountAddress as Address}
-          className="min-h-0 h-auto"
+          displayName={""}
+          ensAvatar={""}
+          blockExplorerAddressLink={blockExplorerAddressLink}
         />
-        <span className="text-xs ml-1" style={{ color: networkColor }}>
-          {chain.name}
-        </span>
+        <AddressQRCodeModal
+          address={accountAddress as Address}
+          modalId="qrcode-modal"
+        />
       </div>
-      <AddressInfoDropdown
-        address={accountAddress as Address}
-        displayName={""}
-        ensAvatar={""}
-        blockExplorerAddressLink={blockExplorerAddressLink}
-      />
-      <AddressQRCodeModal
-        address={accountAddress as Address}
-        modalId="qrcode-modal"
-      />
     </>
   );
 };

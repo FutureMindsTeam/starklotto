@@ -141,7 +141,7 @@ export const AddressInfoDropdown = ({
               </CopyToClipboard>
             )}
           </li>
-          <li className={selectingNetwork ? "hidden" : ""}>
+          {/* <li className={selectingNetwork ? "hidden" : ""}>
             <label
               htmlFor="qrcode-modal"
               className="btn-sm !rounded-xl flex gap-3 py-3"
@@ -149,7 +149,7 @@ export const AddressInfoDropdown = ({
               <QrCodeIcon className="h-6 w-4 ml-2 sm:ml-0" />
               <span className="whitespace-nowrap">View QR Code</span>
             </label>
-          </li>
+          </li> */}
           {chain.network != "devnet" ? (
             <li className={selectingNetwork ? "hidden" : ""}>
               <button
