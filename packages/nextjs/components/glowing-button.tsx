@@ -34,11 +34,13 @@ export function GlowingButton({
       whileTap={{ scale: 0.98 }}
       {...props}
     >
+    
       <div
         className="absolute inset-0 rounded-full blur-lg transition-opacity duration-300 opacity-0 hover:opacity-100"
         style={{ backgroundColor: "var(--glow-color)" }}
       />
       <span className="relative z-10">{children}</span>
     </motion.button>
+    
   );
 }
