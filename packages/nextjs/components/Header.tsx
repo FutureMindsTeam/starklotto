@@ -8,17 +8,19 @@ import {
   UserIcon,
   Bars3Icon,
   XMarkIcon,
+  HomeIcon,
+  BookOpenIcon,
+  TrophyIcon,
+  QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
 import { CustomConnectButton } from "./scaffold-stark/CustomConnectButton";
 import { useRouter } from "next/navigation";
 
 const menuLinks = [
-  { label: "Home", href: "/" },
-  { label: "How It Works", href: "/how-it-works" },
-  { label: "Play", href: "/play" },
-  { label: "Prizes", href: "/prizes" },
-  { label: "Contact Us", href: "/contact-us" },
-  { label: "About Us", href: "/about-us" },
+  { label: "Home", href: "#home", icon: <HomeIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" /> },
+  { label: "How It Works", href: "#how-it-works", icon: <BookOpenIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" /> },
+  { label: "Rewards", href: "#rewards", icon: <TrophyIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" /> },
+  { label: "FAQ", href: "#faq", icon: <QuestionMarkCircleIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" /> },
 ];
 
 export const Header = () => {
@@ -44,9 +46,7 @@ export const Header = () => {
 
   return (
     <header
-      className={`w-full fixed top-0 z-50 transition-all duration-500 ${
-        isScrolled ? "bg-gray-900 bg-opacity-80 shadow-lg" : "bg-transparent"
-      }`}
+    className={`w-full top-0 z-50 transition-all duration-500 bg-transparent`}
     >
       <nav className="container mx-auto flex items-center justify-between py-4 px-6 md:px-8">
         {/* Logo */}
@@ -55,8 +55,8 @@ export const Header = () => {
             <Image
               src="/Starklotto.png"
               alt="StarkLotto Logo"
-              width={131}
-              height={110}
+              width={100}
+              height={100}
               className="rounded-full"
             />
           </div>
@@ -64,14 +64,15 @@ export const Header = () => {
 
         {/* Desktop Navigation */}
         <ul className="hidden md:flex space-x-8">
-          {menuLinks.map(({ label, href }) => (
+          {menuLinks.map(({ label, href, icon }) => (
             <li key={href}>
               <Link
                 href={href}
                 passHref
-                className="text-white hover:text-yellow-400 transition duration-300"
+                className="group text-white hover:text-yellow-400 transition duration-300 flex items-center gap-2"
               >
                 {label}
+                {icon}
               </Link>
             </li>
           ))}
@@ -82,7 +83,7 @@ export const Header = () => {
           {/*           <button className="p-2 bg-transparent hover:bg-gray-700 rounded-full transition">
             <CustomConnectButton isHeader={true} />
           </button> */}
-          <button className="mb-6 px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-full shadow-lg hover:opacity-90 transition">
+          <button className="text-white font-semibold rounded-full hover:opacity-90 transition">
             <CustomConnectButton isHeader={true} />
           </button>
           <button
