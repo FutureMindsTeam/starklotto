@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { User, Ticket, Trophy } from "lucide-react"
+import { motion } from "framer-motion";
+import { User, Ticket, Trophy } from "lucide-react";
 
 interface HowItWorksSectionProps {
-  howItWorksY: any
+  howItWorksY: any;
 }
 
 export function HowItWorksSection({ howItWorksY }: HowItWorksSectionProps) {
@@ -22,7 +22,9 @@ export function HowItWorksSection({ howItWorksY }: HowItWorksSectionProps) {
           viewport={{ once: true }}
         >
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">How It Works</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+              How It Works
+            </h2>
             <p className="max-w-[900px] text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Getting started is easy. Follow these simple steps to participate.
             </p>
@@ -45,7 +47,9 @@ export function HowItWorksSection({ howItWorksY }: HowItWorksSectionProps) {
             </motion.div>
             <div className="space-y-2">
               <h3 className="text-xl font-bold">1. Connect Wallet</h3>
-              <p className="text-gray-400">Connect your Web3 wallet to get started.</p>
+              <p className="text-gray-400">
+                Connect your Web3 wallet to get started.
+              </p>
             </div>
           </motion.div>
 
@@ -64,7 +68,9 @@ export function HowItWorksSection({ howItWorksY }: HowItWorksSectionProps) {
             </motion.div>
             <div className="space-y-2">
               <h3 className="text-xl font-bold">2. Choose Numbers</h3>
-              <p className="text-gray-400">Select your lucky numbers and purchase tickets.</p>
+              <p className="text-gray-400">
+                Select your lucky numbers and purchase tickets.
+              </p>
             </div>
           </motion.div>
 
@@ -83,11 +89,13 @@ export function HowItWorksSection({ howItWorksY }: HowItWorksSectionProps) {
             </motion.div>
             <div className="space-y-2">
               <h3 className="text-xl font-bold">3. Win & Collect</h3>
-              <p className="text-gray-400">Winners receive prizes automatically in their wallet.</p>
+              <p className="text-gray-400">
+                Winners receive prizes automatically in their wallet.
+              </p>
             </div>
           </motion.div>
         </div>
       </div>
     </motion.section>
-  )
-} 
+  );
+}

@@ -78,73 +78,73 @@ const ConnectModal = ({ isHeader }: { isHeader: boolean }) => {
         )}
       </button>
 
-      {isOpen && createPortal(
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={handleCloseModal} />
-          <div className="relative w-full max-w-[480px] p-6 bg-[#0B1221] border border-[#1d3a6d] rounded-2xl shadow-[0_0_15px_rgba(29,58,109,0.5)]">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-[#00FFA3]">
-                {isBurnerWallet ? "Choose account" : "Connect a Wallet"}
-              </h3>
-              <button
-                onClick={handleCloseModal}
-                className="hover:bg-[#1d3a6d]/50 rounded-full p-2 transition-colors duration-200"
-              >
-                <svg
-                  className="w-5 h-5 text-[#00FFA3]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
+      {isOpen &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+              onClick={handleCloseModal}
+            />
+            <div className="relative w-full max-w-[480px] p-6 bg-[#0B1221] border border-[#1d3a6d] rounded-2xl shadow-[0_0_15px_rgba(29,58,109,0.5)]">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-[#00FFA3]">
+                  {isBurnerWallet ? "Choose account" : "Connect a Wallet"}
+                </h3>
+                <button
+                  onClick={handleCloseModal}
+                  className="hover:bg-[#1d3a6d]/50 rounded-full p-2 transition-colors duration-200"
                 >
-                  <path d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div className="flex flex-col w-full">
-              <div className="flex flex-col gap-4 w-full">
-                {!isBurnerWallet ? (
-                  connectors.map((connector, index) => (
-                    <Wallet
-                      key={connector.id || index}
-                      connector={connector}
-                      loader={loader}
-                      handleConnectWallet={handleConnectWallet}
-                    />
-                  ))
-                ) : (
-                  <div className="flex flex-col gap-3">
-                    <div className="max-h-[400px] overflow-y-auto flex w-full flex-col gap-2 pr-2 custom-scrollbar">
-                      {burnerAccounts.map((burnerAcc, ix) => (
-                        <div
-                          key={burnerAcc.publicKey}
-                          className="w-full"
-                        >
-                          <button
-                            className="w-full hover:bg-[#1d3a6d]/30 bg-[#1d3a6d]/10 border border-[#1d3a6d] rounded-xl py-3 px-4 flex items-center gap-4 transition-all duration-200 text-[#00FFA3]"
-                            onClick={(e) => handleConnectBurner(e, ix)}
-                          >
-                            <BlockieAvatar
-                              address={burnerAcc.accountAddress}
-                              size={35}
-                            />
-                            <span>
-                              {`${burnerAcc.accountAddress.slice(0, 6)}...${burnerAcc.accountAddress.slice(-4)}`}
-                            </span>
-                          </button>
-                        </div>
-                      ))}
+                  <svg
+                    className="w-5 h-5 text-[#00FFA3]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="flex flex-col w-full">
+                <div className="flex flex-col gap-4 w-full">
+                  {!isBurnerWallet ? (
+                    connectors.map((connector, index) => (
+                      <Wallet
+                        key={connector.id || index}
+                        connector={connector}
+                        loader={loader}
+                        handleConnectWallet={handleConnectWallet}
+                      />
+                    ))
+                  ) : (
+                    <div className="flex flex-col gap-3">
+                      <div className="max-h-[400px] overflow-y-auto flex w-full flex-col gap-2 pr-2 custom-scrollbar">
+                        {burnerAccounts.map((burnerAcc, ix) => (
+                          <div key={burnerAcc.publicKey} className="w-full">
+                            <button
+                              className="w-full hover:bg-[#1d3a6d]/30 bg-[#1d3a6d]/10 border border-[#1d3a6d] rounded-xl py-3 px-4 flex items-center gap-4 transition-all duration-200 text-[#00FFA3]"
+                              onClick={(e) => handleConnectBurner(e, ix)}
+                            >
+                              <BlockieAvatar
+                                address={burnerAcc.accountAddress}
+                                size={35}
+                              />
+                              <span>
+                                {`${burnerAcc.accountAddress.slice(0, 6)}...${burnerAcc.accountAddress.slice(-4)}`}
+                              </span>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </div>,
-        document.body
-      )}
+          </div>,
+          document.body,
+        )}
     </>
   );
 };
 export default ConnectModal;
-

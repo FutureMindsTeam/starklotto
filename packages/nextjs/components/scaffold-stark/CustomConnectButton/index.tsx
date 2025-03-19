@@ -64,9 +64,7 @@ export const CustomConnectButton: React.FC<CustomConnectButtonProps> = ({
             address={accountAddress as Address}
             className="min-h-0 h-auto text-[#00FFA3]"
           />
-          <span className="text-xs text-[#00FFA3]">
-            {chain.name}
-          </span>
+          <span className="text-xs text-[#00FFA3]">{chain.name}</span>
         </div>
         <AddressInfoDropdown
           address={accountAddress as Address}

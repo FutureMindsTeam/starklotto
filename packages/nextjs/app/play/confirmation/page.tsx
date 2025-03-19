@@ -15,7 +15,7 @@ const contractName: ContractType = LOTT_CONTRACT_NAME as ContractType;
 const NumberSelectionPage = () => {
   const selectedNumbers = usePlayStore((state) => state.loteryNumbersSelected);
   const setSelectedNumbers = usePlayStore(
-    (state) => state.setLoteryNumbersSelected
+    (state) => state.setLoteryNumbersSelected,
   );
   const [randomNumbersToGenerate, setRandomNumbersToGenerate] =
     useState<number>(0);

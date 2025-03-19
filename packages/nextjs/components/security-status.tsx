@@ -1,5 +1,5 @@
-import { motion } from "framer-motion"
-import { Shield, ExternalLink } from "lucide-react"
+import { motion } from "framer-motion";
+import { Shield, ExternalLink } from "lucide-react";
 
 export function SecurityStatus() {
   return (
@@ -23,5 +23,5 @@ export function SecurityStatus() {
         </a>
       </div>
     </motion.div>
-  )
-} 
+  );
+}

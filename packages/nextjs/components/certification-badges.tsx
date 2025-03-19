@@ -1,5 +1,5 @@
-import { motion } from "framer-motion"
-import { Shield, Lock, CheckCircle } from "lucide-react"
+import { motion } from "framer-motion";
+import { Shield, Lock, CheckCircle } from "lucide-react";
 
 export function CertificationBadges() {
   const badges = [
@@ -24,12 +24,12 @@ export function CertificationBadges() {
       bgColor: "bg-green-500/20",
       borderColor: "border-green-500/30",
     },
-  ]
+  ];
 
   return (
     <div className="flex flex-wrap gap-4 justify-center">
       {badges.map((badge, index) => {
-        const Icon = badge.icon
+        const Icon = badge.icon;
         return (
           <motion.div
             key={badge.title}
@@ -40,10 +40,12 @@ export function CertificationBadges() {
             whileHover={{ scale: 1.05 }}
           >
             <Icon className={`h-4 w-4 ${badge.color}`} />
-            <span className={`text-sm font-medium ${badge.color}`}>{badge.title}</span>
+            <span className={`text-sm font-medium ${badge.color}`}>
+              {badge.title}
+            </span>
           </motion.div>
-        )
+        );
       })}
     </div>
-  )
-} 
+  );
+}

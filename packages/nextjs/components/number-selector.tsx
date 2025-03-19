@@ -1,32 +1,36 @@
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 interface NumberSelectorProps {
-  maxNumbers: number
-  maxSelections: number
-  onSelectNumbers: (numbers: number[]) => void
+  maxNumbers: number;
+  maxSelections: number;
+  onSelectNumbers: (numbers: number[]) => void;
 }
 
-export function NumberSelector({ maxNumbers, maxSelections, onSelectNumbers }: NumberSelectorProps) {
-  const [selectedNumbers, setSelectedNumbers] = useState<number[]>([])
+export function NumberSelector({
+  maxNumbers,
+  maxSelections,
+  onSelectNumbers,
+}: NumberSelectorProps) {
+  const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
 
   const handleNumberClick = (number: number) => {
     setSelectedNumbers((prev) => {
-      const isSelected = prev.includes(number)
+      const isSelected = prev.includes(number);
       if (isSelected) {
-        return prev.filter((n) => n !== number)
+        return prev.filter((n) => n !== number);
       }
       if (prev.length >= maxSelections) {
-        return prev
+        return prev;
       }
-      return [...prev, number]
-    })
-  }
+      return [...prev, number];
+    });
+  };
 
   // Update parent component when selections change
   useEffect(() => {
-    onSelectNumbers(selectedNumbers)
-  }, [selectedNumbers, onSelectNumbers])
+    onSelectNumbers(selectedNumbers);
+  }, [selectedNumbers, onSelectNumbers]);
 
   return (
     <div className="grid grid-cols-5 gap-2">
@@ -50,5 +54,5 @@ export function NumberSelector({ maxNumbers, maxSelections, onSelectNumbers }: N
         </motion.button>
       ))}
     </div>
-  )
-} 
+  );
+}

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Shield, Lock, Trophy } from "lucide-react"
-import { CertificationBadges } from "~~/components/certification-badges"
+import { motion } from "framer-motion";
+import { Shield, Lock, Trophy } from "lucide-react";
+import { CertificationBadges } from "~~/components/certification-badges";
 
 interface FeaturesSectionProps {
-  featuresY: any
+  featuresY: any;
 }
 
 export function FeaturesSection({ featuresY }: FeaturesSectionProps) {
@@ -23,9 +23,12 @@ export function FeaturesSection({ featuresY }: FeaturesSectionProps) {
           viewport={{ once: true }}
         >
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Security Features</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+              Security Features
+            </h2>
             <p className="max-w-[900px] text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Our platform uses audited and verified smart contracts to ensure transparency and security.
+              Our platform uses audited and verified smart contracts to ensure
+              transparency and security.
             </p>
           </div>
         </motion.div>
@@ -46,7 +49,10 @@ export function FeaturesSection({ featuresY }: FeaturesSectionProps) {
             </motion.div>
             <div className="space-y-2">
               <h3 className="text-xl font-bold">Audited Contracts</h3>
-              <p className="text-gray-400">All our smart contracts have been audited by leading security firms.</p>
+              <p className="text-gray-400">
+                All our smart contracts have been audited by leading security
+                firms.
+              </p>
             </div>
           </motion.div>
 
@@ -65,7 +71,9 @@ export function FeaturesSection({ featuresY }: FeaturesSectionProps) {
             </motion.div>
             <div className="space-y-2">
               <h3 className="text-xl font-bold">Secure Transactions</h3>
-              <p className="text-gray-400">All transactions are secured and verified on the blockchain.</p>
+              <p className="text-gray-400">
+                All transactions are secured and verified on the blockchain.
+              </p>
             </div>
           </motion.div>
 
@@ -84,7 +92,9 @@ export function FeaturesSection({ featuresY }: FeaturesSectionProps) {
             </motion.div>
             <div className="space-y-2">
               <h3 className="text-xl font-bold">Instant Prizes</h3>
-              <p className="text-gray-400">Winners receive their prizes automatically and instantly.</p>
+              <p className="text-gray-400">
+                Winners receive their prizes automatically and instantly.
+              </p>
             </div>
           </motion.div>
         </div>
@@ -92,5 +102,5 @@ export function FeaturesSection({ featuresY }: FeaturesSectionProps) {
         <CertificationBadges />
       </div>
     </motion.section>
-  )
-} 
+  );
+}

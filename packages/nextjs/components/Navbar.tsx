@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import Image from "next/image"
-import Link from "next/link"
-import { Shield, Info, Trophy, User, HomeIcon, Menu, X } from "lucide-react"
-import { CustomConnectButton } from "./scaffold-stark/CustomConnectButton"
-import { GlowingButton } from "./glowing-button"
-import { useAccount } from "@starknet-react/core"
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { Shield, Info, Trophy, User, HomeIcon, Menu, X } from "lucide-react";
+import { CustomConnectButton } from "./scaffold-stark/CustomConnectButton";
+import { GlowingButton } from "./glowing-button";
+import { useAccount } from "@starknet-react/core";
 
 interface NavbarProps {
-  onBuyTicket: () => void
-  onNavigate: (sectionId: string) => void
+  onBuyTicket: () => void;
+  onNavigate: (sectionId: string) => void;
 }
 
 const menuItems = [
@@ -19,7 +19,7 @@ const menuItems = [
   { id: "features", label: "Features", icon: Shield },
   { id: "how-it-works", label: "How It Works", icon: Info },
   { id: "faq", label: "FAQ", icon: Trophy },
-]
+];
 
 const PlayNowButton = ({ onClick }: { onClick: () => void }) => (
   <motion.button
@@ -30,15 +30,15 @@ const PlayNowButton = ({ onClick }: { onClick: () => void }) => (
   >
     {/* Animated background glow */}
     <div className="absolute -inset-1 bg-gradient-to-r from-[#8A3FFC] via-[#00FFA3] to-[#9B51E0] rounded-lg blur-lg group-hover:blur-xl opacity-70 group-hover:opacity-100 transition-all duration-500 animate-gradient-xy"></div>
-    
+
     {/* Button content */}
     <div className="relative px-4 py-2 bg-black rounded-lg flex items-center gap-2 border border-[#00FFA3]/30">
       <div className="absolute inset-0 bg-gradient-to-r from-[#8A3FFC]/20 to-[#00FFA3]/20 rounded-lg"></div>
-      
+
       <span className="font-semibold text-sm bg-gradient-to-r from-[#00FFA3] to-white bg-clip-text text-transparent">
         Play Now
       </span>
-      
+
       <motion.div
         className="relative"
         animate={{
@@ -56,12 +56,12 @@ const PlayNowButton = ({ onClick }: { onClick: () => void }) => (
       </motion.div>
     </div>
   </motion.button>
-)
+);
 
 export function Navbar({ onBuyTicket, onNavigate }: NavbarProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { status } = useAccount()
-  const isConnected = status === "connected"
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { status } = useAccount();
+  const isConnected = status === "connected";
 
   return (
     <>
@@ -197,8 +197,8 @@ export function Navbar({ onBuyTicket, onNavigate }: NavbarProps) {
                     <motion.button
                       key={id}
                       onClick={() => {
-                        onNavigate(id)
-                        setIsMenuOpen(false)
+                        onNavigate(id);
+                        setIsMenuOpen(false);
                       }}
                       className="flex items-center gap-3 w-full px-4 py-2.5 text-white/80 hover:text-white hover:bg-[#00FFA3]/10 rounded-lg transition-colors group text-sm"
                       whileTap={{ scale: 0.98 }}
@@ -222,5 +222,5 @@ export function Navbar({ onBuyTicket, onNavigate }: NavbarProps) {
         )}
       </AnimatePresence>
     </>
-  )
-} 
+  );
+}

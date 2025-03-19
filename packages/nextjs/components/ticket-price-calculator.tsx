@@ -1,30 +1,34 @@
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Minus, Plus } from "lucide-react"
-import { GlowingButton } from "./glowing-button"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Minus, Plus } from "lucide-react";
+import { GlowingButton } from "./glowing-button";
 
 interface TicketPriceCalculatorProps {
-  basePrice: number
-  maxTickets: number
-  onPurchase: (quantity: number, totalPrice: number) => void
+  basePrice: number;
+  maxTickets: number;
+  onPurchase: (quantity: number, totalPrice: number) => void;
 }
 
-export function TicketPriceCalculator({ basePrice, maxTickets, onPurchase }: TicketPriceCalculatorProps) {
-  const [quantity, setQuantity] = useState(1)
+export function TicketPriceCalculator({
+  basePrice,
+  maxTickets,
+  onPurchase,
+}: TicketPriceCalculatorProps) {
+  const [quantity, setQuantity] = useState(1);
 
   const handleIncrement = () => {
     if (quantity < maxTickets) {
-      setQuantity((prev) => prev + 1)
+      setQuantity((prev) => prev + 1);
     }
-  }
+  };
 
   const handleDecrement = () => {
     if (quantity > 1) {
-      setQuantity((prev) => prev - 1)
+      setQuantity((prev) => prev - 1);
     }
-  }
+  };
 
-  const totalPrice = basePrice * quantity
+  const totalPrice = basePrice * quantity;
 
   return (
     <div className="space-y-4">
@@ -40,7 +44,9 @@ export function TicketPriceCalculator({ basePrice, maxTickets, onPurchase }: Tic
           >
             <Minus className="h-4 w-4" />
           </motion.button>
-          <span className="text-lg font-bold min-w-[2ch] text-center">{quantity}</span>
+          <span className="text-lg font-bold min-w-[2ch] text-center">
+            {quantity}
+          </span>
           <motion.button
             onClick={handleIncrement}
             className="h-8 w-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 disabled:opacity-50"
@@ -71,5 +77,5 @@ export function TicketPriceCalculator({ basePrice, maxTickets, onPurchase }: Tic
         Purchase Tickets
       </GlowingButton>
     </div>
-  )
-} 
+  );
+}

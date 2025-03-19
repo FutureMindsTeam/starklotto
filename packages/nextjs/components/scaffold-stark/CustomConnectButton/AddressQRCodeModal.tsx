@@ -4,7 +4,6 @@ import { Address } from "~~/components/scaffold-stark";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 
-
 type AddressQRCodeModalProps = {
   address: AddressType;
   modalId: string;
@@ -39,46 +38,49 @@ export const AddressQRCodeModal = ({
         <span className="text-sm">QR</span>
       </button>
 
-      {isOpen && createPortal(
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
-          <div className="relative w-full max-w-[480px] p-6 bg-[#0B1221] border border-[#1d3a6d] rounded-2xl shadow-[0_0_15px_rgba(29,58,109,0.5)]">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-[#00FFA3]">
-                Wallet Address QR Code
-              </h3>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="hover:bg-[#1d3a6d]/50 rounded-full p-2 transition-colors duration-200"
-              >
-                <svg
-                  className="w-5 h-5 text-[#00FFA3]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
+      {isOpen &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+              onClick={() => setIsOpen(false)}
+            />
+            <div className="relative w-full max-w-[480px] p-6 bg-[#0B1221] border border-[#1d3a6d] rounded-2xl shadow-[0_0_15px_rgba(29,58,109,0.5)]">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-[#00FFA3]">
+                  Wallet Address QR Code
+                </h3>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="hover:bg-[#1d3a6d]/50 rounded-full p-2 transition-colors duration-200"
                 >
-                  <path d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div className="flex flex-col items-center gap-6 py-6">
-              <div className="p-4 bg-white rounded-xl">
-                <QRCodeSVG value={address} size={256} />
+                  <svg
+                    className="w-5 h-5 text-[#00FFA3]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
-              <div className="text-[#00FFA3]">
-              <Address
-                address={address}
-                format="short"
-                disableAddressLink
-                
-              />
+              <div className="flex flex-col items-center gap-6 py-6">
+                <div className="p-4 bg-white rounded-xl">
+                  <QRCodeSVG value={address} size={256} />
+                </div>
+                <div className="text-[#00FFA3]">
+                  <Address
+                    address={address}
+                    format="short"
+                    disableAddressLink
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </div>,
-        document.body
-      )}
+          </div>,
+          document.body,
+        )}
     </>
   );
 };

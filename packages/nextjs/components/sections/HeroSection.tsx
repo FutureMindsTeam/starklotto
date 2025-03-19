@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Shield, Lock, ChevronRight, Check } from "lucide-react"
-import { Button } from "~~/components/ui/button"
-import { SecurityBadge } from "~~/components/security-badge"
-import { GlowingButton } from "~~/components/glowing-button"
-import { CountdownTimer } from "~~/components/countdown-timer"
-import { NumberSelector } from "~~/components/number-selector"
-import { TicketPriceCalculator } from "~~/components/ticket-price-calculator"
-import { LiveActivityFeed } from "~~/components/live-activity-feed"
+import { motion } from "framer-motion";
+import { Shield, Lock, ChevronRight, Check } from "lucide-react";
+import { Button } from "~~/components/ui/button";
+import { SecurityBadge } from "~~/components/security-badge";
+import { GlowingButton } from "~~/components/glowing-button";
+import { CountdownTimer } from "~~/components/countdown-timer";
+import { NumberSelector } from "~~/components/number-selector";
+import { TicketPriceCalculator } from "~~/components/ticket-price-calculator";
+import { LiveActivityFeed } from "~~/components/live-activity-feed";
 
 interface HeroSectionProps {
-  heroY: any
-  jackpot: number
-  showSecurityInfo: boolean
-  showTicketSelector: boolean
-  selectedNumbers: number[]
-  targetDate: Date
-  onBuyTicket: () => void
-  onSelectNumbers: (numbers: number[]) => void
-  onPurchase: (quantity: number, totalPrice: number) => void
-  onToggleSecurityInfo: () => void
+  heroY: any;
+  jackpot: number;
+  showSecurityInfo: boolean;
+  showTicketSelector: boolean;
+  selectedNumbers: number[];
+  targetDate: Date;
+  onBuyTicket: () => void;
+  onSelectNumbers: (numbers: number[]) => void;
+  onPurchase: (quantity: number, totalPrice: number) => void;
+  onToggleSecurityInfo: () => void;
 }
 
 export function HeroSection({
@@ -59,15 +59,21 @@ export function HeroSection({
                 The Most Secure and Exciting Web3 Lottery
               </h1>
               <p className="max-w-[600px] text-gray-300 md:text-xl">
-                Play, win, and collect prizes instantly with blockchain security. Transparent, fair, and fully
-                decentralized.
+                Play, win, and collect prizes instantly with blockchain
+                security. Transparent, fair, and fully decentralized.
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
-              <GlowingButton onClick={onBuyTicket} glowColor="rgba(139, 92, 246, 0.6)">
+              <GlowingButton
+                onClick={onBuyTicket}
+                glowColor="rgba(139, 92, 246, 0.6)"
+              >
                 Play Now
               </GlowingButton>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <Button
                   variant="outline"
                   size="lg"
@@ -95,10 +101,15 @@ export function HeroSection({
                 showSecurityInfo ? "block" : "hidden"
               }`}
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: showSecurityInfo ? 1 : 0, height: showSecurityInfo ? "auto" : 0 }}
+              animate={{
+                opacity: showSecurityInfo ? 1 : 0,
+                height: showSecurityInfo ? "auto" : 0,
+              }}
               exit={{ opacity: 0, height: 0 }}
             >
-              <h3 className="text-lg font-medium mb-2">Our Security Measures</h3>
+              <h3 className="text-lg font-medium mb-2">
+                Our Security Measures
+              </h3>
               <ul className="space-y-2">
                 <li className="flex items-start gap-2">
                   <Check className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
@@ -110,7 +121,9 @@ export function HeroSection({
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
-                  <span>Multi-signature treasury with time-locked transactions</span>
+                  <span>
+                    Multi-signature treasury with time-locked transactions
+                  </span>
                 </li>
               </ul>
             </motion.div>
@@ -152,11 +165,21 @@ export function HeroSection({
                     exit={{ opacity: 0, y: -20 }}
                   >
                     <div className="mb-4">
-                      <h4 className="text-sm font-medium mb-2">Select your lucky numbers:</h4>
-                      <NumberSelector maxNumbers={20} maxSelections={5} onSelectNumbers={onSelectNumbers} />
+                      <h4 className="text-sm font-medium mb-2">
+                        Select your lucky numbers:
+                      </h4>
+                      <NumberSelector
+                        maxNumbers={20}
+                        maxSelections={5}
+                        onSelectNumbers={onSelectNumbers}
+                      />
                     </div>
                     <div className="mt-4 pt-4 border-t border-white/10">
-                      <TicketPriceCalculator basePrice={5} maxTickets={10} onPurchase={onPurchase} />
+                      <TicketPriceCalculator
+                        basePrice={5}
+                        maxTickets={10}
+                        onPurchase={onPurchase}
+                      />
                     </div>
                   </motion.div>
                 ) : (
@@ -198,5 +221,5 @@ export function HeroSection({
         </div>
       </div>
     </motion.section>
-  )
-} 
+  );
+}

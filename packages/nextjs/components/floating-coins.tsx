@@ -1,5 +1,5 @@
-import { motion } from "framer-motion"
-import { Coins } from "lucide-react"
+import { motion } from "framer-motion";
+import { Coins } from "lucide-react";
 
 export function FloatingCoins() {
   return (
@@ -29,5 +29,5 @@ export function FloatingCoins() {
         </motion.div>
       ))}
     </div>
-  )
-} 
+  );
+}

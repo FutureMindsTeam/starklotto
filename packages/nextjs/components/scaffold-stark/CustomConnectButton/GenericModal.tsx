@@ -11,7 +11,7 @@ const GenericModal = ({
 }) => {
   const { resolvedTheme } = useTheme();
   const isDarkMode = resolvedTheme === "dark";
-  
+
   return (
     <div className="modal modal-bottom sm:modal-middle backdrop-blur-sm">
       <div className={className}>

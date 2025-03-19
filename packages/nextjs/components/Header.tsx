@@ -17,10 +17,34 @@ import { CustomConnectButton } from "./scaffold-stark/CustomConnectButton";
 import { useRouter } from "next/navigation";
 
 const menuLinks = [
-  { label: "Home", href: "#home", icon: <HomeIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" /> },
-  { label: "How It Works", href: "#how-it-works", icon: <BookOpenIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" /> },
-  { label: "Rewards", href: "#rewards", icon: <TrophyIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" /> },
-  { label: "FAQ", href: "#faq", icon: <QuestionMarkCircleIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" /> },
+  {
+    label: "Home",
+    href: "#home",
+    icon: (
+      <HomeIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" />
+    ),
+  },
+  {
+    label: "How It Works",
+    href: "#how-it-works",
+    icon: (
+      <BookOpenIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" />
+    ),
+  },
+  {
+    label: "Rewards",
+    href: "#rewards",
+    icon: (
+      <TrophyIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" />
+    ),
+  },
+  {
+    label: "FAQ",
+    href: "#faq",
+    icon: (
+      <QuestionMarkCircleIcon className="h-6 w-6 text-white group-hover:text-yellow-400 transition duration-300" />
+    ),
+  },
 ];
 
 export const Header = () => {
@@ -46,7 +70,7 @@ export const Header = () => {
 
   return (
     <header
-    className={`w-full top-0 z-50 transition-all duration-500 bg-transparent`}
+      className={`w-full top-0 z-50 transition-all duration-500 bg-transparent`}
     >
       <nav className="container mx-auto flex items-center justify-between py-4 px-6 md:px-8">
         {/* Logo */}

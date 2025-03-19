@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 export function AnimatedBackground() {
   return (
@@ -55,7 +55,8 @@ export function AnimatedBackground() {
       <div
         className="absolute inset-0 opacity-20"
         style={{
-          backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)",
+          backgroundImage:
+            "radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)",
           backgroundSize: "30px 30px",
         }}
       />
@@ -64,5 +65,5 @@ export function AnimatedBackground() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-background to-background" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-indigo-900/20 via-background to-background" />
     </div>
-  )
-} 
+  );
+}

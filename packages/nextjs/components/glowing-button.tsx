@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import { motion, HTMLMotionProps } from "framer-motion";
 import { cn } from "../utils/cn";
 
-
 interface GlowingButtonProps extends HTMLMotionProps<"button"> {
   glowColor?: string;
   size?: "sm" | "md" | "lg";
@@ -28,12 +27,12 @@ export function GlowingButton({
         "relative rounded-full bg-gradient-to-r from-primary to-primary/80 text-white font-medium",
         "hover:shadow-lg transition-all duration-300",
         sizeClasses[size],
-        className
+        className,
       )}
-      style={{ "--glow-color": glowColor } as React.CSSProperties} 
+      style={{ "--glow-color": glowColor } as React.CSSProperties}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      {...props} 
+      {...props}
     >
       <div
         className="absolute inset-0 rounded-full blur-lg transition-opacity duration-300 opacity-0 hover:opacity-100"

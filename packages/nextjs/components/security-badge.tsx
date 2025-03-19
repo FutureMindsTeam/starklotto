@@ -1,8 +1,8 @@
-import { motion } from "framer-motion"
-import { Shield, Lock, CheckCircle } from "lucide-react"
+import { motion } from "framer-motion";
+import { Shield, Lock, CheckCircle } from "lucide-react";
 
 interface SecurityBadgeProps {
-  type: "verified" | "secure" | "encrypted"
+  type: "verified" | "secure" | "encrypted";
 }
 
 export function SecurityBadge({ type }: SecurityBadgeProps) {
@@ -28,10 +28,10 @@ export function SecurityBadge({ type }: SecurityBadgeProps) {
       bgColor: "bg-purple-500/20",
       borderColor: "border-purple-500/30",
     },
-  }
+  };
 
-  const badge = badges[type]
-  const Icon = badge.icon
+  const badge = badges[type];
+  const Icon = badge.icon;
 
   return (
     <motion.div
@@ -43,5 +43,5 @@ export function SecurityBadge({ type }: SecurityBadgeProps) {
       <Icon className={`h-3 w-3 ${badge.color}`} />
       <span className={`text-xs ${badge.color}`}>{badge.text}</span>
     </motion.div>
-  )
-} 
+  );
+}

@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Ticket, Trophy } from "lucide-react"
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Ticket, Trophy } from "lucide-react";
 
 interface Activity {
-  id: string
-  type: "purchase" | "win"
-  address: string
-  amount: number
-  timestamp: Date
+  id: string;
+  type: "purchase" | "win";
+  address: string;
+  amount: number;
+  timestamp: Date;
 }
 
 export function LiveActivityFeed() {
-  const [activities, setActivities] = useState<Activity[]>([])
+  const [activities, setActivities] = useState<Activity[]>([]);
 
   // Simulate new activities coming in
   useEffect(() => {
@@ -22,13 +22,13 @@ export function LiveActivityFeed() {
         address: `0x${Math.random().toString(16).slice(2, 8)}...${Math.random().toString(16).slice(2, 6)}`,
         amount: Math.floor(Math.random() * 1000),
         timestamp: new Date(),
-      }
+      };
 
-      setActivities((prev) => [newActivity, ...prev.slice(0, 4)])
-    }, 5000)
+      setActivities((prev) => [newActivity, ...prev.slice(0, 4)]);
+    }, 5000);
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-4">
@@ -59,7 +59,9 @@ export function LiveActivityFeed() {
                 <p className="text-gray-300 truncate">
                   {activity.address}{" "}
                   {activity.type === "purchase" ? "bought tickets for" : "won"}{" "}
-                  <span className="font-medium text-white">${activity.amount}</span>
+                  <span className="font-medium text-white">
+                    ${activity.amount}
+                  </span>
                 </p>
                 <p className="text-xs text-gray-500">
                   {formatTimeAgo(activity.timestamp)}
@@ -70,17 +72,17 @@ export function LiveActivityFeed() {
         </AnimatePresence>
       </div>
     </div>
-  )
+  );
 }
 
 function formatTimeAgo(date: Date) {
-  const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000)
+  const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
 
-  if (seconds < 60) return "just now"
-  const minutes = Math.floor(seconds / 60)
-  if (minutes < 60) return `${minutes}m ago`
-  const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
-  const days = Math.floor(hours / 24)
-  return `${days}d ago`
-} 
+  if (seconds < 60) return "just now";
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
