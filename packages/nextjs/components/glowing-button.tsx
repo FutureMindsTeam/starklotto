@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { motion, HTMLMotionProps } from "framer-motion";
 import { cn } from "../utils/cn";
 
-// ✅ Usamos solo las props de Framer Motion, sin combinar con React ButtonHTMLAttributes
+
 interface GlowingButtonProps extends HTMLMotionProps<"button"> {
   glowColor?: string;
   size?: "sm" | "md" | "lg";
@@ -30,10 +30,10 @@ export function GlowingButton({
         sizeClasses[size],
         className
       )}
-      style={{ "--glow-color": glowColor } as React.CSSProperties} // ✅ Corregimos el error de estilos
+      style={{ "--glow-color": glowColor } as React.CSSProperties} 
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      {...props} // ✅ Ahora pasamos solo props compatibles con motion.button
+      {...props} 
     >
       <div
         className="absolute inset-0 rounded-full blur-lg transition-opacity duration-300 opacity-0 hover:opacity-100"
