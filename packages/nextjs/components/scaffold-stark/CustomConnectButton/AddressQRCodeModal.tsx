@@ -4,6 +4,7 @@ import { Address } from "~~/components/scaffold-stark";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 
+
 type AddressQRCodeModalProps = {
   address: AddressType;
   modalId: string;
@@ -65,12 +66,14 @@ export const AddressQRCodeModal = ({
               <div className="p-4 bg-white rounded-xl">
                 <QRCodeSVG value={address} size={256} />
               </div>
+              <div className="text-[#00FFA3]">
               <Address
                 address={address}
                 format="short"
                 disableAddressLink
-                className="text-[#00FFA3]"
+                
               />
+              </div>
             </div>
           </div>
         </div>,

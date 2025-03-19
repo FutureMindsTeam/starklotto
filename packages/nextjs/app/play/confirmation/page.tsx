@@ -6,10 +6,16 @@ import { usePlayStore } from "~~/services/store/play";
 import { ContractPlayUI } from "~~/app/_components/contractByApp/ContractPlayUI";
 import { LOTT_CONTRACT_NAME } from "~~/utils/Constants";
 
+// Definir los valores permitidos para contractName
+type ContractType = "Eth" | "Strk" | "Lottery";
+
+// Asegurar que LOTT_CONTRACT_NAME sea del tipo correcto
+const contractName: ContractType = LOTT_CONTRACT_NAME as ContractType;
+
 const NumberSelectionPage = () => {
   const selectedNumbers = usePlayStore((state) => state.loteryNumbersSelected);
   const setSelectedNumbers = usePlayStore(
-    (state) => state.setLoteryNumbersSelected,
+    (state) => state.setLoteryNumbersSelected
   );
   const [randomNumbersToGenerate, setRandomNumbersToGenerate] =
     useState<number>(0);
@@ -151,7 +157,7 @@ const NumberSelectionPage = () => {
       </div>
 
       {/* Confirmation Button */}
-      <ContractPlayUI contractName={LOTT_CONTRACT_NAME} />
+      <ContractPlayUI contractName={contractName} />
 
       {/* Go Back Button */}
       <button
