@@ -3,14 +3,12 @@
 import { useState, useEffect } from "react";
 import {
   motion,
-  AnimatePresence,
   useScroll,
   useTransform,
 } from "framer-motion";
 import { Navbar } from "~~/components/Navbar";
 import { AnimatedBackground } from "~~/components/animated-background";
 import { FloatingCoins } from "~~/components/floating-coins";
-import { SecurityStatus } from "~~/components/security-status";
 import { Notification } from "~~/components/notification";
 import {
   HeroSection,
@@ -20,9 +18,7 @@ import {
   CTASection,
 } from "~~/components/sections";
 import { useAccount } from "@starknet-react/core";
-import Image from "next/image";
-import Link from "next/link";
-import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
+import BuyTicketsModal from "~~/components/BuyTicketsModal";
 
 export default function Home() {
   const { scrollY } = useScroll();
@@ -31,8 +27,7 @@ export default function Home() {
   const howItWorksY = useTransform(scrollY, [1000, 1500], [0, -150]);
   const faqY = useTransform(scrollY, [1500, 2000], [0, -150]);
 
-  const [showTicketSelector, setShowTicketSelector] = useState(false);
-  const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [notification, setNotification] = useState<{
     message: string;
     type: "success" | "error" | "info";
@@ -41,7 +36,6 @@ export default function Home() {
   const [showSecurityInfo, setShowSecurityInfo] = useState(false);
 
   const { status } = useAccount();
-  const isConnected = status === "connected";
 
   // Set target date for countdown (24 hours from now)
   const targetDate = new Date();
@@ -57,30 +51,7 @@ export default function Home() {
   }, []);
 
   const handleBuyTicket = () => {
-    setShowTicketSelector(true);
-  };
-
-  const handleSelectNumbers = (numbers: number[]) => {
-    setSelectedNumbers(numbers);
-  };
-
-  const handlePurchase = (quantity: number, totalPrice: number) => {
-    setNotification({
-      message: `Successfully purchased ${quantity} ticket${quantity > 1 ? "s" : ""} for $${totalPrice} USDC!`,
-      type: "success",
-    });
-    setShowTicketSelector(false);
-  };
-
-  const handleScroll = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      const offset = section.offsetTop - 100; // Adjust offset for header height
-      window.scrollTo({
-        top: offset,
-        behavior: "smooth",
-      });
-    }
+    setIsModalOpen(true);
   };
 
   return (
@@ -90,10 +61,9 @@ export default function Home() {
       <FloatingCoins />
 
       {/* Navigation */}
-      <Navbar onBuyTicket={handleBuyTicket} onNavigate={handleScroll} />
-
-      {/* Security Status */}
-      {/* <SecurityStatus /> */}
+      <Navbar onBuyTicket={handleBuyTicket} onNavigate={function (sectionId: string): void {
+        throw new Error("Function not implemented.");
+      } } />
 
       {/* Notification */}
       {notification && (
@@ -109,23 +79,33 @@ export default function Home() {
           heroY={heroY}
           jackpot={jackpot}
           showSecurityInfo={showSecurityInfo}
-          showTicketSelector={showTicketSelector}
-          selectedNumbers={selectedNumbers}
           targetDate={targetDate}
           onBuyTicket={handleBuyTicket}
-          onSelectNumbers={handleSelectNumbers}
-          onPurchase={handlePurchase}
-          onToggleSecurityInfo={() => setShowSecurityInfo(!showSecurityInfo)}
-        />
+          onToggleSecurityInfo={() => setShowSecurityInfo(!showSecurityInfo)} showTicketSelector={false} selectedNumbers={[]} onSelectNumbers={function (numbers: number[]): void {
+            throw new Error("Function not implemented.");
+          } } onPurchase={function (quantity: number, totalPrice: number): void {
+            throw new Error("Function not implemented.");
+          } }        />
 
         <FeaturesSection featuresY={featuresY} />
-
         <HowItWorksSection howItWorksY={howItWorksY} />
-
         <FAQSection faqY={faqY} />
-
         <CTASection onBuyTicket={handleBuyTicket} />
       </main>
+
+      <BuyTicketsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        jackpotAmount={`$${jackpot.toLocaleString()} USDC`}
+        countdown={{
+          days: "00",
+          hours: "23",
+          minutes: "59",
+          seconds: "58",
+        }}
+        balance={1000}
+        ticketPrice={10}
+      />
     </div>
   );
 }

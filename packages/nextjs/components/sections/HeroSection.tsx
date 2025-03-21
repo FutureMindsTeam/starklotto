@@ -9,6 +9,7 @@ import { CountdownTimer } from "~~/components/countdown-timer";
 import { NumberSelector } from "~~/components/number-selector";
 import { TicketPriceCalculator } from "~~/components/ticket-price-calculator";
 import { LiveActivityFeed } from "~~/components/live-activity-feed";
+import BuyTicketsModal  from "../BuyTicketsModal";
 
 interface HeroSectionProps {
   heroY: any;
@@ -168,6 +169,7 @@ export function HeroSection({
                       <h4 className="text-sm font-medium mb-2">
                         Select your lucky numbers:
                       </h4>
+                  
                       <NumberSelector
                         maxNumbers={20}
                         maxSelections={5}
