@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Shield, Lock, ChevronRight, Check } from "lucide-react";
 import { Button } from "~~/components/ui/button";
@@ -9,6 +10,7 @@ import { CountdownTimer } from "~~/components/countdown-timer";
 import { NumberSelector } from "~~/components/number-selector";
 import { TicketPriceCalculator } from "~~/components/ticket-price-calculator";
 import { LiveActivityFeed } from "~~/components/live-activity-feed";
+import { ConfirmationModal } from "~~/components/confirmation-modal";
 
 interface HeroSectionProps {
   heroY: any;
@@ -35,6 +37,33 @@ export function HeroSection({
   onPurchase,
   onToggleSecurityInfo,
 }: HeroSectionProps) {
+  // Add state for confirmation modal
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [purchaseDetails, setPurchaseDetails] = useState<{
+    quantity: number;
+    totalPrice: number;
+  } | null>(null);
+  
+  // Mock current balance value - in real app, this would come from a wallet connection
+  const currentBalance = 1000;
+
+  // Handle purchase click from the ticket calculator
+  const handlePurchaseClick = (quantity: number, totalPrice: number) => {
+    setPurchaseDetails({ quantity, totalPrice });
+    setShowConfirmation(true);
+  };
+
+  // Handle confirm purchase action
+  const handleConfirmPurchase = () => {
+    if (purchaseDetails) {
+      onPurchase(purchaseDetails.quantity, purchaseDetails.totalPrice);
+    }
+    setShowConfirmation(false);
+  };
+  
+  // Generate the tickets array based on quantity for the modal
+  const tickets = purchaseDetails ? Array(purchaseDetails.quantity).fill(selectedNumbers) : [];
+
   return (
     <motion.section
       id="hero"
@@ -178,7 +207,8 @@ export function HeroSection({
                       <TicketPriceCalculator
                         basePrice={5}
                         maxTickets={10}
-                        onPurchase={onPurchase}
+                        selectedNumbers={selectedNumbers}
+                        onPurchaseClick={handlePurchaseClick}
                       />
                     </div>
                   </motion.div>
@@ -220,6 +250,17 @@ export function HeroSection({
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showConfirmation}
+        onClose={() => setShowConfirmation(false)}
+        onConfirm={handleConfirmPurchase}
+        numTickets={purchaseDetails?.quantity || 0}
+        tickets={tickets}
+        totalPrice={purchaseDetails?.totalPrice || 0}
+        currentBalance={currentBalance}
+      />
     </motion.section>
   );
 }
