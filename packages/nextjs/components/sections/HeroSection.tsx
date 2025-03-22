@@ -168,6 +168,7 @@ export function HeroSection({
                       <h4 className="text-sm font-medium mb-2">
                         Select your lucky numbers:
                       </h4>
+
                       <NumberSelector
                         maxNumbers={20}
                         maxSelections={5}
