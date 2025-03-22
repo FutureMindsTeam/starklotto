@@ -43,7 +43,7 @@ export function HeroSection({
     quantity: number;
     totalPrice: number;
   } | null>(null);
-  
+
   // Mock current balance value - in real app, this would come from a wallet connection
   const currentBalance = 1000;
 
@@ -60,7 +60,7 @@ export function HeroSection({
     }
     setShowConfirmation(false);
   };
-  
+
   // Generate the tickets array based on quantity for the modal
   const tickets = purchaseDetails ? Array(purchaseDetails.quantity).fill(selectedNumbers) : [];
 
@@ -126,9 +126,8 @@ export function HeroSection({
 
             {/* Security Info Panel */}
             <motion.div
-              className={`mt-4 p-4 rounded-lg bg-black/40 backdrop-blur-sm border border-white/10 ${
-                showSecurityInfo ? "block" : "hidden"
-              }`}
+              className={`mt-4 p-4 rounded-lg bg-black/40 backdrop-blur-sm border border-white/10 ${showSecurityInfo ? "block" : "hidden"
+                }`}
               initial={{ opacity: 0, height: 0 }}
               animate={{
                 opacity: showSecurityInfo ? 1 : 0,
