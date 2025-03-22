@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import BuyTicketsModal from "../../components/BuyTicketsModal"
+import { useState } from "react";
+import BuyTicketsModal from "../../components/BuyTicketsModal";
 
 export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#111827] to-[#0f172a] text-white">
@@ -29,7 +29,9 @@ export default function Home() {
           </a>
         </nav>
 
-        <button className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-full">Connect Wallet</button>
+        <button className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-full">
+          Connect Wallet
+        </button>
       </header>
 
       <main className="container mx-auto py-12 px-6 flex flex-col md:flex-row gap-8">
@@ -37,7 +39,9 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl font-bold text-purple-400 mb-4">
             The Most Secure and Exciting Web3 Lottery
           </h1>
-          <p className="text-gray-300 mb-8">Play, win, and collect prizes instantly with blockchain security.</p>
+          <p className="text-gray-300 mb-8">
+            Play, win, and collect prizes instantly with blockchain security.
+          </p>
 
           <div className="flex gap-4">
             <button
@@ -58,7 +62,9 @@ export default function Home() {
             </span>
           </div>
 
-          <p className="text-[#4ade80] text-3xl font-bold mb-4">$260,446 USDC</p>
+          <p className="text-[#4ade80] text-3xl font-bold mb-4">
+            $260,446 USDC
+          </p>
 
           <div className="flex justify-between mb-8">
             <div className="text-center">
@@ -108,6 +114,5 @@ export default function Home() {
         ticketPrice={10}
       />
     </div>
-  )
+  );
 }
-

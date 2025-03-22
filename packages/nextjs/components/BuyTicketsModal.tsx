@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { X, Shuffle } from "lucide-react"
+import { useState } from "react";
+import { X, Shuffle } from "lucide-react";
 
 interface BuyTicketsModalProps {
-  isOpen: boolean
-  onClose: () => void
-  jackpotAmount: string
+  isOpen: boolean;
+  onClose: () => void;
+  jackpotAmount: string;
   countdown: {
-    days: string
-    hours: string
-    minutes: string
-    seconds: string
-  }
-  balance: number
-  ticketPrice: number
+    days: string;
+    hours: string;
+    minutes: string;
+    seconds: string;
+  };
+  balance: number;
+  ticketPrice: number;
 }
 
 export default function BuyTicketsModal({
@@ -25,85 +25,87 @@ export default function BuyTicketsModal({
   balance = 1000,
   ticketPrice = 10,
 }: BuyTicketsModalProps) {
-  const [ticketCount, setTicketCount] = useState(1)
-  const [selectedNumbers, setSelectedNumbers] = useState<Record<number, number[]>>({
+  const [ticketCount, setTicketCount] = useState(1);
+  const [selectedNumbers, setSelectedNumbers] = useState<
+    Record<number, number[]>
+  >({
     1: [],
-  })
+  });
 
   const increaseTickets = () => {
     if (ticketCount < 10) {
       setTicketCount((prev) => {
-        const newCount = prev + 1
+        const newCount = prev + 1;
         setSelectedNumbers((current) => ({
           ...current,
           [newCount]: [],
-        }))
-        return newCount
-      })
+        }));
+        return newCount;
+      });
     }
-  }
+  };
 
   const decreaseTickets = () => {
     if (ticketCount > 1) {
       setTicketCount((prev) => {
-        const newCount = prev - 1
-        const newSelected = { ...selectedNumbers }
-        delete newSelected[ticketCount]
-        setSelectedNumbers(newSelected)
-        return newCount
-      })
+        const newCount = prev - 1;
+        const newSelected = { ...selectedNumbers };
+        delete newSelected[ticketCount];
+        setSelectedNumbers(newSelected);
+        return newCount;
+      });
     }
-  }
+  };
 
   const selectNumber = (ticketId: number, num: number) => {
     setSelectedNumbers((current) => {
-      const currentSelected = current[ticketId] || []
+      const currentSelected = current[ticketId] || [];
 
       // If already selected, remove it
       if (currentSelected.includes(num)) {
         return {
           ...current,
           [ticketId]: currentSelected.filter((n) => n !== num),
-        }
+        };
       }
 
       // If we already have 5 numbers, don't add more
-      if (currentSelected.length >= 5) return current
+      if (currentSelected.length >= 5) return current;
 
       // Add the number
       return {
         ...current,
         [ticketId]: [...currentSelected, num],
-      }
-    })
-  }
+      };
+    });
+  };
 
   const generateRandom = (ticketId: number) => {
-    const numbers = new Set<number>()
+    const numbers = new Set<number>();
     while (numbers.size < 5) {
-      numbers.add(Math.floor(Math.random() * 41)) // 0-40 inclusive
+      numbers.add(Math.floor(Math.random() * 41)); // 0-40 inclusive
     }
     setSelectedNumbers((current) => ({
       ...current,
       [ticketId]: Array.from(numbers),
-    }))
-  }
+    }));
+  };
 
   const generateRandomForAll = () => {
-    const newSelections: Record<number, number[]> = {}
+    const newSelections: Record<number, number[]> = {};
     for (let i = 1; i <= ticketCount; i++) {
-      const numbers = new Set<number>()
+      const numbers = new Set<number>();
       while (numbers.size < 5) {
-        numbers.add(Math.floor(Math.random() * 41)) // 0-40 inclusive
+        numbers.add(Math.floor(Math.random() * 41)); // 0-40 inclusive
       }
-      newSelections[i] = Array.from(numbers)
+      newSelections[i] = Array.from(numbers);
     }
-    setSelectedNumbers(newSelections)
-  }
+    setSelectedNumbers(newSelections);
+  };
 
-  const totalCost = ticketCount * ticketPrice
+  const totalCost = ticketCount * ticketPrice;
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
@@ -112,7 +114,10 @@ export default function BuyTicketsModal({
           {/* Header */}
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-purple-400">Buy Tickets</h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-white">
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-white"
+            >
               <X size={24} />
             </button>
           </div>
@@ -125,19 +130,27 @@ export default function BuyTicketsModal({
             {/* Countdown */}
             <div className="flex justify-between mt-4">
               <div className="text-center">
-                <p className="text-purple-400 text-2xl font-bold">{countdown.days}</p>
+                <p className="text-purple-400 text-2xl font-bold">
+                  {countdown.days}
+                </p>
                 <p className="text-gray-400 text-sm">Days</p>
               </div>
               <div className="text-center">
-                <p className="text-purple-400 text-2xl font-bold">{countdown.hours}</p>
+                <p className="text-purple-400 text-2xl font-bold">
+                  {countdown.hours}
+                </p>
                 <p className="text-gray-400 text-sm">Hours</p>
               </div>
               <div className="text-center">
-                <p className="text-purple-400 text-2xl font-bold">{countdown.minutes}</p>
+                <p className="text-purple-400 text-2xl font-bold">
+                  {countdown.minutes}
+                </p>
                 <p className="text-gray-400 text-sm">Minutes</p>
               </div>
               <div className="text-center">
-                <p className="text-purple-400 text-2xl font-bold">{countdown.seconds}</p>
+                <p className="text-purple-400 text-2xl font-bold">
+                  {countdown.seconds}
+                </p>
                 <p className="text-gray-400 text-sm">Seconds</p>
               </div>
             </div>
@@ -147,17 +160,38 @@ export default function BuyTicketsModal({
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <div className="text-[#4ade80]">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" strokeWidth="2" />
-                  <path d="M6 10H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="2"
+                    y="6"
+                    width="20"
+                    height="12"
+                    rx="2"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
+                  <path
+                    d="M6 10H10"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
                 </svg>
               </div>
               <p className="text-white">
-                Balance: <span className="text-[#4ade80]">${balance} $tarkPlay</span>
+                Balance:{" "}
+                <span className="text-[#4ade80]">${balance} $tarkPlay</span>
               </p>
             </div>
             <p className="text-white">
-              Price per ticket: <span className="text-[#4ade80]">${ticketPrice} $tarkPlay</span>
+              Price per ticket:{" "}
+              <span className="text-[#4ade80]">${ticketPrice} $tarkPlay</span>
             </p>
           </div>
 
@@ -191,7 +225,7 @@ export default function BuyTicketsModal({
 
           {/* Ticket Selection */}
           {Array.from({ length: ticketCount }).map((_, idx) => {
-            const ticketId = idx + 1
+            const ticketId = idx + 1;
             return (
               <div key={ticketId} className="bg-[#1a2234] rounded-lg p-4">
                 <div className="flex justify-between items-center mb-4">
@@ -207,8 +241,8 @@ export default function BuyTicketsModal({
 
                 <div className="grid grid-cols-7 gap-2">
                   {Array.from({ length: 41 }).map((_, numIdx) => {
-                    const num = numIdx
-                    const isSelected = selectedNumbers[ticketId]?.includes(num)
+                    const num = numIdx;
+                    const isSelected = selectedNumbers[ticketId]?.includes(num);
                     return (
                       <button
                         key={num}
@@ -218,7 +252,7 @@ export default function BuyTicketsModal({
                       >
                         {num < 10 ? `0${num}` : num}
                       </button>
-                    )
+                    );
                   })}
                 </div>
 
@@ -233,7 +267,7 @@ export default function BuyTicketsModal({
                   ))}
                 </div>
               </div>
-            )
+            );
           })}
 
           {/* Game Rules */}
@@ -261,6 +295,5 @@ export default function BuyTicketsModal({
         </div>
       </div>
     </div>
-  )
+  );
 }
-

@@ -1,11 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { useScroll, useTransform } from "framer-motion";
 import { Navbar } from "~~/components/Navbar";
 import { AnimatedBackground } from "~~/components/animated-background";
 import { FloatingCoins } from "~~/components/floating-coins";
@@ -61,9 +57,12 @@ export default function Home() {
       <FloatingCoins />
 
       {/* Navigation */}
-      <Navbar onBuyTicket={handleBuyTicket} onNavigate={function (sectionId: string): void {
-        throw new Error("Function not implemented.");
-      } } />
+      <Navbar
+        onBuyTicket={handleBuyTicket}
+        onNavigate={function (sectionId: string): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
 
       {/* Notification */}
       {notification && (
@@ -81,11 +80,16 @@ export default function Home() {
           showSecurityInfo={showSecurityInfo}
           targetDate={targetDate}
           onBuyTicket={handleBuyTicket}
-          onToggleSecurityInfo={() => setShowSecurityInfo(!showSecurityInfo)} showTicketSelector={false} selectedNumbers={[]} onSelectNumbers={function (numbers: number[]): void {
+          onToggleSecurityInfo={() => setShowSecurityInfo(!showSecurityInfo)}
+          showTicketSelector={false}
+          selectedNumbers={[]}
+          onSelectNumbers={function (numbers: number[]): void {
             throw new Error("Function not implemented.");
-          } } onPurchase={function (quantity: number, totalPrice: number): void {
+          }}
+          onPurchase={function (quantity: number, totalPrice: number): void {
             throw new Error("Function not implemented.");
-          } }        />
+          }}
+        />
 
         <FeaturesSection featuresY={featuresY} />
         <HowItWorksSection howItWorksY={howItWorksY} />
