@@ -6,13 +6,15 @@ import { GlowingButton } from "./glowing-button";
 interface TicketPriceCalculatorProps {
   basePrice: number;
   maxTickets: number;
-  onPurchase: (quantity: number, totalPrice: number) => void;
+  selectedNumbers: number[];
+  onPurchaseClick: (quantity: number, totalPrice: number) => void;
 }
 
 export function TicketPriceCalculator({
   basePrice,
   maxTickets,
-  onPurchase,
+  selectedNumbers,
+  onPurchaseClick,
 }: TicketPriceCalculatorProps) {
   const [quantity, setQuantity] = useState(1);
 
@@ -29,6 +31,10 @@ export function TicketPriceCalculator({
   };
 
   const totalPrice = basePrice * quantity;
+
+  const handlePurchaseClick = () => {
+    onPurchaseClick(quantity, totalPrice);
+  };
 
   return (
     <div className="space-y-4">
@@ -70,7 +76,7 @@ export function TicketPriceCalculator({
         </motion.span>
       </div>
       <GlowingButton
-        onClick={() => onPurchase(quantity, totalPrice)}
+        onClick={handlePurchaseClick}
         className="w-full"
         glowColor="rgba(251,191,36,0.4)"
       >

@@ -70,6 +70,7 @@ export default function Home() {
       type: "success",
     });
     setShowTicketSelector(false);
+    setSelectedNumbers([]);
   };
 
   const handleScroll = (sectionId: string) => {
