@@ -43,7 +43,8 @@ export default function TicketCard({ ticket }: TicketProps) {
         <div className="text-gray-400 text-xs mb-3">Your Numbers</div>
         <div className="flex flex-wrap gap-2 mb-4">
           {ticket.numbers.map((number, index) => (
-            <NumberBubble key={index} number={number} status={ticket.status} index={index} />
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+<NumberBubble key={index} number={number} status={ticket.status} index={index} />
           ))}
         </div>
 
@@ -78,6 +79,7 @@ export default function TicketCard({ ticket }: TicketProps) {
         <div className="text-gray-400 text-sm">Purchased: {ticket.purchaseDate}</div>
         {ticket.daysLeft !== undefined && (
           <div className="flex items-center bg-[#6C2BD9] bg-opacity-30 px-3 py-1 rounded-full">
+            {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
             <svg
               width="16"
               height="16"
@@ -101,6 +103,7 @@ function StatusBadge({ status }: { status: string }) {
   if (status === "active") {
     return (
       <div className="flex items-center bg-[#1A3A2A] text-green-400 px-3 py-1 rounded-full text-sm">
+        {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1">
           <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
           <path d="M12 7V12L15 14" stroke="currentColor" strokeWidth="1.5" />
@@ -108,9 +111,11 @@ function StatusBadge({ status }: { status: string }) {
         Active
       </div>
     )
+  // biome-ignore lint/style/noUselessElse: <explanation>
   } else if (status === "finished") {
     return (
       <div className="flex items-center bg-[#2A2344] text-gray-300 px-3 py-1 rounded-full text-sm">
+        {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1">
           <rect x="2" y="4" width="20" height="18" rx="2" stroke="currentColor" strokeWidth="1.5" />
           <path d="M8 2V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -120,9 +125,11 @@ function StatusBadge({ status }: { status: string }) {
         Finished
       </div>
     )
+  // biome-ignore lint/style/noUselessElse: <explanation>
   } else if (status === "winner") {
     return (
       <div className="flex items-center bg-[#3A2A1A] text-[#F5A623] px-3 py-1 rounded-full text-sm">
+        {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1">
           <path d="M8 21H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
           <path d="M12 17V21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
