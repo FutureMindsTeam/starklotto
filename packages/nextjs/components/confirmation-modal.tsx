@@ -65,18 +65,25 @@ export function ConfirmationModal({
                     {tickets.map((ticketNumbers, index) => {
                       const ticketId = index + 1;
                       return (
-                        <div key={ticketId} className="flex flex-col mb-3 last:mb-0">
+                        <div
+                          key={ticketId}
+                          className="flex flex-col mb-3 last:mb-0"
+                        >
                           <div className="flex items-center justify-between">
-                            <span className="text-gray-300 text-sm mr-2">Ticket #{ticketId}:</span>
+                            <span className="text-gray-300 text-sm mr-2">
+                              Ticket #{ticketId}:
+                            </span>
                             <div className="flex flex-row gap-1.5">
-                              {ticketNumbers.sort((a, b) => a - b).map((num) => (
-                                <div
-                                  key={`${ticketId}-${num}`}
-                                  className="h-9 w-9 rounded-full bg-gradient-to-br text-black from-amber-400 to-amber-600 flex items-center justify-center font-bold text-sm"
-                                >
-                                  {num}
-                                </div>
-                              ))}
+                              {ticketNumbers
+                                .sort((a, b) => a - b)
+                                .map((num) => (
+                                  <div
+                                    key={`${ticketId}-${num}`}
+                                    className="h-9 w-9 rounded-full bg-gradient-to-br text-black from-amber-400 to-amber-600 flex items-center justify-center font-bold text-sm"
+                                  >
+                                    {num}
+                                  </div>
+                                ))}
                             </div>
                           </div>
                         </div>
@@ -86,17 +93,25 @@ export function ConfirmationModal({
                     <div className="border-t border-white/10 my-4 pt-4">
                       <div className="flex justify-between items-center">
                         <span className="text-white">Total payment:</span>
-                        <span className="font-bold text-green-400">${totalPrice} $tarkPlay</span>
+                        <span className="font-bold text-green-400">
+                          ${totalPrice} $tarkPlay
+                        </span>
                       </div>
 
                       <div className="flex justify-between items-center mt-1">
                         <span className="text-white">Current balance:</span>
-                        <span className="text-white">${currentBalance} $tarkPlay</span>
+                        <span className="text-white">
+                          ${currentBalance} $tarkPlay
+                        </span>
                       </div>
 
                       <div className="flex justify-between items-center mt-1">
-                        <span className="text-white">Balance after purchase:</span>
-                        <span className="text-white">${balanceAfterPurchase} $tarkPlay</span>
+                        <span className="text-white">
+                          Balance after purchase:
+                        </span>
+                        <span className="text-white">
+                          ${balanceAfterPurchase} $tarkPlay
+                        </span>
                       </div>
                     </div>
                   </div>

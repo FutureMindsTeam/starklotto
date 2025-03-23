@@ -62,7 +62,9 @@ export function HeroSection({
   };
 
   // Generate the tickets array based on quantity for the modal
-  const tickets = purchaseDetails ? Array(purchaseDetails.quantity).fill(selectedNumbers) : [];
+  const tickets = purchaseDetails
+    ? Array(purchaseDetails.quantity).fill(selectedNumbers)
+    : [];
 
   return (
     <motion.section
@@ -126,8 +128,9 @@ export function HeroSection({
 
             {/* Security Info Panel */}
             <motion.div
-              className={`mt-4 p-4 rounded-lg bg-black/40 backdrop-blur-sm border border-white/10 ${showSecurityInfo ? "block" : "hidden"
-                }`}
+              className={`mt-4 p-4 rounded-lg bg-black/40 backdrop-blur-sm border border-white/10 ${
+                showSecurityInfo ? "block" : "hidden"
+              }`}
               initial={{ opacity: 0, height: 0 }}
               animate={{
                 opacity: showSecurityInfo ? 1 : 0,
