@@ -1,6 +1,5 @@
 import ProfilePage from "~~/components/profile/profile-page";
 
 export default function Home() {
-  return <ProfilePage />
+  return <ProfilePage />;
 }
-

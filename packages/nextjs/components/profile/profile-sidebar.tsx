@@ -1,23 +1,32 @@
-"use client"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { useState } from "react"
+"use client";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function ProfileSidebar() {
-  const [activeNav, setActiveNav] = useState<string>("My Tickets")
+  const [activeNav, setActiveNav] = useState<string>("My Tickets");
 
   return (
     <div className="flex flex-col gap-4">
       {/* Perfil y balance */}
       <div
         className="rounded-xl overflow-hidden border"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.4)", borderColor: "rgba(255, 255, 255, 0.2)" }}
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+          borderColor: "rgba(255, 255, 255, 0.2)",
+        }}
       >
         <div className="p-5">
           <div className="flex items-center gap-4">
             <div className="relative">
               <div className="w-16 h-16 rounded-full overflow-hidden">
-                <Image src="/profile.svg" alt="Profile" width={64} height={64} className="object-cover" />
+                <Image
+                  src="/profile.svg"
+                  alt="Profile"
+                  width={64}
+                  height={64}
+                  className="object-cover"
+                />
               </div>
             </div>
             <div>
@@ -70,16 +79,20 @@ export default function ProfileSidebar() {
           </div>
 
           {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-<div className="my-6 border-t border-gray-800"></div>
+          <div className="my-6 border-t border-gray-800"></div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <div className="text-sm text-gray-400 mb-1">Balance</div>
-              <div className="text-lg font-bold text-white whitespace-nowrap">1,250 USDC</div>
+              <div className="text-lg font-bold text-white whitespace-nowrap">
+                1,250 USDC
+              </div>
             </div>
             <div>
               <div className="text-sm text-gray-400 mb-1">Total Won</div>
-              <div className="text-lg font-bold text-[#f5a623] whitespace-nowrap">12,500 USDC</div>
+              <div className="text-lg font-bold text-[#f5a623] whitespace-nowrap">
+                12,500 USDC
+              </div>
             </div>
           </div>
 
@@ -99,10 +112,17 @@ export default function ProfileSidebar() {
       {/* Navegación */}
       <div
         className="rounded-xl overflow-hidden border"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.4)", borderColor: "rgba(255, 255, 255, 0.2)" }}
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+          borderColor: "rgba(255, 255, 255, 0.2)",
+        }}
       >
         <nav>
-          <div className={activeNav === "My Tickets" ? "bg-[rgba(144,66,240,0.1)]" : ""}>
+          <div
+            className={
+              activeNav === "My Tickets" ? "bg-[rgba(144,66,240,0.1)]" : ""
+            }
+          >
             {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
             <button
               onClick={() => setActiveNav("My Tickets")}
@@ -126,12 +146,17 @@ export default function ProfileSidebar() {
               </svg>
               <span>My Tickets</span>
               {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-              {activeNav === "My Tickets" && <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#9042F0]"></div>}
+              {activeNav === "My Tickets" && (
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#9042F0]"></div>
+              )}
             </button>
           </div>
 
           {["Wallet", "History", "Rewards", "Settings"].map((item) => (
-            <div key={item} className={activeNav === item ? "bg-[rgba(144,66,240,0.1)]" : ""}>
+            <div
+              key={item}
+              className={activeNav === item ? "bg-[rgba(144,66,240,0.1)]" : ""}
+            >
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
               <button
                 onClick={() => setActiveNav(item)}
@@ -142,7 +167,9 @@ export default function ProfileSidebar() {
                 {getIcon(item)}
                 <span>{item}</span>
                 {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-                {activeNav === item && <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#9042F0]"></div>}
+                {activeNav === item && (
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#9042F0]"></div>
+                )}
               </button>
             </div>
           ))}
@@ -156,7 +183,14 @@ export default function ProfileSidebar() {
         className="flex items-center text-[#ff6b6b] hover:text-[#ff8787] transition-colors px-4 py-3.5 text-base hover:bg-red-500/10 rounded-lg"
       >
         {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="mr-3"
+        >
           <path
             d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9"
             stroke="currentColor"
@@ -171,12 +205,18 @@ export default function ProfileSidebar() {
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <path d="M21 12H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            d="M21 12H9"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
         <span>Disconnect Wallet</span>
       </motion.button>
     </div>
-  )
+  );
 }
 
 function getIcon(label: string) {
@@ -184,7 +224,7 @@ function getIcon(label: string) {
     case "Wallet":
       return (
         // biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
-<svg
+        <svg
           width="20"
           height="20"
           viewBox="0 0 24 24"
@@ -197,11 +237,11 @@ function getIcon(label: string) {
           <path d="M3 10H21" />
           <path d="M15 15H17" />
         </svg>
-      )
+      );
     case "History":
       return (
         // biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
-<svg
+        <svg
           width="20"
           height="20"
           viewBox="0 0 24 24"
@@ -213,11 +253,11 @@ function getIcon(label: string) {
           <circle cx="12" cy="12" r="9" />
           <path d="M12 7V12L15 14" />
         </svg>
-      )
+      );
     case "Rewards":
       return (
         // biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
-<svg
+        <svg
           width="20"
           height="20"
           viewBox="0 0 24 24"
@@ -232,11 +272,11 @@ function getIcon(label: string) {
           <path d="M5 4H7" />
           <path d="M17 4H19" />
         </svg>
-      )
+      );
     case "Settings":
       return (
         // biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
-<svg
+        <svg
           width="20"
           height="20"
           viewBox="0 0 24 24"
@@ -248,9 +288,8 @@ function getIcon(label: string) {
           <circle cx="12" cy="12" r="3" />
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
         </svg>
-      )
+      );
     default:
-      return null
+      return null;
   }
 }
-

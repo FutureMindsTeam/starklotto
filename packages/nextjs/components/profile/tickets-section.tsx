@@ -1,15 +1,18 @@
-"use client"
+"use client";
 
-import { Search } from "lucide-react"
-import TicketCard from "./ticket-card"
-import { motion } from "framer-motion"
+import { Search } from "lucide-react";
+import TicketCard from "./ticket-card";
+import { motion } from "framer-motion";
 
 interface TicketsSectionProps {
-  activeTab: "all" | "active" | "finished"
-  setActiveTab: (tab: "all" | "active" | "finished") => void
+  activeTab: "all" | "active" | "finished";
+  setActiveTab: (tab: "all" | "active" | "finished") => void;
 }
 
-export default function TicketsSection({ activeTab, setActiveTab }: TicketsSectionProps) {
+export default function TicketsSection({
+  activeTab,
+  setActiveTab,
+}: TicketsSectionProps) {
   // Mock data for tickets
   const tickets = [
     {
@@ -59,15 +62,16 @@ export default function TicketsSection({ activeTab, setActiveTab }: TicketsSecti
       matchedNumbers: "5 / 5",
       winAmount: "$180,000",
     },
-  ]
+  ];
 
   // Filter tickets based on active tab
   const filteredTickets = tickets.filter((ticket) => {
-    if (activeTab === "all") return true
-    if (activeTab === "active") return ticket.status === "active"
-    if (activeTab === "finished") return ticket.status === "finished" || ticket.status === "winner"
-    return true
-  })
+    if (activeTab === "all") return true;
+    if (activeTab === "active") return ticket.status === "active";
+    if (activeTab === "finished")
+      return ticket.status === "finished" || ticket.status === "winner";
+    return true;
+  });
 
   return (
     <div>
@@ -115,10 +119,34 @@ export default function TicketsSection({ activeTab, setActiveTab }: TicketsSecti
             className="bg-[#0F0B1F] border border-[#2A2344] rounded-lg h-9 w-9 flex items-center justify-center hover:bg-[#1A1333] transition-colors"
           >
             {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M7 3L7 21" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M17 21L17 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M3 7L7 3L11 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7 3L7 21"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M17 21L17 3"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M3 7L7 3L11 7"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
               <path
                 d="M21 17L17 21L13 17"
                 stroke="white"
@@ -141,12 +169,28 @@ export default function TicketsSection({ activeTab, setActiveTab }: TicketsSecti
           borderColor: "rgba(255, 255, 255, 0.2)",
         }}
       >
-        <TabButton label="All Tickets" active={activeTab === "all"} onClick={() => setActiveTab("all")} />
-        <TabButton label="Active" active={activeTab === "active"} onClick={() => setActiveTab("active")} />
-        <TabButton label="Finished" active={activeTab === "finished"} onClick={() => setActiveTab("finished")} />
+        <TabButton
+          label="All Tickets"
+          active={activeTab === "all"}
+          onClick={() => setActiveTab("all")}
+        />
+        <TabButton
+          label="Active"
+          active={activeTab === "active"}
+          onClick={() => setActiveTab("active")}
+        />
+        <TabButton
+          label="Finished"
+          active={activeTab === "finished"}
+          onClick={() => setActiveTab("finished")}
+        />
       </motion.div>
 
-      <motion.div className="grid grid-cols-1 lg:grid-cols-2 gap-4" initial={{ opacity: 1 }} animate={{ opacity: 1 }}>
+      <motion.div
+        className="grid grid-cols-1 lg:grid-cols-2 gap-4"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 1 }}
+      >
         {filteredTickets.map((ticket, index) => (
           <motion.div
             // biome-ignore lint/style/useTemplate: <explanation>
@@ -161,7 +205,7 @@ export default function TicketsSection({ activeTab, setActiveTab }: TicketsSecti
         ))}
       </motion.div>
     </div>
-  )
+  );
 }
 
 function TabButton({
@@ -169,9 +213,9 @@ function TabButton({
   active,
   onClick,
 }: {
-  label: string
-  active: boolean
-  onClick: () => void
+  label: string;
+  active: boolean;
+  onClick: () => void;
 }) {
   return (
     <motion.button
@@ -179,11 +223,12 @@ function TabButton({
       whileTap={!active ? { scale: 0.95 } : {}}
       onClick={onClick}
       className={`px-5 py-1.5 rounded-lg transition-all duration-200 text-sm ${
-        active ? "bg-[#9042F0] text-white shadow-md shadow-purple-900/30" : "text-gray-400 hover:text-white"
+        active
+          ? "bg-[#9042F0] text-white shadow-md shadow-purple-900/30"
+          : "text-gray-400 hover:text-white"
       }`}
     >
       {label}
     </motion.button>
-  )
+  );
 }
-
