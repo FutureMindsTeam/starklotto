@@ -48,6 +48,33 @@ export default function Home() {
 
   const handleBuyTicket = () => {
     setIsModalOpen(true);
+
+    setShowTicketSelector(true);
+  };
+
+  const handleSelectNumbers = (numbers: number[]) => {
+    setSelectedNumbers(numbers);
+  };
+
+  const handlePurchase = (quantity: number, totalPrice: number) => {
+    setNotification({
+      message: `Successfully purchased ${quantity} ticket${quantity > 1 ? "s" : ""} for $${totalPrice} USDC!`,
+      type: "success",
+    });
+    setShowTicketSelector(false);
+    setSelectedNumbers([]);
+  };
+
+  const handleScroll = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const offset = section.offsetTop - 100; // Adjust offset for header height
+      window.scrollTo({
+        top: offset,
+        behavior: "smooth",
+      });
+    }
+
   };
 
   return (
