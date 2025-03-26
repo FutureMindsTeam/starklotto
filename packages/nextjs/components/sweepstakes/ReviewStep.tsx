@@ -1,37 +1,41 @@
 import { useSweepstakesStore } from "~~/services/store/sweepstakesStore";
 import { Button } from "../ui/button";
 
-const ReviewStep = ({ onBack, onConfirm }: { onBack: () => void; onConfirm: () => void }) => {
-  const { data } = useSweepstakesStore();
+interface ReviewStepProps {
+  onBack: () => void;
+  onConfirm: () => void;
+  isEditing?: boolean;
+}
+
+const ReviewStep = ({ onBack, onConfirm, isEditing = false }: ReviewStepProps) => {
+  const { currentEntry, createSweepstakes } = useSweepstakesStore();
+  
+  const handleConfirm = () => {
+    createSweepstakes();
+    onConfirm();
+  };
+
   return (
     <div>
-      <h2 className="text-xl font-bold">Review Details</h2>
+      <h2 className="text-xl font-bold">
+        {isEditing ? "Review Updated Sweepstakes" : "Review New Sweepstakes"}
+      </h2>
       <div className="mt-4">
-        <div className="mb-2">
-          <strong>Start Date:</strong> {data.startDate}
-        </div>
-        <div className="mb-2">
-          <strong>End Date:</strong> {data.endDate}
-        </div>
-        <div className="mb-2">
-          <strong>Draw Date:</strong> {data.drawDate}
-        </div>
-        <div className="mb-2">
-          <strong>Ticket Price:</strong> ${data.ticketPrice}
-        </div>
-        <div className="mb-2">
-          <strong>Main Prize:</strong> {data.mainPrize}%
-        </div>
-        <div className="mb-2">
-          <strong>Secondary Prize:</strong> {data.secondaryPrize}%
-        </div>
-        <div className="mb-2">
-          <strong>Protocol Fee:</strong> {data.protocolFee}%
-        </div>
+        {Object.entries(currentEntry).map(([key, value]) => (
+          <div key={key} className="mb-2">
+            <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{' '}
+            {typeof value === 'number' ? 
+              (key.includes('Price') ? `$${value}` : `${value}%`) : 
+              value
+            }
+          </div>
+        ))}
       </div>
       <div className="flex justify-between mt-4">
         <Button variant="outline" onClick={onBack}>Back</Button>
-        <Button onClick={onConfirm}>Confirm</Button>
+        <Button onClick={handleConfirm}>
+          {isEditing ? "Update" : "Confirm"}
+        </Button>
       </div>
     </div>
   );

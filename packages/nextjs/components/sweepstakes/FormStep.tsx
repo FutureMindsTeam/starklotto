@@ -4,24 +4,33 @@ import { sweepstakesSchema, SweepstakesFormValues } from "~~/utils/validations/s
 import { useSweepstakesStore } from "~~/services/store/sweepstakesStore";
 import { Button } from "../ui/button";
 
-const FormStep = ({ onNext }: { onNext: () => void }) => {
-  const { updateData, data } = useSweepstakesStore();
+interface FormStepProps {
+  onNext: () => void;
+  isEditing?: boolean;
+}
+
+const FormStep = ({ onNext, isEditing = false }: FormStepProps) => {
+  const { setCurrentEntry, currentEntry, editingId } = useSweepstakesStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SweepstakesFormValues>({
     resolver: zodResolver(sweepstakesSchema),
-    defaultValues: data,
+    defaultValues: currentEntry,
   });
 
   const onSubmit = (values: SweepstakesFormValues) => {
-    updateData(values);
+    setCurrentEntry(values);
     onNext();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <h2 className="text-xl font-bold mb-4">
+        {isEditing ? "Edit Sweepstakes" : "Create New Sweepstakes"}
+      </h2>
+      
       <div className="grid grid-cols-1 gap-4">
         <FormField label="Start Date" error={errors.startDate?.message}>
           <input type="date" {...register("startDate")} className="border rounded p-2" />
@@ -52,7 +61,9 @@ const FormStep = ({ onNext }: { onNext: () => void }) => {
         </FormField>
       </div>
 
-      <Button type="submit" className="w-full mt-4">Next</Button>
+      <Button type="submit" className="w-full mt-4">
+        {isEditing ? "Update" : "Next"}
+      </Button>
     </form>
   );
 };

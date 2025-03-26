@@ -28,7 +28,7 @@ const GenericModal = ({
       onClick={onClose} // Clicking outside closes modal
     >
       <div
-        className={className}
+        className={cn("w-full h-max max-h-[80vh]", className)}
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
         {children}
