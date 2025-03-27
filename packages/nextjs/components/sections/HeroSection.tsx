@@ -68,13 +68,10 @@ export function HeroSection({
     setShowBuyTicketsModal(true);
   };
 
-  // Handle ticket purchase from BuyTicketsModal
   const handleTicketPurchase = (selectedNumbers: Record<number, number[]>, totalCost: number) => {
     // Process the purchase
     console.log("Processing purchase:", { selectedNumbers, totalCost });
     
-    // You could show confirmation modal here or process directly
-    // For now, we'll just close the modal
     setShowBuyTicketsModal(false);
   };
 
