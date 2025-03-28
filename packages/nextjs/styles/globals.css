@@ -42,7 +42,7 @@ body {
 }
 
 .modal-box {
-  @apply min-h-[20rem] max-w-[25rem] overflow-hidden;
+  @apply min-h-[20rem] max-w-[25rem] overflow-x-hidden;
   transform: translateZ(0);
 }
 
