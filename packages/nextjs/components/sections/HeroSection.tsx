@@ -11,6 +11,7 @@ import { NumberSelector } from "~~/components/number-selector";
 import { TicketPriceCalculator } from "~~/components/ticket-price-calculator";
 import { LiveActivityFeed } from "~~/components/live-activity-feed";
 import { ConfirmationModal } from "~~/components/confirmation-modal";
+import BuyTicketsModal from "~~/components/BuyTicketsModal";
 
 interface HeroSectionProps {
   heroY: any;
@@ -39,6 +40,7 @@ export function HeroSection({
 }: HeroSectionProps) {
   // Add state for confirmation modal
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showBuyTicketsModal, setShowBuyTicketsModal] = useState(false);
   const [purchaseDetails, setPurchaseDetails] = useState<{
     quantity: number;
     totalPrice: number;
@@ -59,6 +61,18 @@ export function HeroSection({
       onPurchase(purchaseDetails.quantity, purchaseDetails.totalPrice);
     }
     setShowConfirmation(false);
+  };
+
+  // Handle buy ticket button click
+  const handleBuyTicketClick = () => {
+    setShowBuyTicketsModal(true);
+  };
+
+  const handleTicketPurchase = (selectedNumbers: Record<number, number[]>, totalCost: number) => {
+    // Process the purchase
+    console.log("Processing purchase:", { selectedNumbers, totalCost });
+    
+    setShowBuyTicketsModal(false);
   };
 
   // Generate the tickets array based on quantity for the modal
@@ -96,7 +110,7 @@ export function HeroSection({
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <GlowingButton
-                onClick={onBuyTicket}
+                onClick={handleBuyTicketClick}
                 glowColor="rgba(139, 92, 246, 0.6)"
               >
                 Play Now
@@ -233,7 +247,7 @@ export function HeroSection({
                         </motion.div>
                       ))}
                     </div>
-                    <GlowingButton onClick={onBuyTicket} className="w-full">
+                    <GlowingButton onClick={handleBuyTicketClick} className="w-full">
                       Buy Ticket
                     </GlowingButton>
                   </motion.div>
@@ -253,6 +267,22 @@ export function HeroSection({
           </div>
         </div>
       </div>
+
+      {/* Buy Tickets Modal */}
+      <BuyTicketsModal
+        isOpen={showBuyTicketsModal}
+        onClose={() => setShowBuyTicketsModal(false)}
+        jackpotAmount={`$${jackpot.toLocaleString()} USDC`}
+        countdown={{
+          days: "01",
+          hours: "23",
+          minutes: "45",
+          seconds: "30",
+        }}
+        balance={currentBalance}
+        ticketPrice={5}
+        onPurchase={handleTicketPurchase}
+      />
 
       {/* Confirmation Modal */}
       <ConfirmationModal
