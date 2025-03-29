@@ -18,6 +18,7 @@ export default function AdminPage() {
       <h2 className="text-3xl font-semibold">Admin Page</h2>
       <Button onClick={openModal}>Set Draw Parameters</Button>
       <ContentDisplay />
+      <SettingsCard/>
       <SweepstakesModal modalId="sweepstakesModal" />
 
       {/* Grid de tarjetas (llama las tarjetas) */}
