@@ -6,7 +6,7 @@ import { useSweepstakesStore } from "~~/services/store/sweepstakesStore";
 import ContentDisplay from "~~/components/sweepstakes/ContentDisplay";
 import React from "react";
 import StatisticsCard from "./statisticsCard";
-import { BarChart } from "lucide-react";
+import { BarChart3 } from "lucide-react";
 
 export default function AdminPage() {
   const { openModal } = useSweepstakesStore();
@@ -20,9 +20,9 @@ export default function AdminPage() {
       <ContentDisplay />
       <SweepstakesModal modalId="sweepstakesModal" />
 
-      {/* Grid de tarjetas (invoca a los archivos de las tarjetas) */}
+      {/* Grid de tarjetas (llama las tarjetas) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-       <StatisticsCard />
+       <StatisticsCard /> 
        
       </div>
 
