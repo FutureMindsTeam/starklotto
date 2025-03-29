@@ -6,16 +6,16 @@ import { useSweepstakesStore } from "~~/services/store/sweepstakesStore";
 import ContentDisplay from "~~/components/sweepstakes/ContentDisplay";
 import React from "react";
 import StatisticsCard from "./statisticsCard";
-import { BarChart3 } from "lucide-react";
+import Header from "~~/components/admin/Header";
+
 
 export default function AdminPage() {
   const { openModal } = useSweepstakesStore();
 
   return (
     <div>
-      
-      <h2 className="text-3xl font-bold">Administration Panel</h2>
-      <h4 className="text-gray-400">Welcome to the StarkLotto administration panel</h4>
+      <Header />
+      <h2 className="text-3xl font-semibold">Admin Page</h2>
       <Button onClick={openModal}>Set Draw Parameters</Button>
       <ContentDisplay />
       <SweepstakesModal modalId="sweepstakesModal" />
