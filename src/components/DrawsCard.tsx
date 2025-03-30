@@ -6,7 +6,7 @@ const DrawsCard: React.FC = () => {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 flex items-center space-x-4">
-      <div className="text-blue-500 text-4xl">
+      <div className="text-blue-500 text-4xl"> 
         {/* Replace with an actual icon */}
         🏆
       </div>
