@@ -2,7 +2,7 @@ use starknet::ContractAddress;
 
 // SPDX-License-Identifier: MIT
 // Compatible with OpenZeppelin Contracts for Cairo ^0.20.0
-pub const INITIAL_SUPPLY: u256 = 0; // Suministro inicial de 0
+pub const INITIAL_SUPPLY: u256 = 0; // initial supply
 
 #[starknet::interface]
 pub trait IMintable<TContractState> {
@@ -83,7 +83,7 @@ pub mod StarkPlayERC20 {
         self.erc20.initializer("$tarkPlay", "STARKP");
         self.ownable.initializer(owner);
         
-        // No se minta ningún token inicialmente
+        // this is not minting any token initially
         //self.erc20.mint(recipient, INITIAL_SUPPLY);
     }
 
