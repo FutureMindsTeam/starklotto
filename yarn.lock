@@ -2384,7 +2384,7 @@ __metadata:
     "@starknet-io/types-js": ^0.7.7
     "@starknet-react/chains": ^3.1.0
     "@starknet-react/core": ^3.6.0
-    "@starknet-react/typescript-config": 0.0.0
+    "@starknet-react/typescript-config": 0.0.2
     "@testing-library/dom": ^10.4.0
     "@testing-library/react": ^16.0.1
     "@types/node": ^20
@@ -2489,10 +2489,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@starknet-react/typescript-config@npm:0.0.0":
-  version: 0.0.0
-  resolution: "@starknet-react/typescript-config@npm:0.0.0"
-  checksum: d56a63d1c5529fda9fa4f892b160a49ebc6c7616a1f719e9992638c98af959c2c30f58912c01f311eba28f5bac36f7aa19bb6c6e11ac1e645ba4e9ec66a801ab
+"@starknet-react/typescript-config@npm:0.0.2":
+  version: 0.0.2
+  resolution: "@starknet-react/typescript-config@npm:0.0.2"
+  checksum: 0ac12d89aefc5c3e1ef5352f9867a61d6aa289587eb55286169e340a6b9340ca6deb775aa32cda4d1c8b4831d7d406184abd445607f23cb1da4b1d1568ba4368
   languageName: node
   linkType: hard
 
