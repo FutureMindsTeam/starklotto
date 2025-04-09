@@ -90,6 +90,7 @@ pub mod StarkPlayERC20 {
     #[abi(embed_v0)]
     impl MintableImpl of IMintable<ContractState> {
         fn mint(ref self: ContractState, recipient: ContractAddress, amount: u256) {
+           //TODO: security, add authorized addresses like vault contract
             self.ownable.assert_only_owner();
             self.erc20.mint(recipient, amount);
             self.emit(Mint { recipient, amount });
@@ -99,6 +100,7 @@ pub mod StarkPlayERC20 {
     #[abi(embed_v0)]
     impl BurnableImpl of IBurnable<ContractState> {
         fn burn(ref self: ContractState, amount: u256) {
+            //TODO: security, add authorized addresses like vault contract
             let burner = get_caller_address();
             self.erc20.burn(burner, amount);
             self.emit(Burn { burner, amount });
