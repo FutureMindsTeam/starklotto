@@ -45,7 +45,7 @@
     "react-hook-form": "^7.54.2",
     "react-hot-toast": "^2.4.1",
     "starknet": "6.12.1",
-    "tailwind-merge": "^3.0.2",
+    "tailwind-merge": "^3.2.0",
     "type-fest": "^4.6.0",
     "usehooks-ts": "^2.13.0",
     "zod": "^3.24.1",
