@@ -1,5 +1,5 @@
-import React from 'react';
-import DrawsCard from '../components/DrawsCard';
+import React from "react";
+import DrawsCard from "../components/DrawsCard";
 
 const AdminPanel: React.FC = () => {
   return (
