@@ -7,9 +7,13 @@ interface ReviewStepProps {
   isEditing?: boolean;
 }
 
-const ReviewStep = ({ onBack, onConfirm, isEditing = false }: ReviewStepProps) => {
+const ReviewStep = ({
+  onBack,
+  onConfirm,
+  isEditing = false,
+}: ReviewStepProps) => {
   const { currentEntry, createSweepstakes } = useSweepstakesStore();
-  
+
   const handleConfirm = () => {
     createSweepstakes();
     onConfirm();
@@ -23,16 +27,19 @@ const ReviewStep = ({ onBack, onConfirm, isEditing = false }: ReviewStepProps) =
       <div className="mt-4">
         {Object.entries(currentEntry).map(([key, value]) => (
           <div key={key} className="mb-2">
-            <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{' '}
-            {typeof value === 'number' ? 
-              (key.includes('Price') ? `$${value}` : `${value}%`) : 
-              value
-            }
+            <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{" "}
+            {typeof value === "number"
+              ? key.includes("Price")
+                ? `$${value}`
+                : `${value}%`
+              : value}
           </div>
         ))}
       </div>
       <div className="flex justify-between mt-4">
-        <Button variant="outline" onClick={onBack}>Back</Button>
+        <Button variant="outline" onClick={onBack}>
+          Back
+        </Button>
         <Button onClick={handleConfirm}>
           {isEditing ? "Update" : "Confirm"}
         </Button>

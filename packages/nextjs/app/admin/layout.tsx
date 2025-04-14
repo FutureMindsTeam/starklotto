@@ -2,8 +2,9 @@ import { ReactNode } from "react";
 import Sidebar from "~~/layout/Sidebar";
 import Topbar from "~~/layout/Topbar";
 
-
-export default function AdminLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function AdminLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
     <div className="w-full h-screen overflow-x-hidden flex">
       <Sidebar style={{ flex: 1.3 }} />
@@ -14,5 +15,5 @@ export default function AdminLayout({ children }: Readonly<{ children: ReactNode
         </main>
       </main>
     </div>
-  )
+  );
 }

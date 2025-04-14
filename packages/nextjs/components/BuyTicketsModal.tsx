@@ -18,7 +18,10 @@ interface BuyTicketsModalProps {
   };
   balance: number;
   ticketPrice: number;
-  onPurchase?: (selectedNumbers: Record<number, number[]>, totalCost: number) => void;
+  onPurchase?: (
+    selectedNumbers: Record<number, number[]>,
+    totalCost: number,
+  ) => void;
 }
 
 export default function BuyTicketsModal({
@@ -136,7 +139,7 @@ export default function BuyTicketsModal({
       opacity: 1,
       y: 0,
       transition: {
-        delay: 0.1 + (i * 0.05),
+        delay: 0.1 + i * 0.05,
         duration: 0.3,
       },
     }),
@@ -144,24 +147,24 @@ export default function BuyTicketsModal({
 
   const ticketVariants = {
     hidden: { opacity: 0, height: 0, marginBottom: 0 },
-    visible: { 
-      opacity: 1, 
-      height: "auto", 
+    visible: {
+      opacity: 1,
+      height: "auto",
       marginBottom: 16,
-      transition: { 
+      transition: {
         duration: 0.3,
         when: "beforeChildren",
-      } 
+      },
     },
-    exit: { 
-      opacity: 0, 
-      height: 0, 
+    exit: {
+      opacity: 0,
+      height: 0,
       marginBottom: 0,
-      transition: { 
+      transition: {
         duration: 0.2,
         when: "afterChildren",
-      } 
-    }
+      },
+    },
   };
 
   return (
@@ -180,33 +183,35 @@ export default function BuyTicketsModal({
             <motion.div
               className="bg-[#111827] rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ 
-                scale: 1, 
-                opacity: 1, 
+              animate={{
+                scale: 1,
+                opacity: 1,
                 y: 0,
                 transition: {
                   type: "spring",
                   damping: 25,
-                  stiffness: 300
-                }
+                  stiffness: 300,
+                },
               }}
-              exit={{ 
-                scale: 0.95, 
-                opacity: 0, 
+              exit={{
+                scale: 0.95,
+                opacity: 0,
                 y: 10,
-                transition: { duration: 0.2 }
+                transition: { duration: 0.2 },
               }}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-6 flex flex-col gap-6">
                 {/* Header */}
-                <motion.div 
+                <motion.div
                   className="flex justify-between items-center"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
                 >
-                  <h2 className="text-2xl font-bold text-purple-400">Buy Tickets</h2>
+                  <h2 className="text-2xl font-bold text-purple-400">
+                    Buy Tickets
+                  </h2>
                   <motion.button
                     onClick={onClose}
                     className="text-gray-400 hover:text-white"
@@ -225,14 +230,14 @@ export default function BuyTicketsModal({
                   transition={{ delay: 0.2 }}
                 >
                   <p className="text-gray-300 mb-1">Next Draw</p>
-                  <motion.p 
+                  <motion.p
                     className="text-[#4ade80] text-3xl font-bold"
                     initial={{ scale: 0.9 }}
                     animate={{ scale: 1 }}
-                    transition={{ 
+                    transition={{
                       delay: 0.3,
                       type: "spring",
-                      stiffness: 300 
+                      stiffness: 300,
                     }}
                   >
                     {jackpotAmount}
@@ -240,7 +245,7 @@ export default function BuyTicketsModal({
 
                   {/* Countdown */}
                   <div className="flex justify-between mt-4">
-                    <motion.div 
+                    <motion.div
                       className="text-center"
                       custom={0}
                       variants={countdownItemVariants}
@@ -252,7 +257,7 @@ export default function BuyTicketsModal({
                       </p>
                       <p className="text-gray-400 text-sm">Days</p>
                     </motion.div>
-                    <motion.div 
+                    <motion.div
                       className="text-center"
                       custom={1}
                       variants={countdownItemVariants}
@@ -264,7 +269,7 @@ export default function BuyTicketsModal({
                       </p>
                       <p className="text-gray-400 text-sm">Hours</p>
                     </motion.div>
-                    <motion.div 
+                    <motion.div
                       className="text-center"
                       custom={2}
                       variants={countdownItemVariants}
@@ -276,7 +281,7 @@ export default function BuyTicketsModal({
                       </p>
                       <p className="text-gray-400 text-sm">Minutes</p>
                     </motion.div>
-                    <motion.div 
+                    <motion.div
                       className="text-center"
                       custom={3}
                       variants={countdownItemVariants}
@@ -292,7 +297,7 @@ export default function BuyTicketsModal({
                 </motion.div>
 
                 {/* Balance and Price */}
-                <motion.div 
+                <motion.div
                   className="flex justify-between items-center"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -326,17 +331,21 @@ export default function BuyTicketsModal({
                     </div>
                     <p className="text-white">
                       Balance:{" "}
-                      <span className="text-[#4ade80]">${balance} $tarkPlay</span>
+                      <span className="text-[#4ade80]">
+                        ${balance} $tarkPlay
+                      </span>
                     </p>
                   </div>
                   <p className="text-white">
                     Price per ticket:{" "}
-                    <span className="text-[#4ade80]">${ticketPrice} $tarkPlay</span>
+                    <span className="text-[#4ade80]">
+                      ${ticketPrice} $tarkPlay
+                    </span>
                   </p>
                 </motion.div>
 
                 {/* Ticket Quantity */}
-                <motion.div 
+                <motion.div
                   className="flex justify-between items-center"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -383,8 +392,8 @@ export default function BuyTicketsModal({
                     {Array.from({ length: ticketCount }).map((_, idx) => {
                       const ticketId = idx + 1;
                       return (
-                        <motion.div 
-                          key={ticketId} 
+                        <motion.div
+                          key={ticketId}
                           className="bg-[#1a2234] rounded-lg p-4 mb-4"
                           variants={ticketVariants}
                           initial="hidden"
@@ -393,7 +402,9 @@ export default function BuyTicketsModal({
                           custom={idx}
                         >
                           <div className="flex justify-between items-center mb-4">
-                            <p className="text-white font-medium">Ticket #{ticketId}</p>
+                            <p className="text-white font-medium">
+                              Ticket #{ticketId}
+                            </p>
                             <motion.button
                               onClick={() => generateRandom(ticketId)}
                               className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-lg flex items-center gap-1"
@@ -408,7 +419,8 @@ export default function BuyTicketsModal({
                           <div className="grid grid-cols-7 gap-2">
                             {Array.from({ length: 41 }).map((_, numIdx) => {
                               const num = numIdx;
-                              const isSelected = selectedNumbers[ticketId]?.includes(num);
+                              const isSelected =
+                                selectedNumbers[ticketId]?.includes(num);
                               return (
                                 <motion.button
                                   key={num}
@@ -428,37 +440,35 @@ export default function BuyTicketsModal({
                             })}
                           </div>
 
-                          <motion.div 
+                          <motion.div
                             className="flex justify-center mt-4 gap-2"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.3 }}
                           >
-                            {selectedNumbers[ticketId]?.length > 0 ? (
-                              selectedNumbers[ticketId].map((num, i) => (
-                                <motion.div
-                                  key={i}
-                                  className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white"
-                                  initial={{ scale: 0 }}
-                                  animate={{ scale: 1 }}
-                                  transition={{ delay: i * 0.1 }}
-                                >
-                                  {num < 10 ? `0${num}` : num}
-                                </motion.div>
-                              ))
-                            ) : (
-                              Array.from({ length: 5 }).map((_, i) => (
-                                <motion.div
-                                  key={i}
-                                  className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-gray-400"
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  transition={{ delay: i * 0.1 }}
-                                >
-                                  ?
-                                </motion.div>
-                              ))
-                            )}
+                            {selectedNumbers[ticketId]?.length > 0
+                              ? selectedNumbers[ticketId].map((num, i) => (
+                                  <motion.div
+                                    key={i}
+                                    className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white"
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ delay: i * 0.1 }}
+                                  >
+                                    {num < 10 ? `0${num}` : num}
+                                  </motion.div>
+                                ))
+                              : Array.from({ length: 5 }).map((_, i) => (
+                                  <motion.div
+                                    key={i}
+                                    className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-gray-400"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: i * 0.1 }}
+                                  >
+                                    ?
+                                  </motion.div>
+                                ))}
                           </motion.div>
                         </motion.div>
                       );
@@ -467,7 +477,7 @@ export default function BuyTicketsModal({
                 </div>
 
                 {/* Game Rules */}
-                <motion.div 
+                <motion.div
                   className="bg-[#1a2234] rounded-lg p-4"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -484,14 +494,16 @@ export default function BuyTicketsModal({
                 </motion.div>
 
                 {/* Total Cost */}
-                <motion.div 
+                <motion.div
                   className="bg-[#1a2234] rounded-lg p-4 flex justify-between items-center"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.55 }}
                 >
                   <p className="text-white font-medium">Total cost:</p>
-                  <p className="text-[#4ade80] font-medium">${totalCost} $tarkPlay</p>
+                  <p className="text-[#4ade80] font-medium">
+                    ${totalCost} $tarkPlay
+                  </p>
                 </motion.div>
 
                 {/* Buy Button */}
@@ -500,8 +512,8 @@ export default function BuyTicketsModal({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
                 >
-                  <GlowingButton 
-                    onClick={handlePurchase} 
+                  <GlowingButton
+                    onClick={handlePurchase}
                     className="w-full"
                     glowColor="rgba(139, 92, 246, 0.5)"
                   >

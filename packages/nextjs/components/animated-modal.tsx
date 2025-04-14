@@ -25,35 +25,35 @@ export function AnimatedModal({
   };
 
   const modalVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 20,
-      scale: 0.95
+      scale: 0.95,
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       scale: 1,
       transition: {
         type: "spring",
         damping: 25,
-        stiffness: 300
-      }
+        stiffness: 300,
+      },
     },
-    exit: { 
-      opacity: 0, 
-      y: 20, 
+    exit: {
+      opacity: 0,
+      y: 20,
       scale: 0.95,
       transition: {
-        duration: 0.2
-      }
-    }
+        duration: 0.2,
+      },
+    },
   };
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div 
+        <motion.div
           className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 backdrop-blur-sm"
           initial="hidden"
           animate="visible"
@@ -66,7 +66,7 @@ export function AnimatedModal({
             }
           }}
         >
-          <motion.div 
+          <motion.div
             className={`bg-[#111827] rounded-xl ${maxWidth} w-full max-h-[90vh] overflow-y-auto`}
             variants={modalVariants}
             onClick={(e) => e.stopPropagation()}

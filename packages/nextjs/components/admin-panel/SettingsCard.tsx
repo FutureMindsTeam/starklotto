@@ -3,7 +3,6 @@ import { FC } from "react";
 import { Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-
 const SettingsCard: FC = () => {
   const router = useRouter();
 
@@ -14,7 +13,9 @@ const SettingsCard: FC = () => {
           <Settings className="w-8 h-8 text-[#8A3FFC]" />
         </div>
         <h2 className="text-xl font-semibold">Settings</h2>
-        <p className="text-base text-gray-400">Manage all aspects of the system</p>
+        <p className="text-base text-gray-400">
+          Manage all aspects of the system
+        </p>
         <button
           className="bg-purple-600 hover:bg-purple-700 px-4 text-sm py-2 rounded-md text-white flex items-center space-x-2"
           onClick={() => router.push("/configure")}

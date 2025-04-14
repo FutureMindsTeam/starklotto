@@ -17,12 +17,7 @@ export default function SwapPage() {
     <div className="flex min-h-screen flex-col bg-background text-foreground overflow-x-hidden">
       <AnimatedBackground />
       <FloatingCoins />
-
-+      <Navbar
-        onBuyTicket={() => {}}
-        onNavigate={(sectionId: string) => {}}
-      />
-
+      + <Navbar onBuyTicket={() => {}} onNavigate={(sectionId: string) => {}} />
       {notification && (
         <Notification
           message={notification.message}
@@ -30,7 +25,6 @@ export default function SwapPage() {
           onClose={() => setNotification(null)}
         />
       )}
-
       <main className="flex-1 pt-24 relative z-10">
         <div className="container mx-auto px-4">
           {/* Page Header */}
@@ -39,12 +33,13 @@ export default function SwapPage() {
               Token Swap
             </h1>
             <p className="max-w-2xl mx-auto text-gray-300 text-lg">
-              Convert between STRK and $tarkPlay tokens instantly with minimal fees.
+              Convert between STRK and $tarkPlay tokens instantly with minimal
+              fees.
             </p>
           </div>
 
           <div className="max-w-md mx-auto mb-16">
-            <TokenConversion 
+            <TokenConversion
               useExternalNotifications={true}
               onSuccess={(amount, receivedAmount, message) => {
                 setNotification({
@@ -63,19 +58,25 @@ export default function SwapPage() {
 
           <div className="max-w-3xl mx-auto mt-12 grid md:grid-cols-2 gap-8 mb-8">
             <div className="bg-gray-900 rounded-xl p-6 border border-purple-500/20">
-              <h2 className="text-xl font-bold mb-4 text-purple-300">About Token Conversion</h2>
+              <h2 className="text-xl font-bold mb-4 text-purple-300">
+                About Token Conversion
+              </h2>
               <p className="text-gray-300 mb-4">
-                Converting between STRK and $tarkPlay tokens allows you to utilize your 
-                assets for different purposes within our ecosystem. $tarkPlay tokens are used 
-                specifically for gaming, while STRK tokens have broader utility.
+                Converting between STRK and $tarkPlay tokens allows you to
+                utilize your assets for different purposes within our ecosystem.
+                $tarkPlay tokens are used specifically for gaming, while STRK
+                tokens have broader utility.
               </p>
               <p className="text-gray-300">
-                The conversion rate is pegged at 1:1, with a minimal fee of 0.5% applied to 
-                each transaction to support the ecosystem&apos;s stability and growth.
+                The conversion rate is pegged at 1:1, with a minimal fee of 0.5%
+                applied to each transaction to support the ecosystem&apos;s
+                stability and growth.
               </p>
             </div>
             <div className="bg-gray-900 rounded-xl p-6 border border-purple-500/20">
-              <h2 className="text-xl font-bold mb-4 text-purple-300">Conversion Guidelines</h2>
+              <h2 className="text-xl font-bold mb-4 text-purple-300">
+                Conversion Guidelines
+              </h2>
               <ul className="text-gray-300 space-y-2">
                 <li className="flex gap-2 items-start">
                   <span className="text-purple-400 font-bold">•</span>
@@ -83,7 +84,10 @@ export default function SwapPage() {
                 </li>
                 <li className="flex gap-2 items-start">
                   <span className="text-purple-400 font-bold">•</span>
-                  <span>You can convert in either direction: STRK to $tarkPlay or $tarkPlay to STRK</span>
+                  <span>
+                    You can convert in either direction: STRK to $tarkPlay or
+                    $tarkPlay to STRK
+                  </span>
                 </li>
                 <li className="flex gap-2 items-start">
                   <span className="text-purple-400 font-bold">•</span>
@@ -91,7 +95,10 @@ export default function SwapPage() {
                 </li>
                 <li className="flex gap-2 items-start">
                   <span className="text-purple-400 font-bold">•</span>
-                  <span>There is no minimum or maximum conversion amount, but you cannot exceed your balance</span>
+                  <span>
+                    There is no minimum or maximum conversion amount, but you
+                    cannot exceed your balance
+                  </span>
                 </li>
               </ul>
             </div>
@@ -100,4 +107,4 @@ export default function SwapPage() {
       </main>
     </div>
   );
-} 
+}

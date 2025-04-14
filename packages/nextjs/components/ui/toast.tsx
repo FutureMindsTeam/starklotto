@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import { createPortal } from "react-dom"
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export interface ToastProps {
-  title: string
-  message: string
-  type: "success" | "error"
-  onClose: () => void
+  title: string;
+  message: string;
+  type: "success" | "error";
+  onClose: () => void;
 }
 
 export const Toast = ({ title, message, type, onClose }: ToastProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      onClose()
-    }, 5000)
+      onClose();
+    }, 5000);
 
-    return () => clearTimeout(timer)
-  }, [onClose])
+    return () => clearTimeout(timer);
+  }, [onClose]);
 
   return (
     <div
@@ -34,7 +34,7 @@ export const Toast = ({ title, message, type, onClose }: ToastProps) => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Toast 
+export default Toast;

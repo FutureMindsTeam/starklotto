@@ -20,16 +20,16 @@ interface SweepstakesState {
   step: number;
   isModalOpen: boolean;
   editingId: number | null;
-  
+
   // CRUD Operations
   createSweepstakes: () => void;
   updateSweepstakes: (id: number, updates: Partial<SweepstakesEntry>) => void;
   deleteSweepstakes: (id: number) => void;
-  
+
   // State Management
   setCurrentEntry: (entry: Partial<SweepstakesEntry>) => void;
   resetCurrentEntry: () => void;
-  
+
   // Modal and Navigation
   openModal: () => void;
   closeModal: () => void;
@@ -64,59 +64,59 @@ export const useSweepstakesStore = create<SweepstakesState>()(
       // CRUD Operations
       createSweepstakes: () => {
         const { editingId, currentEntry, sweepstakes } = get();
-        
+
         if (editingId !== null) {
           // Update existing entry
           set({
-            sweepstakes: sweepstakes.map(entry => 
-              entry.id === editingId 
-                ? { 
-                    ...entry, 
-                    ...currentEntry, 
-                    updatedAt: Date.now() 
+            sweepstakes: sweepstakes.map((entry) =>
+              entry.id === editingId
+                ? {
+                    ...entry,
+                    ...currentEntry,
+                    updatedAt: Date.now(),
                   }
-                : entry
+                : entry,
             ),
             editingId: null,
             currentEntry: INITIAL_ENTRY,
             isModalOpen: false,
-            step: 1
+            step: 1,
           });
         } else {
           // Create new entry
           const newEntry: SweepstakesEntry = {
-            ...currentEntry as SweepstakesEntry,
+            ...(currentEntry as SweepstakesEntry),
             id: Date.now(), // Keep id as number
             createdAt: Date.now(),
             updatedAt: Date.now(),
           };
 
-          set(state => ({
+          set((state) => ({
             sweepstakes: [...state.sweepstakes, newEntry],
             currentEntry: INITIAL_ENTRY,
             step: 1,
-            isModalOpen: false
+            isModalOpen: false,
           }));
         }
       },
 
       updateSweepstakes: (id, updates) => {
-        set(state => ({
-          sweepstakes: state.sweepstakes.map(entry => 
-            entry.id === id 
-              ? { 
-                  ...entry, 
-                  ...updates, 
-                  updatedAt: Date.now() 
+        set((state) => ({
+          sweepstakes: state.sweepstakes.map((entry) =>
+            entry.id === id
+              ? {
+                  ...entry,
+                  ...updates,
+                  updatedAt: Date.now(),
                 }
-              : entry
-          )
+              : entry,
+          ),
         }));
       },
 
       deleteSweepstakes: (id) => {
-        set(state => ({
-          sweepstakes: state.sweepstakes.filter(entry => entry.id !== id)
+        set((state) => ({
+          sweepstakes: state.sweepstakes.filter((entry) => entry.id !== id),
         }));
       },
 
@@ -131,57 +131,59 @@ export const useSweepstakesStore = create<SweepstakesState>()(
 
       // Modal and Navigation
       openModal: () => set({ isModalOpen: true }),
-      
-      closeModal: () => set({ 
-        isModalOpen: false, 
-        step: 1,
-        currentEntry: INITIAL_ENTRY 
-      }),
 
-      nextStep: () => set(state => ({ step: state.step + 1 })),
-      prevStep: () => set(state => ({ step: state.step > 1 ? state.step - 1 : 1 })),
+      closeModal: () =>
+        set({
+          isModalOpen: false,
+          step: 1,
+          currentEntry: INITIAL_ENTRY,
+        }),
+
+      nextStep: () => set((state) => ({ step: state.step + 1 })),
+      prevStep: () =>
+        set((state) => ({ step: state.step > 1 ? state.step - 1 : 1 })),
 
       // New methods for editing
       startEditing: (id) => {
-        const entryToEdit = get().sweepstakes.find(entry => entry.id === id);
-        
+        const entryToEdit = get().sweepstakes.find((entry) => entry.id === id);
+
         if (entryToEdit) {
           set({
             editingId: id,
             currentEntry: { ...entryToEdit },
             isModalOpen: true,
-            step: 1
+            step: 1,
           });
         }
       },
-      
+
       cancelEditing: () => {
         set({
           editingId: null,
           currentEntry: INITIAL_ENTRY,
           isModalOpen: false,
-          step: 1
+          step: 1,
         });
       },
-      
+
       updateAndSaveEditing: (updates) => {
         const { editingId, sweepstakes } = get();
-        
+
         if (editingId !== null) {
           set({
-            sweepstakes: sweepstakes.map(entry => 
-              entry.id === editingId 
-                ? { 
-                    ...entry, 
-                    ...updates, 
-                    updatedAt: Date.now() 
+            sweepstakes: sweepstakes.map((entry) =>
+              entry.id === editingId
+                ? {
+                    ...entry,
+                    ...updates,
+                    updatedAt: Date.now(),
                   }
-                : entry
+                : entry,
             ),
             editingId: null,
             currentEntry: INITIAL_ENTRY,
             isModalOpen: false,
-            step: 1
+            step: 1,
           });
         }
       },
@@ -201,6 +203,6 @@ export const useSweepstakesStore = create<SweepstakesState>()(
           localStorage.removeItem(name);
         },
       },
-    }
-  )
+    },
+  ),
 );
