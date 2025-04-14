@@ -82,15 +82,14 @@ pub mod StarkPlayERC20 {
     fn constructor(ref self: ContractState, recipient: ContractAddress, owner: ContractAddress) {
         self.erc20.initializer("$tarkPlay", "STARKP");
         self.ownable.initializer(owner);
-        
         // this is not minting any token initially
-        //self.erc20.mint(recipient, INITIAL_SUPPLY);
+    //self.erc20.mint(recipient, INITIAL_SUPPLY);
     }
 
     #[abi(embed_v0)]
     impl MintableImpl of IMintable<ContractState> {
         fn mint(ref self: ContractState, recipient: ContractAddress, amount: u256) {
-           //TODO: security, add authorized addresses like vault contract
+            //TODO: security, add authorized addresses like vault contract
             self.ownable.assert_only_owner();
             self.erc20.mint(recipient, amount);
             self.emit(Mint { recipient, amount });
