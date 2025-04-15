@@ -37,26 +37,54 @@ jobs:
       - name: Build snfoundry dependencies
         run: cd packages/snfoundry && yarn install --immutable && yarn compile
 
+      - name: Debug directory structure
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Listing directory structure:"
+          find ./packages/snfoundry -name "Scarb.toml" -type f | sort
+          if [ -f ./packages/snfoundry/contracts/Scarb.toml ]; then
+            echo "Scarb.toml exists at expected path"
+            cat ./packages/snfoundry/contracts/Scarb.toml
+          else
+            echo "ERROR: Scarb.toml does not exist at expected path"
+            exit 1
+          fi
+
       - name: Validate Scarb.toml configuration
         run: |
-          if [ ! -f ./Scarb.toml ]; then
-            echo "Error: Scarb.toml is missing in the current directory" && exit 1
+          cd ./packages/snfoundry/contracts
+          echo "Current directory: $(pwd)"
+          
+          if [ ! -f Scarb.toml ]; then
+            echo "Error: Scarb.toml is missing in the current directory" 
+            exit 1
           fi
-          if ! grep -q '\[profile.dev.cairo\]' ./Scarb.toml; then
-            echo "Error: Missing [profile.dev.cairo] section in Scarb.toml" && exit 1
+          
+          echo "Scarb.toml content:"
+          cat Scarb.toml
+          
+          if ! grep -q '\[profile.dev.cairo\]' Scarb.toml; then
+            echo "Error: Missing [profile.dev.cairo] section in Scarb.toml" 
+            exit 1
           fi
-          if ! grep -q 'unstable-add-statements-code-locations-debug-info = true' ./Scarb.toml; then
-            echo "Error: Missing unstable-add-statements-code-locations-debug-info setting in Scarb.toml" && exit 1
+          
+          if ! grep -q 'unstable-add-statements-code-locations-debug-info = true' Scarb.toml; then
+            echo "Error: Missing unstable-add-statements-code-locations-debug-info setting in Scarb.toml" 
+            exit 1
           fi
-          if ! grep -q 'inlining-strategy = "avoid"' ./Scarb.toml; then
-            echo "Error: Missing inlining-strategy setting in Scarb.toml" && exit 1
+          
+          if ! grep -q 'inlining-strategy = "avoid"' Scarb.toml; then
+            echo "Error: Missing inlining-strategy setting in Scarb.toml" 
+            exit 1
           fi
+          
           echo "Scarb.toml validation successful: Configuration for coverage is present"
-        working-directory: ./packages/snfoundry/contracts
 
       - name: Run snforge tests
-        run: snforge test --coverage
-        working-directory: ./packages/snfoundry/contracts
+        run: |
+          cd ./packages/snfoundry/contracts
+          echo "Running snforge tests with coverage in directory: $(pwd)"
+          snforge test --coverage
 
       - name: Setup node env
         uses: actions/setup-node@v3
