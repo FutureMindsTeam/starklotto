@@ -7,6 +7,7 @@ import ContentDisplay from "~~/components/sweepstakes/ContentDisplay";
 import React from "react";
 import StatisticsCard from "./statisticsCard";
 import Header from "~~/components/admin/Header";
+import SettingsCard from "~~/components/admin-panel/SettingsCard";
 
 export default function AdminPage() {
   const { openModal } = useSweepstakesStore();
