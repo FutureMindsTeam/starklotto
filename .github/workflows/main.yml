@@ -37,6 +37,23 @@ jobs:
       - name: Build snfoundry dependencies
         run: cd packages/snfoundry && yarn install --immutable && yarn compile
 
+      - name: Validate Scarb.toml configuration
+        run: |
+          if [ ! -f ./Scarb.toml ]; then
+            echo "Error: Scarb.toml is missing in the current directory" && exit 1
+          fi
+          if ! grep -q '\[profile.dev.cairo\]' ./Scarb.toml; then
+            echo "Error: Missing [profile.dev.cairo] section in Scarb.toml" && exit 1
+          fi
+          if ! grep -q 'unstable-add-statements-code-locations-debug-info = true' ./Scarb.toml; then
+            echo "Error: Missing unstable-add-statements-code-locations-debug-info setting in Scarb.toml" && exit 1
+          fi
+          if ! grep -q 'inlining-strategy = "avoid"' ./Scarb.toml; then
+            echo "Error: Missing inlining-strategy setting in Scarb.toml" && exit 1
+          fi
+          echo "Scarb.toml validation successful: Configuration for coverage is present"
+        working-directory: ./packages/snfoundry/contracts
+
       - name: Run snforge tests
         run: snforge test --coverage
         working-directory: ./packages/snfoundry/contracts
