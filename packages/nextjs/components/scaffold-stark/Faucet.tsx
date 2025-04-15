@@ -99,7 +99,14 @@ export const Faucet = () => {
         <span>Faucet</span>
       </label>
       <input type="checkbox" id="faucet-modal" className="modal-toggle" />
-      <GenericModal modalId="faucet-modal">
+      <GenericModal 
+        modalId="faucet-modal"
+        isOpen={true}
+        onClose={() => {
+          const modalToggle = document.getElementById("faucet-modal") as HTMLInputElement;
+          if (modalToggle) modalToggle.checked = false;
+        }}
+      >
         <>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-bold">Local Faucet</h3>
