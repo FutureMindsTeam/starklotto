@@ -38,7 +38,7 @@ jobs:
         run: cd packages/snfoundry && yarn install --immutable && yarn compile
 
       - name: Run snforge tests
-        run: snforge test --discover
+        run: snforge test --coverage
         working-directory: ./packages/snfoundry/contracts
 
       - name: Setup node env
