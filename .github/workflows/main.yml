@@ -34,8 +34,11 @@ jobs:
       - name: Install snforge
         run: snfoundryup -v 0.34.0
 
+      - name: Build snfoundry dependencies
+        run: cd packages/snfoundry && yarn install --immutable && yarn compile
+
       - name: Run snforge tests
-        run: snforge test
+        run: snforge test --discover
         working-directory: ./packages/snfoundry/contracts
 
       - name: Setup node env
@@ -48,6 +51,9 @@ jobs:
       - name: Install dependencies (Next.js)
         run: yarn install --immutable
         working-directory: ./packages/nextjs
+
+      - name: Install root dependencies
+        run: yarn install --immutable
 
       - name: Check Code Format
         run: yarn format:check

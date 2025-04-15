@@ -24,6 +24,7 @@ export const Faucet = () => {
     "0x78662e7352d062084b0010068b99288486c2d8b914f6e2a55ce945f8792c8b1",
   );
   const [sendValue, setSendValue] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { chain: ConnectedChain } = useNetwork();
   const { provider: publicClient } = useProvider();
@@ -92,30 +93,26 @@ export const Faucet = () => {
   return (
     <div>
       <label
-        htmlFor="faucet-modal"
+        onClick={() => setIsModalOpen(true)}
         className="btn btn-sm font-normal gap-1 border border-[#32BAC4] shadow-none"
       >
         <BanknotesIcon className="h-4 w-4 text-[#32BAC4]" />
         <span>Faucet</span>
       </label>
-      <input type="checkbox" id="faucet-modal" className="modal-toggle" />
       <GenericModal 
         modalId="faucet-modal"
-        isOpen={true}
-        onClose={() => {
-          const modalToggle = document.getElementById("faucet-modal") as HTMLInputElement;
-          if (modalToggle) modalToggle.checked = false;
-        }}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
       >
         <>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-bold">Local Faucet</h3>
-            <label
-              htmlFor="faucet-modal"
+            <button
+              onClick={() => setIsModalOpen(false)}
               className="btn btn-ghost btn-sm btn-circle"
             >
               ✕
-            </label>
+            </button>
           </div>
           <div className="flex flex-col gap-8">
             <AddressInput
