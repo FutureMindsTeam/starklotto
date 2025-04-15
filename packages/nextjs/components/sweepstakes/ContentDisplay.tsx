@@ -4,7 +4,8 @@ import { Button } from "../ui/button";
 import { SweepstakesEntry } from "~~/services/store/sweepstakesStore";
 
 export default function ContentDisplay() {
-  const { sweepstakes, deleteSweepstakes, startEditing, openModal } = useSweepstakesStore();
+  const { sweepstakes, deleteSweepstakes, startEditing, openModal } =
+    useSweepstakesStore();
 
   const handleEdit = (item: SweepstakesEntry) => {
     startEditing(item.id);
@@ -29,25 +30,34 @@ export default function ContentDisplay() {
         >
           <div className="space-y-1">
             {Object.entries(item)
-              .filter(([key]) => 
-                ['startDate', 'endDate', 'drawDate', 'ticketPrice', 'mainPrize', 'secondaryPrize', 'protocolFee'].includes(key)
+              .filter(([key]) =>
+                [
+                  "startDate",
+                  "endDate",
+                  "drawDate",
+                  "ticketPrice",
+                  "mainPrize",
+                  "secondaryPrize",
+                  "protocolFee",
+                ].includes(key),
               )
               .map(([key, value]) => (
                 <p key={key} className="text-base text-white">
                   <span className="font-semibold">
                     {key.charAt(0).toUpperCase() + key.slice(1)}:
-                  </span>{' '}
-                  {typeof value === 'number' ? 
-                    (key.includes('Price') ? `$${value}` : `${value}%`) : 
-                    value
-                  }
+                  </span>{" "}
+                  {typeof value === "number"
+                    ? key.includes("Price")
+                      ? `$${value}`
+                      : `${value}%`
+                    : value}
                 </p>
               ))}
           </div>
-          
+
           <div className="mt-auto flex space-x-2">
-            <Button 
-              size="sm" 
+            <Button
+              size="sm"
               variant="default"
               onClick={() => handleEdit(item)}
               className="px-8 w-full"
@@ -55,9 +65,9 @@ export default function ContentDisplay() {
               Edit
             </Button>
 
-            <Button 
-              size="sm" 
-              variant="destructive" 
+            <Button
+              size="sm"
+              variant="destructive"
               onClick={() => deleteSweepstakes(item.id)}
               className="w-full"
             >

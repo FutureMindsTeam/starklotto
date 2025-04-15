@@ -6,8 +6,10 @@ import { useNetwork } from "@starknet-react/core";
 import Image from "next/image";
 import GenericModal from "./CustomConnectButton/GenericModal";
 import { useTheme } from "next-themes";
+import { useState } from "react";
 
 export const BlockExplorer = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { chain: ConnectedChain } = useNetwork();
 
   const blockExplorers = [
@@ -39,26 +41,25 @@ export const BlockExplorer = () => {
   return (
     <div>
       <label
-        htmlFor="blockexplorer-modal"
+        onClick={() => setIsModalOpen(true)}
         className="btn btn-sm font-normal gap-1 border border-[#32BAC4] shadow-none"
       >
         <MagnifyingGlassIcon className="h-4 w-4 text-[#32BAC4]" />
         <span>Block Explorer</span>
       </label>
-      <input
-        type="checkbox"
-        id="blockexplorer-modal"
-        className="modal-toggle"
-      />
-      <GenericModal modalId="blockexplorer-modal">
+      <GenericModal
+        modalId="blockexplorer-modal"
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      >
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-bold">Mainnet Block Explorers</h3>
-          <label
-            htmlFor="blockexplorer-modal"
+          <button
+            onClick={() => setIsModalOpen(false)}
             className="btn btn-ghost btn-sm btn-circle"
           >
             ✕
-          </label>
+          </button>
         </div>
         <div className="mb-4 mt-6">
           <div className="flex flex-col gap-4">

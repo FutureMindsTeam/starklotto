@@ -51,8 +51,8 @@ export default function ProfilePage() {
         <div className="absolute bottom-[-100px] right-[20%] opacity-75">
           <Image
             src="/overlay-blur-purple.svg"
-            alt=""
-            width={450}
+            alt="overlay-blur-purple-updated"
+            width={451}
             height={450}
           />
         </div>

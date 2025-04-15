@@ -83,27 +83,27 @@ export function ConfirmationModal({
               <motion.div
                 className="bg-[#191c2a] rounded-xl border border-white/10 max-w-md w-full overflow-hidden"
                 initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                animate={{ 
-                  scale: 1, 
-                  opacity: 1, 
+                animate={{
+                  scale: 1,
+                  opacity: 1,
                   y: 0,
                   transition: {
                     type: "spring",
                     damping: 25,
-                    stiffness: 300
-                  }
+                    stiffness: 300,
+                  },
                 }}
-                exit={{ 
-                  scale: 0.95, 
+                exit={{
+                  scale: 0.95,
                   opacity: 0,
-                  transition: { 
-                    duration: 0.2 
-                  } 
+                  transition: {
+                    duration: 0.2,
+                  },
                 }}
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="p-5 text-white">
-                  <motion.div 
+                  <motion.div
                     className="flex justify-between items-center mb-5"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -121,7 +121,7 @@ export function ConfirmationModal({
                   </motion.div>
 
                   <div className="space-y-4">
-                    <motion.div 
+                    <motion.div
                       className="flex justify-between items-center mb-4"
                       custom={0}
                       variants={contentVariants}
@@ -170,7 +170,7 @@ export function ConfirmationModal({
                       );
                     })}
 
-                    <motion.div 
+                    <motion.div
                       className="border-t border-white/10 my-4 pt-4"
                       custom={1}
                       variants={contentVariants}
@@ -202,14 +202,14 @@ export function ConfirmationModal({
                     </motion.div>
                   </div>
 
-                  <motion.div 
+                  <motion.div
                     className="flex gap-3 mt-6"
                     custom={2}
                     variants={contentVariants}
                     initial="hidden"
                     animate="visible"
                   >
-                    <motion.div 
+                    <motion.div
                       className="flex-1"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -222,8 +222,8 @@ export function ConfirmationModal({
                         Cancel
                       </Button>
                     </motion.div>
-                    
-                    <motion.div 
+
+                    <motion.div
                       className="flex-1"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}

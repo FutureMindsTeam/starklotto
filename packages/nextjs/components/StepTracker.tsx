@@ -1,6 +1,10 @@
-
-
-export const StepTracker = ({ step, totalSteps }: { step: number; totalSteps: number }) => {
+export const StepTracker = ({
+  step,
+  totalSteps,
+}: {
+  step: number;
+  totalSteps: number;
+}) => {
   return (
     <div className="flex gap-2 items-center mb-4">
       {[...Array(totalSteps)].map((_, i) => (

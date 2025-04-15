@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { sepolia } from "@starknet-react/chains";
 import { BanknotesIcon } from "@heroicons/react/24/outline";
 import { useNetwork, useProvider } from "@starknet-react/core";
@@ -13,6 +13,7 @@ import { useTheme } from "next-themes";
  * Faucet modal which displays external websites that lets you send small amounts of L2 Sepolia ETH/STRK to an account address on Starknet Sepolia..
  */
 export const FaucetSepolia = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { chain: ConnectedChain } = useNetwork();
 
   const sepoliaFaucets = [
@@ -84,23 +85,26 @@ export const FaucetSepolia = () => {
   return (
     <div>
       <label
-        htmlFor="faucet-modal"
+        onClick={() => setIsModalOpen(true)}
         className="btn btn-sm font-normal gap-1 border border-[#32BAC4] shadow-none"
       >
         <BanknotesIcon className="h-4 w-4 text-[#32BAC4]" />
         <span>Faucet</span>
       </label>
-      <input type="checkbox" id="faucet-modal" className="modal-toggle" />
-      <GenericModal modalId="faucet-modal">
+      <GenericModal
+        modalId="faucet-modal"
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      >
         <>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-bold mb-3">Sepolia Faucets</h3>
-            <label
-              htmlFor="faucet-modal"
+            <button
+              onClick={() => setIsModalOpen(false)}
               className="btn btn-ghost btn-sm btn-circle"
             >
               ✕
-            </label>
+            </button>
           </div>
           <p className="text-xs mb-6">
             <span className="font-medium underline">Disclaimer:</span>

@@ -68,10 +68,13 @@ export function HeroSection({
     setShowBuyTicketsModal(true);
   };
 
-  const handleTicketPurchase = (selectedNumbers: Record<number, number[]>, totalCost: number) => {
+  const handleTicketPurchase = (
+    selectedNumbers: Record<number, number[]>,
+    totalCost: number,
+  ) => {
     // Process the purchase
     console.log("Processing purchase:", { selectedNumbers, totalCost });
-    
+
     setShowBuyTicketsModal(false);
   };
 
@@ -247,7 +250,10 @@ export function HeroSection({
                         </motion.div>
                       ))}
                     </div>
-                    <GlowingButton onClick={handleBuyTicketClick} className="w-full">
+                    <GlowingButton
+                      onClick={handleBuyTicketClick}
+                      className="w-full"
+                    >
                       Buy Ticket
                     </GlowingButton>
                   </motion.div>

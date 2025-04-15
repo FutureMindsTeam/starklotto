@@ -1,20 +1,24 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
-import type React from "react"
+import { useState, useRef } from "react";
+import type React from "react";
 
 export interface TooltipProps {
-  content: string
-  children: React.ReactNode
+  content: string;
+  children: React.ReactNode;
 }
 
 export const Tooltip = ({ content, children }: TooltipProps) => {
-  const [isVisible, setIsVisible] = useState(false)
-  const tooltipRef = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="relative inline-block">
-      <div onMouseEnter={() => setIsVisible(true)} onMouseLeave={() => setIsVisible(false)} className="inline-flex">
+      <div
+        onMouseEnter={() => setIsVisible(true)}
+        onMouseLeave={() => setIsVisible(false)}
+        className="inline-flex"
+      >
         {children}
       </div>
       {isVisible && (
@@ -28,7 +32,7 @@ export const Tooltip = ({ content, children }: TooltipProps) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Tooltip 
+export default Tooltip;

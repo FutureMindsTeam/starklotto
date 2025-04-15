@@ -34,19 +34,20 @@ export function AnimatedButton({
   const variantClasses = {
     primary: "bg-purple-600 hover:bg-purple-700 text-white",
     secondary: "bg-green-500 hover:bg-green-600 text-white",
-    outline: "bg-transparent border border-white/20 hover:bg-white/5 text-white",
+    outline:
+      "bg-transparent border border-white/20 hover:bg-white/5 text-white",
   };
 
   // Animation variants
   const buttonVariants = {
-    hover: { 
+    hover: {
       scale: 1.03,
-      transition: { duration: 0.2 }
+      transition: { duration: 0.2 },
     },
-    tap: { 
+    tap: {
       scale: 0.97,
-      transition: { duration: 0.1 }
-    }
+      transition: { duration: 0.1 },
+    },
   };
 
   return (
@@ -57,7 +58,7 @@ export function AnimatedButton({
         variantClasses[variant],
         fullWidth ? "w-full" : "",
         "flex items-center justify-center gap-2",
-        className
+        className,
       )}
       whileHover="hover"
       whileTap="tap"

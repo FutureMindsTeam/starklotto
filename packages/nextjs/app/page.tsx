@@ -30,6 +30,8 @@ export default function Home() {
   } | null>(null);
   const [jackpot, setJackpot] = useState(250000);
   const [showSecurityInfo, setShowSecurityInfo] = useState(false);
+  const [showTicketSelector, setShowTicketSelector] = useState(false);
+  const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
 
   const { status } = useAccount();
 
@@ -48,8 +50,6 @@ export default function Home() {
 
   const handleBuyTicket = () => {
     setIsModalOpen(true);
-
-    setShowTicketSelector(true);
   };
 
   const handleSelectNumbers = (numbers: number[]) => {
@@ -74,7 +74,6 @@ export default function Home() {
         behavior: "smooth",
       });
     }
-
   };
 
   return (
