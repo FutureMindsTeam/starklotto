@@ -47,7 +47,7 @@ export const BlockExplorerSepolia = () => {
         <MagnifyingGlassIcon className="h-4 w-4 text-[#32BAC4]" />
         <span>Block Explorer</span>
       </label>
-      <GenericModal 
+      <GenericModal
         modalId="sepolia-blockexplorer-modal"
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
