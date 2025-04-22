@@ -8,6 +8,7 @@ import React from "react";
 import StatisticsCard from "./statisticsCard";
 import Header from "~~/components/admin/Header";
 import SettingsCard from "~~/components/admin-panel/SettingsCard";
+import DrawsCard from "./DrawsCard";
 
 export default function AdminPage() {
   const { openModal } = useSweepstakesStore();
@@ -24,6 +25,7 @@ export default function AdminPage() {
       {/* Grid de tarjetas (llama las tarjetas) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <StatisticsCard />
+        <DrawsCard />
       </div>
     </div>
   );
