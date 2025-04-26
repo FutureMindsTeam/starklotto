@@ -3,6 +3,7 @@
 import { Search } from "lucide-react";
 import TicketCard from "./ticket-card";
 import { motion } from "framer-motion";
+import { tickets } from "~~/components/profile/_data";
 
 interface TicketsSectionProps {
   activeTab: "all" | "active" | "finished";
@@ -14,55 +15,6 @@ export default function TicketsSection({
   setActiveTab,
 }: TicketsSectionProps) {
   // Mock data for tickets
-  const tickets = [
-    {
-      id: "ticket-005",
-      status: "active",
-      numbers: [2, 13, 24, 35, 46],
-      drawDate: "Mar 24, 2025",
-      drawAmount: "$270,000",
-      purchaseDate: "Mar 21, 2025",
-      daysLeft: 3,
-    },
-    {
-      id: "ticket-001",
-      status: "active",
-      numbers: [7, 12, 23, 34, 45],
-      drawDate: "Mar 23, 2025",
-      drawAmount: "$250,000",
-      purchaseDate: "Mar 20, 2025",
-      daysLeft: 2,
-    },
-    {
-      id: "ticket-002",
-      status: "active",
-      numbers: [3, 16, 22, 31, 42],
-      drawDate: "Mar 22, 2025",
-      drawAmount: "$300,000",
-      purchaseDate: "Mar 19, 2025",
-      daysLeft: 1,
-    },
-    {
-      id: "ticket-003",
-      status: "finished",
-      numbers: [5, 11, 18, 27, 39],
-      drawDate: "Mar 20, 2025",
-      drawAmount: "$200,000",
-      purchaseDate: "Mar 17, 2025",
-      matchedNumbers: "4 / 5",
-      winAmount: "No win",
-    },
-    {
-      id: "ticket-004",
-      status: "winner",
-      numbers: [9, 14, 25, 33, 41],
-      drawDate: "Mar 18, 2025",
-      drawAmount: "$180,000",
-      purchaseDate: "Mar 15, 2025",
-      matchedNumbers: "5 / 5",
-      winAmount: "$180,000",
-    },
-  ];
 
   // Filter tickets based on active tab
   const filteredTickets = tickets.filter((ticket) => {
@@ -208,12 +160,14 @@ export default function TicketsSection({
   );
 }
 
-function TabButton({
+export function TabButton({
   label,
   active,
+  className,
   onClick,
 }: {
-  label: string;
+  label: React.ReactNode;
+  className?: string;
   active: boolean;
   onClick: () => void;
 }) {
@@ -222,11 +176,10 @@ function TabButton({
       whileHover={!active ? { scale: 1.05 } : {}}
       whileTap={!active ? { scale: 0.95 } : {}}
       onClick={onClick}
-      className={`px-5 py-1.5 rounded-lg transition-all duration-200 text-sm ${
-        active
+      className={`px-5 py-1.5 rounded-lg transition-all duration-200 text-sm ${active
           ? "bg-[#9042F0] text-white shadow-md shadow-purple-900/30"
           : "text-gray-400 hover:text-white"
-      }`}
+        } ${className}`}
     >
       {label}
     </motion.button>
