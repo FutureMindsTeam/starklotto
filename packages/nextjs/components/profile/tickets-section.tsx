@@ -3,6 +3,8 @@
 import { Search } from "lucide-react";
 import TicketCard from "./ticket-card";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useDebounce } from "~~/hooks/useDebouce";
 
 interface TicketsSectionProps {
   activeTab: "all" | "active" | "finished";
@@ -64,6 +66,11 @@ export default function TicketsSection({
     },
   ];
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<Array<any>>([]);
+
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
   // Filter tickets based on active tab
   const filteredTickets = tickets.filter((ticket) => {
     if (activeTab === "all") return true;
@@ -72,6 +79,30 @@ export default function TicketsSection({
       return ticket.status === "finished" || ticket.status === "winner";
     return true;
   });
+
+  useEffect(() => {
+    const res: Array<any> = [];
+
+    if (debouncedSearchQuery === "") {
+      setSearchResults([]);
+      return;
+    }
+
+    filteredTickets.forEach((ticket) => {
+      const ticketId = ticket.id.toLowerCase();
+      const searchValue = debouncedSearchQuery.toLowerCase();
+
+      if (ticketId.includes(searchValue)) {
+        res.push(ticket);
+      }
+    });
+    setSearchResults(res);
+  }, [debouncedSearchQuery, filteredTickets]);
+
+  function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    setSearchQuery(value);
+  }
 
   return (
     <div>
@@ -107,6 +138,8 @@ export default function TicketsSection({
             >
               <Search className="text-gray-400 h-4 w-4 mr-2 group-hover:text-purple-400 transition-colors" />
               <input
+                value={searchQuery}
+                onChange={onSearchChange}
                 type="text"
                 placeholder="Search tickets..."
                 className="bg-transparent border-none outline-none text-white placeholder-gray-400 text-sm w-full"
@@ -191,7 +224,7 @@ export default function TicketsSection({
         initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
       >
-        {filteredTickets.map((ticket, index) => (
+        {debouncedSearchQuery === "" ? filteredTickets.map((ticket, index) => (
           <motion.div
             // biome-ignore lint/style/useTemplate: <explanation>
             key={ticket.id + "-" + activeTab}
@@ -202,7 +235,27 @@ export default function TicketsSection({
           >
             <TicketCard ticket={ticket} />
           </motion.div>
-        ))}
+        )) : searchResults.length !== 0 ? searchResults.map((ticket, index) => (
+          <motion.div
+            // biome-ignore lint/style/useTemplate: <explanation>
+            key={ticket.id + "-" + activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 * index }}
+            layout
+          >
+            <TicketCard ticket={ticket} />
+          </motion.div>
+        )) : (
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="col-span-2 text-center text-gray-400"
+          >
+            Ticket number not found
+          </motion.p>
+        )}
       </motion.div>
     </div>
   );
@@ -222,11 +275,10 @@ function TabButton({
       whileHover={!active ? { scale: 1.05 } : {}}
       whileTap={!active ? { scale: 0.95 } : {}}
       onClick={onClick}
-      className={`px-5 py-1.5 rounded-lg transition-all duration-200 text-sm ${
-        active
-          ? "bg-[#9042F0] text-white shadow-md shadow-purple-900/30"
-          : "text-gray-400 hover:text-white"
-      }`}
+      className={`px-5 py-1.5 rounded-lg transition-all duration-200 text-sm ${active
+        ? "bg-[#9042F0] text-white shadow-md shadow-purple-900/30"
+        : "text-gray-400 hover:text-white"
+        }`}
     >
       {label}
     </motion.button>
