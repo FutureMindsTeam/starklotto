@@ -25,6 +25,7 @@ export default function TicketsSection({
       drawAmount: "$270,000",
       purchaseDate: "Mar 21, 2025",
       daysLeft: 3,
+      createdAtTimestamp: 1742598000000,
     },
     {
       id: "ticket-001",
@@ -34,6 +35,7 @@ export default function TicketsSection({
       drawAmount: "$250,000",
       purchaseDate: "Mar 20, 2025",
       daysLeft: 2,
+      createdAtTimestamp: 1742511600000,
     },
     {
       id: "ticket-002",
@@ -43,6 +45,7 @@ export default function TicketsSection({
       drawAmount: "$300,000",
       purchaseDate: "Mar 19, 2025",
       daysLeft: 1,
+      createdAtTimestamp: 1742425200000,
     },
     {
       id: "ticket-003",
@@ -53,6 +56,7 @@ export default function TicketsSection({
       purchaseDate: "Mar 17, 2025",
       matchedNumbers: "4 / 5",
       winAmount: "No win",
+      createdAtTimestamp: 1742252400000,
     },
     {
       id: "ticket-004",
@@ -63,11 +67,47 @@ export default function TicketsSection({
       purchaseDate: "Mar 15, 2025",
       matchedNumbers: "5 / 5",
       winAmount: "$180,000",
+      createdAtTimestamp: 1742079600000,
+    },
+    {
+      id: "ticket-006",
+      status: "finished",
+      numbers: [3, 16, 22, 31, 42],
+      drawDate: "Mar 22, 2024",
+      drawAmount: "$300,000",
+      purchaseDate: "Mar 19, 2024",
+      matchedNumbers: "2 / 5",
+      winAmount: "No win",
+      createdAtTimestamp: 1710802800000,
+    },
+    {
+      id: "ticket-007",
+      status: "finished",
+      numbers: [5, 11, 18, 27, 39],
+      drawDate: "Apr 28, 2025",
+      drawAmount: "$200,000",
+      purchaseDate: "Apr 27, 2025",
+      matchedNumbers: "4 / 5",
+      winAmount: "No win",
+      createdAtTimestamp: 1745708400000,
+    },
+    {
+      id: "ticket-008",
+      status: "winner",
+      numbers: [9, 14, 25, 33, 41],
+      drawDate: "Feb 15, 2025",
+      drawAmount: "$180,000",
+      purchaseDate: "Feb 12, 2025",
+      matchedNumbers: "5 / 5",
+      winAmount: "$180,000",
+      createdAtTimestamp: 1739660400000,
     },
   ];
 
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Array<any>>([]);
+
+  const [dateFilter, setDateFilter] = useState("all");
 
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
@@ -83,6 +123,34 @@ export default function TicketsSection({
   useEffect(() => {
     const res: Array<any> = [];
 
+    if (dateFilter !== "" && dateFilter !== "all") {
+      const now = new Date();
+      let endDate = new Date();
+      let startDate = new Date();
+      switch (dateFilter) {
+        case "7-days":
+          startDate.setDate(endDate.getDate() - 7);
+          break;
+        case "last-month":
+          startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+          endDate = new Date(now.getFullYear(), now.getMonth(), 0);
+          break;
+        case "previous":
+          startDate = new Date(now.getFullYear() - 1, 0, 0);
+          break;
+      }
+
+      filteredTickets.forEach((ticket) => {
+        const ticketDate = new Date(ticket.createdAtTimestamp);
+        if (ticketDate >= startDate && ticketDate <= endDate) {
+          console.log(ticket);
+          res.push(ticket);
+        }
+      });
+      setSearchResults(res);
+      return;
+    }
+
     if (debouncedSearchQuery === "") {
       setSearchResults([]);
       return;
@@ -97,11 +165,18 @@ export default function TicketsSection({
       }
     });
     setSearchResults(res);
-  }, [debouncedSearchQuery, filteredTickets]);
+  }, [debouncedSearchQuery, activeTab, dateFilter]);
 
   function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setSearchQuery(value);
+    setDateFilter("");
+  }
+
+  function onDateFilterChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const value = e.target.value;
+    setDateFilter(value);
+    setSearchQuery("");
   }
 
   return (
@@ -145,6 +220,16 @@ export default function TicketsSection({
                 className="bg-transparent border-none outline-none text-white placeholder-gray-400 text-sm w-full"
               />
             </div>
+            <select
+              value={dateFilter}
+              onChange={onDateFilterChange}
+              className="select select-primary select-sm w-full max-w-xs px-5 py-1.5 rounded-lg transition-all duration-200 text-sm bg-[#9042F0] text-white">
+              <option value="" disabled selected>Date filter</option>
+              <option value="all">All</option>
+              <option value="7-days">Last days</option>
+              <option value="last-month">Last month</option>
+              <option value="previous">Previous</option>
+            </select>
           </div>
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -224,7 +309,7 @@ export default function TicketsSection({
         initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
       >
-        {debouncedSearchQuery === "" ? filteredTickets.map((ticket, index) => (
+        {(debouncedSearchQuery === "") && ((dateFilter === "all") || (dateFilter === "")) ? filteredTickets.map((ticket, index) => (
           <motion.div
             // biome-ignore lint/style/useTemplate: <explanation>
             key={ticket.id + "-" + activeTab}
