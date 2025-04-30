@@ -98,7 +98,8 @@ mod Lottery {
     impl OwnableImpl = OwnableComponent::OwnableImpl<ContractState>;
     impl OwnableInternalImpl = OwnableComponent::InternalImpl<ContractState>;
 
-    const STRK_CONTRACT_ADRESS: felt252 =
+    // TODO: Update the address of the token contract once the token is deployed
+    const STRK_PLAY_CONTRACT_ADDRESS: felt252 =
         0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d;
     //=======================================================================================
     //events
@@ -198,7 +199,29 @@ mod Lottery {
             let draw = self.draws.read(drawId);
             assert(draw.isActive, 'Draw is not active');
 
-            //TODO: We need to process the payment
+            // Process the payment
+            let strk_play_token_dispatcher = IERC20Dispatcher {
+                contract_address: contract_address_const::<STRK_PLAY_CONTRACT_ADDRESS>()
+            };
+
+            let buyer = get_caller_address();
+            let contract_address = get_contract_address();
+            let payment_amount = self.ticketPrice.read();
+
+            assert(strk_play_token_dispatcher.balance_of(buyer) >= payment_amount,
+            'Insufficient funds');
+
+            assert(strk_play_token_dispatcher.allowance(buyer, contract_address) >= payment_amount,
+            'Insufficient allowance');
+
+            let transfer = strk_play_token_dispatcher.transfer_from(buyer, contract_address, payment_amount);
+
+            assert(transfer, 'Payment failed');
+
+            // TODO: Mint the NFT here, for now it is simulated
+            let minted = true;
+            assert(minted, 'NFT minting failed');
+
             assert(numbers.len() == 5, 'Invalid numbers length');
 
             // Debug del array antes de crear el ticket
