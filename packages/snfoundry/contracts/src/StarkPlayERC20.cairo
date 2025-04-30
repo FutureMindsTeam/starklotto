@@ -31,16 +31,17 @@ pub trait IBurnable<TContractState> {
 
 #[starknet::contract]
 pub mod StarkPlayERC20 {
-    use super::{MINTER_ROLE, BURNER_ROLE, PAUSER_ROLE, IMintable, IBurnable};
-    use starknet::{ContractAddress, get_caller_address, ClassHash};
-    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess, Map};
-    use openzeppelin_access::accesscontrol::DEFAULT_ADMIN_ROLE;
     use openzeppelin_access::accesscontrol::AccessControlComponent;
-    use openzeppelin_security::PausableComponent;
+    use openzeppelin_access::accesscontrol::DEFAULT_ADMIN_ROLE;
+    use openzeppelin_introspection::interface::{ISRC5Dispatcher, ISRC5DispatcherTrait};
     use openzeppelin_introspection::src5::SRC5Component;
+    use openzeppelin_security::PausableComponent;
     use openzeppelin_token::erc20::{ERC20Component, ERC20HooksEmptyImpl};
     use openzeppelin_upgrades::UpgradeableComponent;
     use openzeppelin_upgrades::interface::IUpgradeable;
+    use starknet::storage::{Map, StoragePointerReadAccess, StoragePointerWriteAccess};
+    use starknet::{ClassHash, ContractAddress, get_caller_address};
+    use super::{BURNER_ROLE, IBurnable, IMintable, MINTER_ROLE};
 
     component!(path: ERC20Component, storage: erc20, event: ERC20Event);
     component!(path: AccessControlComponent, storage: accesscontrol, event: AccessControlEvent);
@@ -140,7 +141,7 @@ pub mod StarkPlayERC20 {
         self.erc20.initializer("$tarkPlay", "STARKP");
         self.accesscontrol.initializer();
         self.accesscontrol._grant_role(DEFAULT_ADMIN_ROLE, admin);
-         // this is not minting any token initially
+        // this is not minting any token initially
     //self.erc20.mint(recipient, INITIAL_SUPPLY);
     }
 
@@ -281,8 +282,15 @@ pub mod StarkPlayERC20 {
     }
 
     fn is_contract(address: ContractAddress) -> bool {
-        // Proper logic to check if the address is a contract
-        return true; // Placeholder
+        // Avoid zero address
+        if address == zero_address_const() {
+            return false;
+        }
+        // Check if the address supports the SRC5 interface
+        let src5_dispatcher = ISRC5Dispatcher { contract_address: address };
+        let src5_interface_id: felt252 =
+            0x3f918d17e5ee77373b56385708f855659a07f75997f365cf8774862850866d; // replace with the actual interface ID
+        src5_dispatcher.supports_interface(src5_interface_id)
     }
 
     fn zero_address_const() -> ContractAddress {
