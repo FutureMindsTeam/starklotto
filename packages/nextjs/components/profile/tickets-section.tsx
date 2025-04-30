@@ -1,11 +1,14 @@
 "use client";
 
+import type React from "react";
+
 import { Search } from "lucide-react";
 import TicketCard from "./ticket-card";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useDebounce } from "~~/hooks/useDebouce";
 import { tickets } from "~~/components/profile/_data";
+import TicketEmptyState from "../TicketEmptyState";
+import TicketErrorState from "../TicketErrorState";
 
 interface TicketsSectionProps {
   activeTab: "all" | "active" | "finished";
@@ -16,31 +19,86 @@ export default function TicketsSection({
   activeTab,
   setActiveTab,
 }: TicketsSectionProps) {
-
+  // Add minimal state for loading, error, and search
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<null | "wallet" | "network" | "unknown">(
+    null,
+  );
+  const [ticketsData, setTicketsData] = useState<typeof tickets>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<Array<any>>([]);
-
   const [dateFilter, setDateFilter] = useState("all");
 
-  const debouncedSearchQuery = useDebounce(searchQuery, 300);
-
-  // Filter tickets based on active tab
-  const filteredTickets = tickets.filter((ticket) => {
-    if (activeTab === "all") return true;
-    if (activeTab === "active") return ticket.status === "active";
-    if (activeTab === "finished")
-      return ticket.status === "finished" || ticket.status === "winner";
-    return true;
-  });
-
+  // Simulate loading tickets
   useEffect(() => {
-    const res: Array<any> = [];
+    const loadTickets = async () => {
+      setIsLoading(true);
+      setError(null);
 
-    if (dateFilter !== "" && dateFilter !== "all") {
+      try {
+        // Simulate API call
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // For demo purposes, we'll use the imported tickets
+        // In a real app, you would fetch from an API
+        setTicketsData(tickets);
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Error loading tickets:", err);
+        setError("network");
+        setIsLoading(false);
+      }
+    };
+
+    loadTickets();
+  }, []);
+
+  // Handle retry
+  const handleRetry = () => {
+    setIsLoading(true);
+    setError(null);
+
+    // Simulate retry
+    setTimeout(() => {
+      setTicketsData(tickets);
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  // Handle wallet reconnection
+  const handleReconnectWallet = () => {
+    setIsLoading(true);
+    setError(null);
+
+    // Simulate wallet reconnection
+    setTimeout(() => {
+      setTicketsData(tickets);
+      setIsLoading(false);
+    }, 1500);
+  };
+
+  // Filter tickets based on active tab and search query
+  const filteredTickets = ticketsData.filter((ticket) => {
+    const matchesTab =
+      activeTab === "all"
+        ? true
+        : activeTab === "active"
+          ? ticket.status === "active"
+          : ticket.status === "finished" || ticket.status === "winner";
+
+    const matchesSearch =
+      searchQuery === ""
+        ? true
+        : ticket.id.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return (matchesTab && matchesSearch) && (matchesTab && ticketDateFilter(ticket, dateFilter))
+  })
+
+  function ticketDateFilter(ticket: typeof tickets[0], filter: string): boolean {
+    if (filter !== "" && filter !== "all") {
       const now = new Date();
       let endDate = new Date();
       let startDate = new Date();
-      switch (dateFilter) {
+      switch (filter) {
         case "7-days":
           startDate.setDate(endDate.getDate() - 7);
           break;
@@ -53,43 +111,23 @@ export default function TicketsSection({
           break;
       }
 
-      filteredTickets.forEach((ticket) => {
-        const ticketDate = new Date(ticket.createdAtTimestamp);
-        if (ticketDate >= startDate && ticketDate <= endDate) {
-          console.log(ticket);
-          res.push(ticket);
-        }
-      });
-      setSearchResults(res);
-      return;
-    }
-
-    if (debouncedSearchQuery === "") {
-      setSearchResults([]);
-      return;
-    }
-
-    filteredTickets.forEach((ticket) => {
-      const ticketId = ticket.id.toLowerCase();
-      const searchValue = debouncedSearchQuery.toLowerCase();
-
-      if (ticketId.includes(searchValue)) {
-        res.push(ticket);
+      const ticketDate = new Date(ticket.createdAtTimestamp);
+      if (ticketDate >= startDate && ticketDate <= endDate) {
+        return true
       }
-    });
-    setSearchResults(res);
-  }, [debouncedSearchQuery, activeTab, dateFilter]);
+      return false
+    }
+    return true
+  }
 
   function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setSearchQuery(value);
-    setDateFilter("");
   }
 
   function onDateFilterChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value;
     setDateFilter(value);
-    setSearchQuery("");
   }
 
   return (
@@ -217,44 +255,66 @@ export default function TicketsSection({
         />
       </motion.div>
 
-      <motion.div
-        className="grid grid-cols-1 lg:grid-cols-2 gap-4"
-        initial={{ opacity: 1 }}
-        animate={{ opacity: 1 }}
-      >
-        {(debouncedSearchQuery === "") && ((dateFilter === "all") || (dateFilter === "")) ? filteredTickets.map((ticket, index) => (
-          <motion.div
-            // biome-ignore lint/style/useTemplate: <explanation>
-            key={ticket.id + "-" + activeTab}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 * index }}
-            layout
+      {/* Loading state */}
+      {isLoading && (
+        <div className="flex justify-center items-center py-20">
+          <div className="flex flex-col items-center">
+            <div className="w-12 h-12 rounded-full border-4 border-purple-400 border-t-transparent animate-spin mb-4"></div>
+            <p className="text-gray-400">Loading your tickets...</p>
+          </div>
+        </div>
+      )}
+
+      {/* Error state */}
+      {!isLoading && error && (
+        <TicketErrorState
+          errorType={error}
+          onRetry={handleRetry}
+          onReconnectWallet={handleReconnectWallet}
+        />
+      )}
+
+      {/* Empty state */}
+      {!isLoading && !error && filteredTickets.length === 0 && !searchQuery && (
+        <TicketEmptyState />
+      )}
+
+      {/* No results for search */}
+      {!isLoading && !error && filteredTickets.length === 0 && searchQuery && (
+        <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
+          <p className="text-gray-400 mb-4">
+            No tickets found matching "{searchQuery}"
+          </p>
+          <button
+            onClick={() => { setSearchQuery(""); setDateFilter("") }}
+            className="px-4 py-2 rounded-lg bg-purple-900/30 text-purple-400 border border-purple-700/30 hover:bg-purple-900/40 transition-all duration-300"
           >
-            <TicketCard ticket={ticket} />
-          </motion.div>
-        )) : searchResults.length !== 0 ? searchResults.map((ticket, index) => (
-          <motion.div
-            // biome-ignore lint/style/useTemplate: <explanation>
-            key={ticket.id + "-" + activeTab}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 * index }}
-            layout
-          >
-            <TicketCard ticket={ticket} />
-          </motion.div>
-        )) : (
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="col-span-2 text-center text-gray-400"
-          >
-            Ticket number not found
-          </motion.p>
-        )}
-      </motion.div>
+            Clear search
+          </button>
+        </div>
+      )}
+
+      {/* Tickets grid - only show when we have tickets */}
+      {!isLoading && !error && filteredTickets.length > 0 && (
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-4"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
+        >
+          {filteredTickets.map((ticket, index) => (
+            <motion.div
+              // biome-ignore lint/style/useTemplate: <explanation>
+              key={ticket.id + "-" + activeTab}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 * index }}
+              layout
+            >
+              <TicketCard ticket={ticket} />
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
     </div>
   );
 }
@@ -276,9 +336,8 @@ export function TabButton({
       whileTap={!active ? { scale: 0.95 } : {}}
       onClick={onClick}
       className={`px-5 py-1.5 rounded-lg transition-all duration-200 text-sm ${active
-
-          ? "bg-[#9042F0] text-white shadow-md shadow-purple-900/30"
-          : "text-gray-400 hover:text-white"
+        ? "bg-[#9042F0] text-white shadow-md shadow-purple-900/30"
+        : "text-gray-400 hover:text-white"
         } ${className}`}
     >
       {label}

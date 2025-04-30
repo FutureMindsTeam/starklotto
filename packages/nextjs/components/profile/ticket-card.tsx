@@ -143,7 +143,11 @@ export default function TicketCard({ ticket }: TicketProps) {
         </div>
       </motion.div>
 
-      <TicketModal ticket={selectedTicket } isOpen={isModalOpen} onClose={handleCloseModal} />
+      <TicketModal
+        ticket={selectedTicket}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </>
   );
 }
