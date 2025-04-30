@@ -148,6 +148,7 @@ pub mod StarkPlayERC20 {
     #[abi(embed_v0)]
     impl MintableImpl of IMintable<ContractState> {
         fn mint(ref self: ContractState, recipient: ContractAddress, amount: u256) {
+            self.pausable.assert_not_paused();
             let caller = get_caller_address();
             self.accesscontrol.assert_only_role(MINTER_ROLE);
             let allowance = self.minter_allowance.read(caller);
@@ -207,6 +208,8 @@ pub mod StarkPlayERC20 {
     #[abi(embed_v0)]
     impl BurnableImpl of IBurnable<ContractState> {
         fn burn(ref self: ContractState, amount: u256) {
+            self.pausable.assert_not_paused();
+
             let burner = get_caller_address();
             self.accesscontrol.assert_only_role(BURNER_ROLE);
             let allowance = self.burner_allowance.read(burner);
