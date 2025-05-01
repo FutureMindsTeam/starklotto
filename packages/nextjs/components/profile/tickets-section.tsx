@@ -294,7 +294,7 @@ export default function TicketsSection({
       {!isLoading && !error && filteredTickets.length === 0 && searchQuery && (
         <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
           <p className="text-gray-400 mb-4">
-            No tickets found matching "{searchQuery}"
+            No tickets found matching &quot;{searchQuery}&quot;
           </p>
           <button
             onClick={() => {

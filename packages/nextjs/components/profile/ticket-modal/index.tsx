@@ -193,6 +193,7 @@ export function TicketModal({ isOpen, onClose, ticket }: TicketModalProps) {
                 <div className="w-full flex items-center justify-between gap-4 my-4">
                   {ticket.numbers.map((number, index) => (
                     <NumberBubble
+                      key={`number-${index}`}
                       index={index}
                       number={number}
                       status={ticket?.status}
@@ -267,6 +268,7 @@ export function TicketModal({ isOpen, onClose, ticket }: TicketModalProps) {
                     <div className="w-full flex items-center justify-between gap-4 my-4">
                       {ticket.numbers.map((number, index) => (
                         <NumberBubble
+                          key={`number-${index}`}
                           index={index}
                           number={number}
                           status={ticket?.status}
