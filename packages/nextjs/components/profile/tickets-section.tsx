@@ -90,10 +90,18 @@ export default function TicketsSection({
         ? true
         : ticket.id.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return (matchesTab && matchesSearch) && (matchesTab && ticketDateFilter(ticket, dateFilter))
-  })
+    return (
+      matchesTab &&
+      matchesSearch &&
+      matchesTab &&
+      ticketDateFilter(ticket, dateFilter)
+    );
+  });
 
-  function ticketDateFilter(ticket: typeof tickets[0], filter: string): boolean {
+  function ticketDateFilter(
+    ticket: (typeof tickets)[0],
+    filter: string,
+  ): boolean {
     if (filter !== "" && filter !== "all") {
       const now = new Date();
       let endDate = new Date();
@@ -113,11 +121,11 @@ export default function TicketsSection({
 
       const ticketDate = new Date(ticket.createdAtTimestamp);
       if (ticketDate >= startDate && ticketDate <= endDate) {
-        return true
+        return true;
       }
-      return false
+      return false;
     }
-    return true
+    return true;
   }
 
   function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -174,8 +182,11 @@ export default function TicketsSection({
             <select
               value={dateFilter}
               onChange={onDateFilterChange}
-              className="select select-primary select-sm w-full max-w-xs px-5 py-1.5 rounded-lg transition-all duration-200 text-sm bg-[#9042F0] text-white">
-              <option value="" disabled selected>Date filter</option>
+              className="select select-primary select-sm w-full max-w-xs px-5 py-1.5 rounded-lg transition-all duration-200 text-sm bg-[#9042F0] text-white"
+            >
+              <option value="" disabled selected>
+                Date filter
+              </option>
               <option value="all">All</option>
               <option value="7-days">Last days</option>
               <option value="last-month">Last month</option>
@@ -286,7 +297,10 @@ export default function TicketsSection({
             No tickets found matching "{searchQuery}"
           </p>
           <button
-            onClick={() => { setSearchQuery(""); setDateFilter("") }}
+            onClick={() => {
+              setSearchQuery("");
+              setDateFilter("");
+            }}
             className="px-4 py-2 rounded-lg bg-purple-900/30 text-purple-400 border border-purple-700/30 hover:bg-purple-900/40 transition-all duration-300"
           >
             Clear search
@@ -335,10 +349,11 @@ export function TabButton({
       whileHover={!active ? { scale: 1.05 } : {}}
       whileTap={!active ? { scale: 0.95 } : {}}
       onClick={onClick}
-      className={`px-5 py-1.5 rounded-lg transition-all duration-200 text-sm ${active
-        ? "bg-[#9042F0] text-white shadow-md shadow-purple-900/30"
-        : "text-gray-400 hover:text-white"
-        } ${className}`}
+      className={`px-5 py-1.5 rounded-lg transition-all duration-200 text-sm ${
+        active
+          ? "bg-[#9042F0] text-white shadow-md shadow-purple-900/30"
+          : "text-gray-400 hover:text-white"
+      } ${className}`}
     >
       {label}
     </motion.button>
