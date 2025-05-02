@@ -101,6 +101,10 @@ mod Lottery {
     // TODO: Update the address of the token contract once the token is deployed
     const STRK_PLAY_CONTRACT_ADDRESS: felt252 =
         0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d;
+    
+    const STRK_PLAY_VAULT_CONTRACT_ADDRESS: felt252 =
+        0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d;
+         
     //=======================================================================================
     //events
     //=======================================================================================
@@ -205,16 +209,16 @@ mod Lottery {
             };
 
             let buyer = get_caller_address();
-            let contract_address = get_contract_address();
+            let strk_play_token_vault_address: ContractAddress = contract_address_const::<STRK_PLAY_VAULT_CONTRACT_ADDRESS>();
             let payment_amount = self.ticketPrice.read();
 
             assert(strk_play_token_dispatcher.balance_of(buyer) >= payment_amount,
             'Insufficient funds');
 
-            assert(strk_play_token_dispatcher.allowance(buyer, contract_address) >= payment_amount,
+            assert(strk_play_token_dispatcher.allowance(buyer, strk_play_token_vault_address) >= payment_amount,
             'Insufficient allowance');
 
-            let transfer = strk_play_token_dispatcher.transfer_from(buyer, contract_address, payment_amount);
+            let transfer = strk_play_token_dispatcher.transfer_from(buyer, strk_play_token_vault_address, payment_amount);
 
             assert(transfer, 'Payment failed');
 
