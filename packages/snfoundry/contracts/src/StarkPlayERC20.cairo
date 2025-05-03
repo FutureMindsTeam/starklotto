@@ -41,7 +41,7 @@ pub mod StarkPlayERC20 {
     use openzeppelin_upgrades::interface::IUpgradeable;
     use starknet::storage::{Map, StoragePointerReadAccess, StoragePointerWriteAccess};
     use starknet::{ClassHash, ContractAddress, get_caller_address};
-    use super::{BURNER_ROLE, IBurnable, IMintable, MINTER_ROLE};
+    use super::{BURNER_ROLE, IBurnable, IMintable, MINTER_ROLE, PAUSER_ROLE};
 
     component!(path: ERC20Component, storage: erc20, event: ERC20Event);
     component!(path: AccessControlComponent, storage: accesscontrol, event: AccessControlEvent);
@@ -141,6 +141,7 @@ pub mod StarkPlayERC20 {
         self.erc20.initializer("$tarkPlay", "STARKP");
         self.accesscontrol.initializer();
         self.accesscontrol._grant_role(DEFAULT_ADMIN_ROLE, admin);
+        self.accesscontrol._grant_role(PAUSER_ROLE, admin);
         // this is not minting any token initially
     //self.erc20.mint(recipient, INITIAL_SUPPLY);
     }
