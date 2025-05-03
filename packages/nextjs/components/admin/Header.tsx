@@ -11,8 +11,14 @@ import {
   EyeIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
+import SettingsCard from "../admin-panel/SettingsCard";
+import DrawsCard from "../../app/admin/DrawsCard";
+import StatisticsCard from "../../app/admin/statisticsCard";
+import UsersCards from "../../app/admin/UsersCard";
+
 
 export default function AdminHeader() {
+
   return (
     <div className="min-h-screen bg-black text-white">
       <header className="border-b border-gray-800 bg-black px-6 py-4">
@@ -89,6 +95,14 @@ export default function AdminHeader() {
           <p className="text-gray-400">
             Welcome to the StarkLotto administration panel
           </p>
+
+          {/* Grid de tarjetas (llama las tarjetas) */}
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-2">
+            <SettingsCard/>
+            <DrawsCard/>
+            <UsersCards/>
+            <StatisticsCard/>
+          </div>
         </div>
       </main>
     </div>
