@@ -1,0 +1,327 @@
+use contracts::StarkPlayERC20::{
+    IBurnableDispatcher, IBurnableDispatcherTrait, IMintableDispatcher, IMintableDispatcherTrait,
+};
+use contracts::StarkPlayERC20::StarkPlayERC20;
+use openzeppelin_access::accesscontrol::interface::{
+    IAccessControlDispatcher, IAccessControlDispatcherTrait,
+};
+use openzeppelin_introspection::interface::{ISRC5Dispatcher, ISRC5DispatcherTrait};
+use openzeppelin_security::interface::{IPausableDispatcher, IPausableDispatcherTrait};
+use openzeppelin_token::erc20::interface::{
+    IERC20Dispatcher, IERC20DispatcherTrait, IERC20MetadataDispatcher,
+    IERC20MetadataDispatcherTrait,
+};
+use openzeppelin_utils::serde::SerializedAppend;
+use snforge_std::{CheatSpan, ContractClassTrait, DeclareResultTrait, cheat_caller_address, declare};
+use starknet::{ContractAddress, contract_address_const};
+
+fn ADMIN() -> ContractAddress {
+    contract_address_const::<0x01234>()
+}
+fn OWNER() -> ContractAddress {
+    contract_address_const::<0x01234>()
+}
+fn USER() -> ContractAddress {
+    contract_address_const::<0x0567>()
+}
+fn STRK_TOKEN_ADDRESS() -> ContractAddress {
+    contract_address_const::<0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d>()
+}
+
+
+fn deploy_token() -> ContractAddress {
+    let contract_class = declare("StarkPlayERC20").unwrap().contract_class();
+    let mut calldata = array![];
+    calldata.append_serde(ADMIN()); // recipient (unused)
+    calldata.append_serde(ADMIN()); // admin
+    let (contract_address, _) = contract_class.deploy(@calldata).unwrap();
+    contract_address
+}
+
+
+fn deploy_vault(starkplay_token: ContractAddress) -> ContractAddress {
+    let contract_class = declare("StarkPlayVault").unwrap().contract_class();
+    let mut calldata = array![];
+    calldata.append_serde(OWNER());
+    calldata.append_serde(starkplay_token);
+    calldata.append_serde(5_u64); // feePercentage
+    let (contract_address, _) = contract_class.deploy(@calldata).unwrap();
+    contract_address
+}
+
+#[test]
+fn test_initialization() {
+    let token_address = deploy_token();
+    let erc20_metadata = IERC20MetadataDispatcher { contract_address: token_address };
+    let access_control = IAccessControlDispatcher { contract_address: token_address };
+    let erc20 = IERC20Dispatcher { contract_address: token_address };
+    let pausable = IPausableDispatcher { contract_address: token_address };
+
+    assert(erc20_metadata.name() == "$tarkPlay", 'Incorrect token name');
+    assert(erc20_metadata.symbol() == "STARKP", 'Incorrect token symbol');
+    assert(erc20_metadata.decimals() == 18, 'Incorrect decimals');
+    assert(access_control.has_role(0, ADMIN()), 'Admin role not set');
+    // let src5 = ISRC5Dispatcher { contract_address: token_address };
+    // let access_control_interface_id: felt252 =
+    //     0x3f918d17e5ee77373b56385708f855659a07f75997f365cf8774862850866d;
+    // assert(src5.supports_interface(access_control_interface_id), 'Interface not registered');
+    assert(erc20.total_supply() == 0, 'Initial supply not zero');
+    assert(!pausable.is_paused(), 'Contract should not be paused');
+}
+
+
+#[test]
+fn test_default_admin_set() {
+    let token_address = deploy_token();
+    let access_control = IAccessControlDispatcher { contract_address: token_address };
+    assert(access_control.has_role(0, ADMIN()), 'Wrong admin address');
+}
+
+#[test]
+fn test_grant_minter_role() {
+    let token_address = deploy_token();
+    let vault_address = deploy_vault(token_address);
+    let mintable = IMintableDispatcher { contract_address: token_address };
+    let access_control = IAccessControlDispatcher { contract_address: token_address };
+
+    cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
+    mintable.grant_minter_role(vault_address);
+
+    assert(
+        access_control.has_role(selector!("MINTER_ROLE"), vault_address), 'Minter role not granted',
+    );
+    let authorized_minters = mintable.get_authorized_minters();
+    assert(authorized_minters.len() == 1, 'Incorrect minters count');
+    assert(*authorized_minters.at(0) == vault_address, 'Vault not in minters list');
+}
+
+
+#[test]
+fn test_revoke_minter_role() {
+    let token_address = deploy_token();
+    let vault_address = deploy_vault(token_address);
+    let mintable = IMintableDispatcher { contract_address: token_address };
+    let access_control = IAccessControlDispatcher { contract_address: token_address };
+
+    cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
+    mintable.grant_minter_role(vault_address);
+
+    cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
+    mintable.revoke_minter_role(vault_address);
+
+    assert(
+        !access_control.has_role(selector!("MINTER_ROLE"), vault_address),
+        'Minter role not revoked',
+    );
+    let authorized_minters = mintable.get_authorized_minters();
+    assert(authorized_minters.len() == 0, 'Minters list not empty');
+}
+
+#[test]
+fn test_mint_tokens_directly() {
+    let token_address = deploy_token();
+    let vault_address = deploy_vault(token_address);
+    let mintable = IMintableDispatcher { contract_address: token_address };
+    let erc20 = IERC20Dispatcher { contract_address: token_address };
+
+    cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
+    mintable.grant_minter_role(vault_address);
+    mintable.set_minter_allowance(vault_address, 1000);
+
+    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    mintable.mint(USER(), 1000);
+
+    assert(erc20.balance_of(USER()) == 1000, 'Incorrect balance after mint');
+    assert(erc20.total_supply() == 1000, 'Incorrect total supply');
+    assert(mintable.get_minter_allowance(vault_address) == 0, 'Allowance not reduced');
+}
+
+#[test]
+fn test_grant_burner_role() {
+    let token_address = deploy_token();
+    let vault_address = deploy_vault(token_address);
+    let burnable = IBurnableDispatcher { contract_address: token_address };
+    let access_control = IAccessControlDispatcher { contract_address: token_address };
+
+    cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
+    burnable.grant_burner_role(vault_address);
+
+    assert(
+        access_control.has_role(selector!("BURNER_ROLE"), vault_address),
+        'Burner role not
+        granted',
+    );
+    let authorized_burners = burnable.get_authorized_burners();
+    assert(authorized_burners.len() == 1, 'Incorrect burners count');
+    assert(*authorized_burners.at(0) == vault_address, 'Vault not in burners list');
+}
+
+#[test]
+fn test_revoke_burner_role() {
+    let token_address = deploy_token();
+    let vault_address = deploy_vault(token_address);
+    let burnable = IBurnableDispatcher { contract_address: token_address };
+    let access_control = IAccessControlDispatcher { contract_address: token_address };
+
+    cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
+    burnable.grant_burner_role(vault_address);
+
+    burnable.revoke_burner_role(vault_address);
+
+    assert(
+        !access_control.has_role(selector!("BURNER_ROLE"), vault_address),
+        'Burner role not revoked',
+    );
+    let authorized_burners = burnable.get_authorized_burners();
+    assert(authorized_burners.len() == 0, 'Burners list not empty');
+}
+
+
+#[test]
+fn test_burn_tokens() {
+    let token_address = deploy_token();
+    let vault_address = deploy_vault(token_address);
+    let mintable = IMintableDispatcher { contract_address: token_address };
+    let burnable = IBurnableDispatcher { contract_address: token_address };
+    let erc20 = IERC20Dispatcher { contract_address: token_address };
+
+    // Mint tokens
+    cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
+    mintable.grant_minter_role(vault_address);
+    mintable.set_minter_allowance(vault_address, 1000);
+    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    mintable.mint(USER(), 1000);
+
+    // Grant BURNER_ROLE
+    cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
+    burnable.grant_burner_role(vault_address);
+    burnable.set_burner_allowance(vault_address, 500);
+
+    // Burn tokens
+    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    burnable.burn_from(USER(), 500);
+
+    assert(erc20.balance_of(USER()) == 500, 'Incorrect balance after burn');
+    assert(erc20.total_supply() == 500, 'Incorrect total supply');
+    assert(burnable.get_burner_allowance(vault_address) == 0, 'Allowance not reduced');
+}
+
+#[should_panic(expected: 'Caller is missing role')]
+#[test]
+fn test_non_admin_cannot_grant_minter_role() {
+    let token_address = deploy_token();
+    let vault_address = deploy_vault(token_address);
+    let mintable = IMintableDispatcher { contract_address: token_address };
+
+    cheat_caller_address(token_address, USER(), CheatSpan::TargetCalls(1));
+    mintable.grant_minter_role(vault_address);
+}
+
+#[should_panic(expected: 'Caller is missing role')]
+#[test]
+fn test_non_admin_cannot_grant_burner_role() {
+    let token_address = deploy_token();
+    let vault_address = deploy_vault(token_address);
+    let burnable = IBurnableDispatcher { contract_address: token_address };
+
+    cheat_caller_address(token_address, USER(), CheatSpan::TargetCalls(1));
+    burnable.grant_burner_role(vault_address);
+}
+
+#[should_panic(expected: 'Insufficient minter allowance')]
+#[test]
+fn test_mint_exceeds_allowance() {
+    let token_address = deploy_token();
+    let vault_address = deploy_vault(token_address);
+    let mintable = IMintableDispatcher { contract_address: token_address };
+
+    cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
+    mintable.grant_minter_role(vault_address);
+    mintable.set_minter_allowance(vault_address, 500);
+
+    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    mintable.mint(USER(), 1000);
+}
+
+#[should_panic(expected: 'Caller is missing role')]
+#[test]
+fn test_non_minter_cannot_mint() {
+    let token_address = deploy_token();
+    let mintable = IMintableDispatcher { contract_address: token_address };
+
+    cheat_caller_address(token_address, USER(), CheatSpan::TargetCalls(1));
+    mintable.mint(USER(), 1000);
+}
+
+#[should_panic(expected: 'Insufficient burner allowance')]
+#[test]
+fn test_burn_exceeds_allowance() {
+    let token_address = deploy_token();
+    let vault_address = deploy_vault(token_address);
+    let mintable = IMintableDispatcher { contract_address: token_address };
+    let burnable = IBurnableDispatcher { contract_address: token_address };
+
+    // Mint tokens
+    cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
+    mintable.grant_minter_role(vault_address);
+    mintable.set_minter_allowance(vault_address, 1000);
+    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    mintable.mint(USER(), 1000);
+
+    // Grant BURNER_ROLE
+    cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
+    burnable.grant_burner_role(vault_address);
+    burnable.set_burner_allowance(vault_address, 500);
+
+    // Try to burn more
+    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    burnable.burn_from(USER(), 1000);
+}
+
+#[should_panic(expected: 'Caller is missing role')]
+#[test]
+fn test_non_burner_cannot_burn() {
+    let token_address = deploy_token();
+    let burnable = IBurnableDispatcher { contract_address: token_address };
+
+    cheat_caller_address(token_address, USER(), CheatSpan::TargetCalls(1));
+    burnable.burn(1000);
+}
+// // 16. Token Pause and Unpause
+// #[test]
+// fn test_token_pause_unpause() {
+//     let token_address = deploy_token();
+//     let pausable = IPausableDispatcher { contract_address: token_address };
+
+//     // Pause as admin
+//     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
+//     pausable.pause();
+//     assert(pausable.paused(), 'Token not paused');
+
+//     // Unpause as admin
+//     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
+//     pausable.unpause();
+//     assert(!pausable.paused(), 'Token not unpaused');
+// }
+
+// #[should_panic(expected: 'Pausable: paused')]
+// #[test]
+// fn test_mint_while_token_paused() {
+//     let token_address = deploy_token();
+//     let vault_address = deploy_vault(token_address);
+//     let mintable = IMintableDispatcher { contract_address: token_address };
+//     let pausable = IPausableDispatcher { contract_address: token_address };
+
+//     // Grant MINTER_ROLE
+//     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
+//     mintable.grant_minter_role(vault_address);
+//     mintable.set_minter_allowance(vault_address, 1000);
+
+//     // Pause token
+//     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
+//     pausable.pause();
+
+//     // Try to mint
+//     cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+//     mintable.mint(USER(), 1000);
+// }
