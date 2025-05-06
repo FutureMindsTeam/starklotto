@@ -7,6 +7,7 @@ pub const INITIAL_SUPPLY: u256 = 0; // initial supply
 const MINTER_ROLE: felt252 = selector!("MINTER_ROLE");
 const BURNER_ROLE: felt252 = selector!("BURNER_ROLE");
 const PAUSER_ROLE: felt252 = selector!("PAUSER_ROLE");
+const PRIZE_ASSIGNER_ROLE: felt252 = selector!("PRIZE_ASSIGNER_ROLE");
 
 #[starknet::interface]
 pub trait IMintable<TContractState> {
@@ -29,6 +30,14 @@ pub trait IBurnable<TContractState> {
     fn get_authorized_burners(self: @TContractState) -> Array<ContractAddress>;
 }
 
+#[starknet::interface]
+pub trait IPrizeToken<TContractState> {
+    fn assign_prize_tokens(ref self: TContractState, recipient: ContractAddress, amount: u256);
+    fn get_prize_balance(self: @TContractState, account: ContractAddress) -> u256;
+    fn grant_prize_assigner_role(ref self: TContractState, assigner: ContractAddress);
+    fn revoke_prize_assigner_role(ref self: TContractState, assigner: ContractAddress);
+}
+
 #[starknet::contract]
 pub mod StarkPlayERC20 {
     use openzeppelin_access::accesscontrol::AccessControlComponent;
@@ -41,7 +50,10 @@ pub mod StarkPlayERC20 {
     use openzeppelin_upgrades::interface::IUpgradeable;
     use starknet::storage::{Map, StoragePointerReadAccess, StoragePointerWriteAccess};
     use starknet::{ClassHash, ContractAddress, get_caller_address};
-    use super::{BURNER_ROLE, IBurnable, IMintable, MINTER_ROLE, PAUSER_ROLE};
+    use super::{
+        BURNER_ROLE, IBurnable, IMintable, IPrizeToken, MINTER_ROLE, PAUSER_ROLE,
+        PRIZE_ASSIGNER_ROLE,
+    };
 
     component!(path: ERC20Component, storage: erc20, event: ERC20Event);
     component!(path: AccessControlComponent, storage: accesscontrol, event: AccessControlEvent);
@@ -56,7 +68,6 @@ pub mod StarkPlayERC20 {
     #[abi(embed_v0)]
     impl AccessControlMixinImpl =
         AccessControlComponent::AccessControlMixinImpl<ContractState>;
-
 
     impl ERC20InternalImpl = ERC20Component::InternalImpl<ContractState>;
     impl PausableInternalImpl = PausableComponent::InternalImpl<ContractState>;
@@ -83,6 +94,10 @@ pub mod StarkPlayERC20 {
         burners_count: u256,
         minter_index: Map<ContractAddress, u256>,
         burner_index: Map<ContractAddress, u256>,
+        prize_balances: Map<ContractAddress, u256>,
+        prize_assigners: Map<u256, ContractAddress>,
+        prize_assigners_count: u256,
+        prize_assigner_index: Map<ContractAddress, u256>,
     }
 
     #[derive(Drop, starknet::Event)]
@@ -117,6 +132,14 @@ pub mod StarkPlayERC20 {
         pub allowance: u256,
     }
 
+    #[derive(Drop, starknet::Event)]
+    pub struct PrizeTokensAssigned {
+        #[key]
+        pub recipient: ContractAddress,
+        #[key]
+        pub amount: u256,
+    }
+
     #[event]
     #[derive(Drop, starknet::Event)]
     pub enum Event {
@@ -134,6 +157,7 @@ pub mod StarkPlayERC20 {
         Mint: Mint,
         MinterAllowanceSet: MinterAllowanceSet,
         BurnerAllowanceSet: BurnerAllowanceSet,
+        PrizeTokensAssigned: PrizeTokensAssigned,
     }
 
     #[constructor]
@@ -210,12 +234,17 @@ pub mod StarkPlayERC20 {
     impl BurnableImpl of IBurnable<ContractState> {
         fn burn(ref self: ContractState, amount: u256) {
             self.pausable.assert_not_paused();
-
             let burner = get_caller_address();
             self.accesscontrol.assert_only_role(BURNER_ROLE);
             let allowance = self.burner_allowance.read(burner);
             assert(allowance >= amount, 'Insufficient burner allowance');
             self.burner_allowance.write(burner, allowance - amount);
+            let prize_balance = self.prize_balances.read(burner);
+            if prize_balance >= amount {
+                self.prize_balances.write(burner, prize_balance - amount);
+            } else {
+                self.prize_balances.write(burner, 0);
+            }
             self.erc20.burn(burner, amount);
             self.emit(Burn { burner, amount });
         }
@@ -226,6 +255,12 @@ pub mod StarkPlayERC20 {
             let allowance = self.burner_allowance.read(caller);
             assert(allowance >= amount, 'Insufficient burner allowance');
             self.burner_allowance.write(caller, allowance - amount);
+            let prize_balance = self.prize_balances.read(account);
+            if prize_balance >= amount {
+                self.prize_balances.write(account, prize_balance - amount);
+            } else {
+                self.prize_balances.write(account, 0);
+            }
             self.erc20.burn(account, amount);
             self.emit(Burn { burner: account, amount });
         }
@@ -274,6 +309,47 @@ pub mod StarkPlayERC20 {
                 i += 1;
             };
             burners
+        }
+    }
+
+    #[abi(embed_v0)]
+    impl PrizeTokenImpl of IPrizeToken<ContractState> {
+        fn assign_prize_tokens(ref self: ContractState, recipient: ContractAddress, amount: u256) {
+            self.pausable.assert_not_paused();
+            self.accesscontrol.assert_only_role(PRIZE_ASSIGNER_ROLE);
+            let current_prize_balance = self.prize_balances.read(recipient);
+            self.prize_balances.write(recipient, current_prize_balance + amount);
+            self.erc20.mint(recipient, amount);
+            self.emit(PrizeTokensAssigned { recipient, amount });
+        }
+
+        fn get_prize_balance(self: @ContractState, account: ContractAddress) -> u256 {
+            self.prize_balances.read(account)
+        }
+
+        fn grant_prize_assigner_role(ref self: ContractState, assigner: ContractAddress) {
+            self.accesscontrol.assert_only_role(DEFAULT_ADMIN_ROLE);
+            assert(is_contract(assigner), 'Assigner must be a contract');
+            self.accesscontrol._grant_role(PRIZE_ASSIGNER_ROLE, assigner);
+            let index = self.prize_assigners_count.read();
+            self.prize_assigners.write(index, assigner);
+            self.prize_assigner_index.write(assigner, index);
+            self.prize_assigners_count.write(index + 1);
+        }
+
+        fn revoke_prize_assigner_role(ref self: ContractState, assigner: ContractAddress) {
+            self.accesscontrol.assert_only_role(DEFAULT_ADMIN_ROLE);
+            self.accesscontrol._revoke_role(PRIZE_ASSIGNER_ROLE, assigner);
+            let index = self.prize_assigner_index.read(assigner);
+            let last_index = self.prize_assigners_count.read() - 1;
+            if index != last_index {
+                let last_assigner = self.prize_assigners.read(last_index);
+                self.prize_assigners.write(index, last_assigner);
+                self.prize_assigner_index.write(last_assigner, index);
+            }
+            self.prize_assigners.write(last_index, zero_address_const());
+            self.prize_assigner_index.write(assigner, 0);
+            self.prize_assigners_count.write(last_index);
         }
     }
 
