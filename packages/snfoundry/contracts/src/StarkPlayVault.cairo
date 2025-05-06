@@ -4,7 +4,8 @@ mod StarkPlayVault {
     //imports
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     use crate::StarkPlayERC20::{
-        IBurnable, IMintable, IMintableDispatcher, IMintableDispatcherTrait,
+        IBurnableDispatcher, IBurnableDispatcherTrait, IMintable, IMintableDispatcher,
+        IMintableDispatcherTrait, IPrizeTokenDispatcher, IPrizeTokenDispatcherTrait,
     };
     use openzeppelin_access::ownable::OwnableComponent;
     use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
@@ -142,6 +143,14 @@ mod StarkPlayVault {
         amount: u256,
     }
 
+    #[derive(Drop, starknet::Event)]
+    struct ConvertedToSTRK {
+        #[key]
+        user: ContractAddress,
+        #[key]
+        amount: u256,
+    }
+
     #[event]
     #[derive(Drop, starknet::Event)]
     enum Event {
@@ -155,6 +164,7 @@ mod StarkPlayVault {
         Unpaused: Unpaused,
         StarkPlayBurnedByOwner: StarkPlayBurnedByOwner,
         FeeCollected: FeeCollected,
+        ConvertedToSTRK: ConvertedToSTRK,
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -277,6 +287,24 @@ mod StarkPlayVault {
         self.reentrant_locked.write(false);
 
         return success;
+    }
+
+    fn convert_to_strk(ref self: ContractState, amount: u256) {
+        _assert_not_paused(@self);
+        let user = get_caller_address();
+        let starkPlayContractAddress = self.starkPlayToken.read();
+        let prizeDispatcher = IPrizeTokenDispatcher { contract_address: starkPlayContractAddress };
+        let prize_balance = prizeDispatcher.get_prize_balance(user);
+        assert(prize_balance >= amount, 'Insufficient prize tokens');
+        let mut burnDispatcher = IBurnableDispatcher { contract_address: starkPlayContractAddress };
+        burnDispatcher.burn_from(user, amount);
+        self.totalStarkPlayBurned.write(self.totalStarkPlayBurned.read() + amount);
+        self.emit(StarkPlayBurned { user, amount });
+        let strk_contract_address = contract_address_const::<TOKEN_STRK_ADDRESS>();
+        let strk_dispatcher = IERC20Dispatcher { contract_address: strk_contract_address };
+        strk_dispatcher.transfer(user, amount);
+        self.totalSTRKStored.write(self.totalSTRKStored.read() - amount);
+        self.emit(ConvertedToSTRK { user, amount });
     }
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //private functions
