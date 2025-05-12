@@ -2420,7 +2420,7 @@ __metadata:
     react-hook-form: ^7.54.2
     react-hot-toast: ^2.4.1
     starknet: 6.12.1
-    tailwind-merge: ^3.0.2
+    tailwind-merge: ^3.3.0
     tailwindcss: ^3.3.0
     type-fest: ^4.6.0
     typescript: ^5
@@ -9974,10 +9974,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "tailwind-merge@npm:3.0.2"
-  checksum: fdcf4d9e65c8767077b93de4f6296125d9a761fce1ef85715e7cadbf467973a6b1c5fd95ca3a0416013b24ecfba61d0340f201d7becd1fc1f2f771e007bd5bd3
+"tailwind-merge@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "tailwind-merge@npm:3.3.0"
+  checksum: 9c8957753c09c5e79d490fc9d142a4d9ba1192410633d864867f5640cf5d45d06d31ea14ffcf83763a584b3202a131a2d1f1d62c47f205f598b71d8ec5071767
   languageName: node
   linkType: hard
 
