@@ -70,13 +70,13 @@ export const useDataTransaction = (blockNumber: number) => {
         for (const txHash of txHashes) {
           const receipt: any = await publicClient.getTransactionReceipt(txHash);
           if (receipt?.actual_fee) {
-            totalFeeFri  += BigInt(receipt.actual_fee.amount);
+            totalFeeFri += BigInt(receipt.actual_fee.amount);
           }
         }
 
         const totalFee = Number(totalFeeFri) / 1e18;
 
-        const starkPriceInUSD  = await fetchPrice();
+        const starkPriceInUSD = await fetchPrice();
 
         const averageFeeUSD = (totalFee * starkPriceInUSD) / txHashes.length;
 

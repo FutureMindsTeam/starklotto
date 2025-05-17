@@ -7,8 +7,6 @@ import { useProvider } from "@starknet-react/core";
 import { RpcProvider } from "starknet";
 import { ContractClassHashCache } from "../ContractClassHashCache";
 import { ContractCodeStatus } from "~~/utils/scaffold-stark/contract";
-	   
-																			
 
 // Mock the dependencies
 vi.mock("../useTargetNetwork", () => ({
@@ -18,12 +16,6 @@ vi.mock("../useTargetNetwork", () => ({
 vi.mock("usehooks-ts", () => ({
   useIsMounted: vi.fn(),
 }));
-
-							
-												  
-									   
-	  
-	
 
 vi.mock("@starknet-react/core");
 
@@ -561,13 +553,6 @@ describe("useDeployedContractInfo", () => {
   const mockIsMounted = vi.fn();
   const mockPublicClient = {
     getClassHashAt: vi.fn(),
-							 
-				
-				 
-										   
-		  
-		
-	  
   };
 
   beforeEach(() => {
@@ -579,8 +564,6 @@ describe("useDeployedContractInfo", () => {
     (useProvider as Mock).mockReturnValue({ provider: mockPublicClient });
 
     ContractClassHashCache.getInstance().clear();
-		 
-	   
   });
 
   it("should initially set the status to LOADING", () => {
@@ -618,14 +601,9 @@ describe("useDeployedContractInfo", () => {
       useDeployedContractInfo("YourContract"),
     );
 
-								  
-					 
     await waitFor(() => {
       expect(result.current.status).toBe(ContractCodeStatus.DEPLOYED);
       expect(result.current.data).toBeDefined();
-														 
-		  
-		 
     });
 
     expect(mockPublicClient.getClassHashAt).toHaveBeenCalledTimes(1);
@@ -640,11 +618,10 @@ describe("useDeployedContractInfo", () => {
     );
 
     // Wait for the hook to update
-					 
+
     await waitFor(() => {
       expect(result.current.isLoading).toBe(true);
       expect(result.current.data).toBeUndefined(); // Should not update the data
-		 
     });
   });
 });

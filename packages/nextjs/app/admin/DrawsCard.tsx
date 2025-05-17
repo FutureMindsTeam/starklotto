@@ -1,4 +1,3 @@
-
 import { Trophy, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "~~/components/ui/card";
 import { Button } from "~~/components/ui/button";
@@ -16,7 +15,6 @@ export default function DrawsCard() {
 
         <Link href="/admin/draws">
           <Button className="bg-purple-600 hover:bg-purple-700 text-sm py-2 rounded-md text-white flex items-center space-x-2">
-            
             <span>Go to Draws</span>
             <span className="ml-1">→</span>
             {/* <ArrowRight className="h-4 w-4" /> */}

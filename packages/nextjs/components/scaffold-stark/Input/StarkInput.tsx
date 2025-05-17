@@ -22,9 +22,7 @@ function starkValueToDisplayValue(
       // We need to round the value rather than use toFixed,
       // since otherwise a user would not be able to modify the decimal value
       return (
-				   
         Math.round(parsedStrkValue * currencyPrice * 10 ** MAX_DECIMALS_USD) /
-		   
         10 ** MAX_DECIMALS_USD
       ).toString();
     }
@@ -67,9 +65,9 @@ export const StarkInput = ({
 }: CommonInputProps & { usdMode?: boolean }) => {
   const [transitoryDisplayValue, setTransitoryDisplayValue] =
     useState<string>();
-											 
+
   const currencyPrice = useGlobalState((state) => state.nativeCurrencyPrice);
-	
+
   const [internalUsdMode, setInternalUSDMode] = useState(
     currencyPrice > 0 ? Boolean(usdMode) : false,
   );

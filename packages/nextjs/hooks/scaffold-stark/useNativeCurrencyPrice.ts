@@ -6,7 +6,7 @@ export const useNativeCurrencyPrice = () => {
   const setNativeCurrencyPrice = useGlobalState(
     (state) => state.setNativeCurrencyPrice,
   );
- 
+
   const ref = useRef<string>(priceService.getNextId().toString());
   useEffect(() => {
     const id = ref.current;

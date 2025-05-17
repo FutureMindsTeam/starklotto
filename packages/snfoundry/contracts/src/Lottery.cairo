@@ -79,16 +79,17 @@ trait ILottery<TContractState> {
 //=======================================================================================
 #[starknet::contract]
 mod Lottery {
-    use core::array::Array;
-    use core::array::ArrayTrait;
+    use core::array::{Array, ArrayTrait};
     use core::dict::{Felt252Dict, Felt252DictTrait};
     use openzeppelin_access::ownable::OwnableComponent;
     use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
     use starknet::storage::{
         Map, StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess,
     };
-    use starknet::{ContractAddress, contract_address_const};
-    use starknet::{get_block_timestamp, get_caller_address, get_contract_address};
+    use starknet::{
+        ContractAddress, contract_address_const, get_block_timestamp, get_caller_address,
+        get_contract_address,
+    };
     use super::{Draw, ILottery, Ticket};
 
     // ownable component by openzeppelin
@@ -102,10 +103,10 @@ mod Lottery {
     // TODO: Update the address of the token contract once the token is deployed
     const STRK_PLAY_CONTRACT_ADDRESS: felt252 =
         0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d;
-    
+
     const STRK_PLAY_VAULT_CONTRACT_ADDRESS: felt252 =
         0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d;
-         
+
     //=======================================================================================
     //events
     //=======================================================================================
@@ -210,20 +211,28 @@ mod Lottery {
 
             // Process the payment
             let strk_play_token_dispatcher = IERC20Dispatcher {
-                contract_address: contract_address_const::<STRK_PLAY_CONTRACT_ADDRESS>()
+                contract_address: contract_address_const::<STRK_PLAY_CONTRACT_ADDRESS>(),
             };
 
             let buyer = get_caller_address();
-            let strk_play_token_vault_address: ContractAddress = contract_address_const::<STRK_PLAY_VAULT_CONTRACT_ADDRESS>();
+            let strk_play_token_vault_address: ContractAddress = contract_address_const::<
+                STRK_PLAY_VAULT_CONTRACT_ADDRESS,
+            >();
             let payment_amount = self.ticketPrice.read();
 
-            assert(strk_play_token_dispatcher.balance_of(buyer) >= payment_amount,
-            'Insufficient funds');
+            assert(
+                strk_play_token_dispatcher.balance_of(buyer) >= payment_amount,
+                'Insufficient funds',
+            );
 
-            assert(strk_play_token_dispatcher.allowance(buyer, strk_play_token_vault_address) >= payment_amount,
-            'Insufficient allowance');
+            assert(
+                strk_play_token_dispatcher
+                    .allowance(buyer, strk_play_token_vault_address) >= payment_amount,
+                'Insufficient allowance',
+            );
 
-            let transfer = strk_play_token_dispatcher.transfer_from(buyer, strk_play_token_vault_address, payment_amount);
+            let transfer = strk_play_token_dispatcher
+                .transfer_from(buyer, strk_play_token_vault_address, payment_amount);
 
             assert(transfer, 'Payment failed');
 
@@ -447,7 +456,7 @@ mod Lottery {
                 let ticketId = self.userTicketIds.entry((player, drawId, i)).read();
                 userTickets.append(ticketId);
                 i += 1;
-            };
+            }
 
             userTickets
         }
@@ -526,7 +535,7 @@ mod Lottery {
 
                 usedNumbers.insert(number.into(), true);
                 i += 1;
-            };
+            }
 
             valid
         }
@@ -562,7 +571,7 @@ mod Lottery {
                 usedNumbers.insert(number.into(), true);
                 count += 1;
             }
-        };
+        }
 
         numbers
     }

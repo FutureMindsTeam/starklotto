@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Address as AddressType } from "@starknet-react/chains";
-import { getChecksumAddress, StarkProfile  } from "starknet";
+import { getChecksumAddress, StarkProfile } from "starknet";
 import { devnet } from "@starknet-react/chains";
 import {
   CheckCircleIcon,
@@ -50,7 +50,7 @@ export const Address = ({
   const [addressCopied, setAddressCopied] = useState(false);
 
   const { targetNetwork } = useTargetNetwork();
-  
+
   const checkSumAddress = useMemo(() => {
     if (!address) return undefined;
 
@@ -122,7 +122,7 @@ export const Address = ({
   return (
     <div className="flex items-center">
       <div className="flex-shrink-0">
-      {getStarknetPFPIfExists(profile?.profilePicture) ? (
+        {getStarknetPFPIfExists(profile?.profilePicture) ? (
           <NextImage
             src={profile?.profilePicture || ""}
             alt="Profile Picture"

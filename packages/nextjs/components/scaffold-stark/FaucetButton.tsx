@@ -5,7 +5,7 @@ import { BanknotesIcon } from "@heroicons/react/24/outline";
 import { mintStrk } from "~~/services/web3/faucet";
 import { Address, devnet } from "@starknet-react/chains";
 import { useTargetNetwork } from "~~/hooks/scaffold-stark/useTargetNetwork";
-import useScaffoldStrkBalance  from "~~/hooks/scaffold-stark/useScaffoldStrkBalance";
+import useScaffoldStrkBalance from "~~/hooks/scaffold-stark/useScaffoldStrkBalance";
 import { useAccount } from "~~/hooks/useAccount";
 
 // Number of STRK  faucet sends to an address

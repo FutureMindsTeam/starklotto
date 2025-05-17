@@ -10,7 +10,7 @@ import {
   StarkInput,
 } from "~~/components/scaffold-stark";
 import { useNetwork, useProvider } from "@starknet-react/core";
-import { mintStrk  } from "~~/services/web3/faucet";
+import { mintStrk } from "~~/services/web3/faucet";
 import { notification } from "~~/utils/scaffold-stark";
 import GenericModal from "./CustomConnectButton/GenericModal";
 
@@ -18,7 +18,6 @@ import GenericModal from "./CustomConnectButton/GenericModal";
  * Faucet modal which lets you send STRK  to any address.
  */
 export const Faucet = () => {
-  
   const [loading, setLoading] = useState(false);
   const [inputAddress, setInputAddress] = useState<AddressType>();
   const [faucetAddress] = useState<AddressType>(
@@ -69,7 +68,7 @@ export const Faucet = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const sendSTRK  = async () => {
+  const sendSTRK = async () => {
     if (!faucetAddress || !inputAddress) {
       return;
     }

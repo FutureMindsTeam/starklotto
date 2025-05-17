@@ -95,8 +95,6 @@ describe("useDataTransaction", () => {
 
     // Mock fetchPrice to return STARK price directly
     (PriceService.fetchPrice as Mock).mockResolvedValue(2000);
-																   
-	   
 
     // Configure RpcProvider mocks
     mockGetBlock.mockImplementation((identifier: number) => {

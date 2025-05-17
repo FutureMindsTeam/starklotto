@@ -40,17 +40,17 @@ pub trait IPrizeToken<TContractState> {
 
 #[starknet::contract]
 pub mod StarkPlayERC20 {
-    use openzeppelin_access::accesscontrol::AccessControlComponent;
-    use openzeppelin_access::accesscontrol::DEFAULT_ADMIN_ROLE;
+    use openzeppelin_access::accesscontrol::{AccessControlComponent, DEFAULT_ADMIN_ROLE};
     use openzeppelin_introspection::interface::{ISRC5Dispatcher, ISRC5DispatcherTrait};
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_security::PausableComponent;
     use openzeppelin_token::erc20::{ERC20Component, ERC20HooksEmptyImpl};
     use openzeppelin_upgrades::UpgradeableComponent;
     use openzeppelin_upgrades::interface::IUpgradeable;
-    use starknet::storage::{Map, StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry,
-        StorageMapReadAccess, StorageMapWriteAccess};
-
+    use starknet::storage::{
+        Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePathEntry,
+        StoragePointerReadAccess, StoragePointerWriteAccess,
+    };
     use starknet::{ClassHash, ContractAddress, get_caller_address};
     use super::{
         BURNER_ROLE, IBurnable, IMintable, IPrizeToken, MINTER_ROLE, PAUSER_ROLE,
@@ -227,7 +227,7 @@ pub mod StarkPlayERC20 {
             while i < count {
                 minters.append(self.minters.entry(i).read());
                 i += 1;
-            };
+            }
             minters
         }
     }
@@ -269,7 +269,7 @@ pub mod StarkPlayERC20 {
 
         fn grant_burner_role(ref self: ContractState, burner: ContractAddress) {
             self.accesscontrol.assert_only_role(DEFAULT_ADMIN_ROLE);
-          // assert(is_contract(burner), 'Burner must be a contract');
+            // assert(is_contract(burner), 'Burner must be a contract');
             self.accesscontrol._grant_role(BURNER_ROLE, burner);
             let index = self.burners_count.read();
             self.burners.entry(index).write(burner);
@@ -309,7 +309,7 @@ pub mod StarkPlayERC20 {
             while i < count {
                 burners.append(self.burners.read(i));
                 i += 1;
-            };
+            }
             burners
         }
     }

@@ -54,7 +54,6 @@ export const AddressInfoDropdown = ({
     dropdownRef.current?.removeAttribute("open");
   };
 
-  
   useOutsideClick(dropdownRef, closeDropdown);
 
   function handleConnectBurner(

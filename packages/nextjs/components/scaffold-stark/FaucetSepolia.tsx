@@ -13,7 +13,6 @@ import { useTheme } from "next-themes";
  * Faucet modal which displays external websites that lets you send small amounts of L2 Sepolia STRK to an account address on Starknet Sepolia..
  */
 export const FaucetSepolia = () => {
-														
   const { chain: ConnectedChain } = useNetwork();
 
   const sepoliaFaucets = [
@@ -88,9 +87,6 @@ export const FaucetSepolia = () => {
       </label>
       <input type="checkbox" id="faucet-modal" className="modal-toggle" />
       <GenericModal modalId="faucet-modal">
-							
-											 
-	   
         <>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-bold mb-3">Sepolia Faucets</h3>

@@ -1,7 +1,7 @@
 use contracts::StarkPlayERC20::{
     IBurnableDispatcher, IBurnableDispatcherTrait, IMintableDispatcher, IMintableDispatcherTrait,
+    StarkPlayERC20,
 };
-use contracts::StarkPlayERC20::StarkPlayERC20;
 use openzeppelin_access::accesscontrol::interface::{
     IAccessControlDispatcher, IAccessControlDispatcherTrait,
 };
@@ -325,3 +325,4 @@ fn test_non_burner_cannot_burn() {
 //     cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
 //     mintable.mint(USER(), 1000);
 // }
+

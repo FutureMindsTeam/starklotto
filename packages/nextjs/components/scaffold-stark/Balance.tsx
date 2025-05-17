@@ -25,7 +25,7 @@ export const Balance = ({ address, className = "", usdMode }: BalanceProps) => {
     address,
   });
   const [displayUsdMode, setDisplayUsdMode] = useState(
-    strkPrice  > 0 ? Boolean(usdMode) : false,
+    strkPrice > 0 ? Boolean(usdMode) : false,
   );
 
   const toggleBalanceMode = () => {
@@ -55,8 +55,8 @@ export const Balance = ({ address, className = "", usdMode }: BalanceProps) => {
     );
   }
 
- // Calculate the balance in USD
- const strkBalanceInUsd = parseFloat(strkFormatted) * strkPrice;
+  // Calculate the balance in USD
+  const strkBalanceInUsd = parseFloat(strkFormatted) * strkPrice;
 
   return (
     <>
@@ -76,8 +76,7 @@ export const Balance = ({ address, className = "", usdMode }: BalanceProps) => {
               </span>
             </div>
           ) : (
-         
-              <div className="flex">
+            <div className="flex">
               <span>{parseFloat(strkFormatted).toFixed(4)}</span>
               <span className="text-[0.8em] font-bold ml-1">{strkSymbol}</span>
             </div>
