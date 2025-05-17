@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [lts/*]
+        node: [18]
 
     steps:
       - name: Checkout
@@ -64,8 +64,16 @@ jobs:
           cache: "yarn"
           #cache-dependency-path: packages/nextjs/yarn.lock
 
+      - name: Clear Yarn Cache
+        run: yarn cache clean --all
+
       - name: Install dependencies (Next.js)
-        run: yarn install --immutable
+        run: |
+          for i in {1..3}; do
+            yarn install --immutable --force && break
+            echo "Retrying yarn install (attempt $i of 3)..."
+            sleep 10
+          done
         working-directory: ./packages/nextjs
 
       - name: Install root dependencies
@@ -87,5 +95,7 @@ jobs:
         working-directory: ./packages/nextjs
 
       - name: Build Next.js project
-        run: yarn build
+        run: |
+          set -x
+          yarn build
         working-directory: ./packages/nextjs
