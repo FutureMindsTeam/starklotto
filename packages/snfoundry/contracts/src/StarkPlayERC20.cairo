@@ -48,7 +48,9 @@ pub mod StarkPlayERC20 {
     use openzeppelin_token::erc20::{ERC20Component, ERC20HooksEmptyImpl};
     use openzeppelin_upgrades::UpgradeableComponent;
     use openzeppelin_upgrades::interface::IUpgradeable;
-    use starknet::storage::{Map, StoragePointerReadAccess, StoragePointerWriteAccess};
+    use starknet::storage::{Map, StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry,
+        StorageMapReadAccess, StorageMapWriteAccess};
+
     use starknet::{ClassHash, ContractAddress, get_caller_address};
     use super::{
         BURNER_ROLE, IBurnable, IMintable, IPrizeToken, MINTER_ROLE, PAUSER_ROLE,
@@ -176,9 +178,9 @@ pub mod StarkPlayERC20 {
             self.pausable.assert_not_paused();
             let caller = get_caller_address();
             self.accesscontrol.assert_only_role(MINTER_ROLE);
-            let allowance = self.minter_allowance.read(caller);
+            let allowance = self.minter_allowance.entry(caller).read();
             assert(allowance >= amount, 'Insufficient minter allowance');
-            self.minter_allowance.write(caller, allowance - amount);
+            self.minter_allowance.entry(caller).write(allowance - amount);
             self.erc20.mint(recipient, amount);
             self.emit(Mint { recipient, amount });
         }
@@ -188,8 +190,8 @@ pub mod StarkPlayERC20 {
             //assert(is_contract(minter), 'Minter must be a contract');
             self.accesscontrol._grant_role(MINTER_ROLE, minter);
             let index = self.minters_count.read();
-            self.minters.write(index, minter);
-            self.minter_index.write(minter, index);
+            self.minters.entry(index).write(minter);
+            self.minter_index.entry(minter).write(index);
             self.minters_count.write(index + 1);
         }
 
@@ -199,23 +201,23 @@ pub mod StarkPlayERC20 {
             let index = self.minter_index.read(minter);
             let last_index = self.minters_count.read() - 1;
             if index != last_index {
-                let last_minter = self.minters.read(last_index);
-                self.minters.write(index, last_minter);
-                self.minter_index.write(last_minter, index);
+                let last_minter = self.minters.entry(last_index).read();
+                self.minters.entry(index).write(last_minter);
+                self.minter_index.entry(last_minter).write(index);
             }
-            self.minters.write(last_index, zero_address_const());
+            self.minters.entry(last_index).write(zero_address_const());
             self.minter_index.write(minter, 0);
             self.minters_count.write(last_index);
         }
 
         fn set_minter_allowance(ref self: ContractState, minter: ContractAddress, allowance: u256) {
             self.accesscontrol.assert_only_role(DEFAULT_ADMIN_ROLE);
-            self.minter_allowance.write(minter, allowance);
+            self.minter_allowance.entry(minter).write(allowance);
             self.emit(MinterAllowanceSet { minter, allowance });
         }
 
         fn get_minter_allowance(self: @ContractState, minter: ContractAddress) -> u256 {
-            self.minter_allowance.read(minter)
+            self.minter_allowance.entry(minter).read()
         }
 
         fn get_authorized_minters(self: @ContractState) -> Array<ContractAddress> {
@@ -223,7 +225,7 @@ pub mod StarkPlayERC20 {
             let count = self.minters_count.read();
             let mut i = 0;
             while i < count {
-                minters.append(self.minters.read(i));
+                minters.append(self.minters.entry(i).read());
                 i += 1;
             };
             minters
@@ -236,14 +238,14 @@ pub mod StarkPlayERC20 {
             self.pausable.assert_not_paused();
             let burner = get_caller_address();
             self.accesscontrol.assert_only_role(BURNER_ROLE);
-            let allowance = self.burner_allowance.read(burner);
+            let allowance = self.burner_allowance.entry(burner).read();
             assert(allowance >= amount, 'Insufficient burner allowance');
-            self.burner_allowance.write(burner, allowance - amount);
-            let prize_balance = self.prize_balances.read(burner);
+            self.burner_allowance.entry(burner).write(allowance - amount);
+            let prize_balance = self.prize_balances.entry(burner).read();
             if prize_balance >= amount {
-                self.prize_balances.write(burner, prize_balance - amount);
+                self.prize_balances.entry(burner).write(prize_balance - amount);
             } else {
-                self.prize_balances.write(burner, 0);
+                self.prize_balances.entry(burner).write(0);
             }
             self.erc20.burn(burner, amount);
             self.emit(Burn { burner, amount });
@@ -252,14 +254,14 @@ pub mod StarkPlayERC20 {
         fn burn_from(ref self: ContractState, account: ContractAddress, amount: u256) {
             let caller = get_caller_address();
             self.accesscontrol.assert_only_role(BURNER_ROLE);
-            let allowance = self.burner_allowance.read(caller);
+            let allowance = self.burner_allowance.entry(caller).read();
             assert(allowance >= amount, 'Insufficient burner allowance');
-            self.burner_allowance.write(caller, allowance - amount);
-            let prize_balance = self.prize_balances.read(account);
+            self.burner_allowance.entry(caller).write(allowance - amount);
+            let prize_balance = self.prize_balances.entry(account).read();
             if prize_balance >= amount {
-                self.prize_balances.write(account, prize_balance - amount);
+                self.prize_balances.entry(account).write(prize_balance - amount);
             } else {
-                self.prize_balances.write(account, 0);
+                self.prize_balances.entry(account).write(0);
             }
             self.erc20.burn(account, amount);
             self.emit(Burn { burner: account, amount });
@@ -270,8 +272,8 @@ pub mod StarkPlayERC20 {
           // assert(is_contract(burner), 'Burner must be a contract');
             self.accesscontrol._grant_role(BURNER_ROLE, burner);
             let index = self.burners_count.read();
-            self.burners.write(index, burner);
-            self.burner_index.write(burner, index);
+            self.burners.entry(index).write(burner);
+            self.burner_index.entry(burner).write(index);
             self.burners_count.write(index + 1);
         }
 
@@ -281,23 +283,23 @@ pub mod StarkPlayERC20 {
             let index = self.burner_index.read(burner);
             let last_index = self.burners_count.read() - 1;
             if index != last_index {
-                let last_burner = self.burners.read(last_index);
-                self.burners.write(index, last_burner);
-                self.burner_index.write(last_burner, index);
+                let last_burner = self.burners.entry(last_index).read();
+                self.burners.entry(index).write(last_burner);
+                self.burner_index.entry(last_burner).write(index);
             }
-            self.burners.write(last_index, zero_address_const());
+            self.burners.entry(last_index).write(zero_address_const());
             self.burner_index.write(burner, 0);
             self.burners_count.write(last_index);
         }
 
         fn set_burner_allowance(ref self: ContractState, burner: ContractAddress, allowance: u256) {
             self.accesscontrol.assert_only_role(DEFAULT_ADMIN_ROLE);
-            self.burner_allowance.write(burner, allowance);
+            self.burner_allowance.entry(burner).write(allowance);
             self.emit(BurnerAllowanceSet { burner, allowance });
         }
 
         fn get_burner_allowance(self: @ContractState, burner: ContractAddress) -> u256 {
-            self.burner_allowance.read(burner)
+            self.burner_allowance.entry(burner).read()
         }
 
         fn get_authorized_burners(self: @ContractState) -> Array<ContractAddress> {
@@ -317,14 +319,14 @@ pub mod StarkPlayERC20 {
         fn assign_prize_tokens(ref self: ContractState, recipient: ContractAddress, amount: u256) {
             self.pausable.assert_not_paused();
             self.accesscontrol.assert_only_role(PRIZE_ASSIGNER_ROLE);
-            let current_prize_balance = self.prize_balances.read(recipient);
-            self.prize_balances.write(recipient, current_prize_balance + amount);
+            let current_prize_balance = self.prize_balances.entry(recipient).read();
+            self.prize_balances.entry(recipient).write(current_prize_balance + amount);
             self.erc20.mint(recipient, amount);
             self.emit(PrizeTokensAssigned { recipient, amount });
         }
 
         fn get_prize_balance(self: @ContractState, account: ContractAddress) -> u256 {
-            self.prize_balances.read(account)
+            self.prize_balances.entry(account).read()
         }
 
         fn grant_prize_assigner_role(ref self: ContractState, assigner: ContractAddress) {
@@ -332,8 +334,8 @@ pub mod StarkPlayERC20 {
             assert(is_contract(assigner), 'Assigner must be a contract');
             self.accesscontrol._grant_role(PRIZE_ASSIGNER_ROLE, assigner);
             let index = self.prize_assigners_count.read();
-            self.prize_assigners.write(index, assigner);
-            self.prize_assigner_index.write(assigner, index);
+            self.prize_assigners.entry(index).write(assigner);
+            self.prize_assigner_index.entry(assigner).write(index);
             self.prize_assigners_count.write(index + 1);
         }
 
@@ -343,12 +345,12 @@ pub mod StarkPlayERC20 {
             let index = self.prize_assigner_index.read(assigner);
             let last_index = self.prize_assigners_count.read() - 1;
             if index != last_index {
-                let last_assigner = self.prize_assigners.read(last_index);
-                self.prize_assigners.write(index, last_assigner);
-                self.prize_assigner_index.write(last_assigner, index);
+                let last_assigner = self.prize_assigners.entry(last_index).read();
+                self.prize_assigners.entry(index).write(last_assigner);
+                self.prize_assigner_index.entry(last_assigner).write(index);
             }
-            self.prize_assigners.write(last_index, zero_address_const());
-            self.prize_assigner_index.write(assigner, 0);
+            self.prize_assigners.entry(last_index).write(zero_address_const());
+            self.prize_assigner_index.entry(assigner).write(0);
             self.prize_assigners_count.write(last_index);
         }
     }

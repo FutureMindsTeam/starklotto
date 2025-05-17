@@ -81,7 +81,7 @@ trait ILottery<TContractState> {
 mod Lottery {
     use core::array::Array;
     use core::array::ArrayTrait;
-    use core::dict::Felt252DictTrait;
+    use core::dict::{Felt252Dict, Felt252DictTrait};
     use openzeppelin_access::ownable::OwnableComponent;
     use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
     use starknet::storage::{
@@ -204,7 +204,7 @@ mod Lottery {
         //OK
         fn BuyTicket(ref self: ContractState, drawId: u64, numbers: Array<u16>) {
             assert(self.ValidateNumbers(@numbers), 'Invalid numbers');
-            let draw = self.draws.read(drawId);
+            let draw = self.draws.entry(drawId).read();
             assert(draw.isActive, 'Draw is not active');
             let current_timestamp = get_block_timestamp();
 
@@ -253,15 +253,15 @@ mod Lottery {
             };
 
             let ticketId = GenerateTicketId(ref self);
-            self.tickets.write((drawId, ticketId), ticketNew);
+            self.tickets.entry((drawId, ticketId)).write(ticketNew);
 
             //Incrementar contador y guardar ticketId
 
             let caller = get_caller_address();
-            let mut count = self.userTicketCount.read((caller, drawId));
+            let mut count = self.userTicketCount.entry((caller, drawId)).read();
             count += 1;
-            self.userTicketCount.write((caller, drawId), count);
-            self.userTicketIds.write((caller, drawId, count), ticketId);
+            self.userTicketCount.entry((caller, drawId)).write(count);
+            self.userTicketIds.entry((caller, drawId, count)).write(ticketId);
 
             self
                 .emit(
@@ -277,14 +277,14 @@ mod Lottery {
         }
         //=======================================================================================
         fn GetUserTicketsCount(self: @ContractState, drawId: u64, player: ContractAddress) -> u32 {
-            self.userTicketCount.read((player, drawId))
+            self.userTicketCount.entry((player, drawId)).read()
         }
 
         //=======================================================================================
         //OK
         fn DrawNumbers(ref self: ContractState, drawId: u64) {
             self.ownable.assert_only_owner();
-            let mut draw = self.draws.read(drawId);
+            let mut draw = self.draws.entry(drawId).read();
             assert(draw.isActive, 'Draw is not active');
 
             let winningNumbers = GenerateRandomNumbers();
@@ -294,7 +294,7 @@ mod Lottery {
             draw.winningNumber4 = *winningNumbers.at(3);
             draw.winningNumber5 = *winningNumbers.at(4);
             draw.isActive = false;
-            self.draws.write(drawId, draw);
+            self.draws.entry(drawId).write(draw);
 
             self
                 .emit(
@@ -306,8 +306,8 @@ mod Lottery {
         //=======================================================================================
         //OK
         fn ClaimPrize(ref self: ContractState, drawId: u64, ticketId: felt252) {
-            let draw = self.draws.read(drawId);
-            let ticket = self.tickets.read((drawId, ticketId));
+            let draw = self.draws.entry(drawId).read();
+            let ticket = self.tickets.entry((drawId, ticketId)).read();
             assert(!ticket.claimed, 'Prize already claimed');
             assert(!draw.isActive, 'Draw still active');
 
@@ -324,7 +324,7 @@ mod Lottery {
 
             let mut ticket = ticket;
             ticket.claimed = true;
-            self.tickets.write((drawId, ticketId), ticket);
+            self.tickets.entry((drawId, ticketId)).write(ticket);
 
             if prize > 0 {
                 //TODO: We need to process the payment of the prize
@@ -352,7 +352,7 @@ mod Lottery {
             number5: u16,
         ) -> u8 {
             // Obtener el sorteo
-            let draw = self.draws.read(drawId);
+            let draw = self.draws.entry(drawId).read();
             assert(!draw.isActive, 'Draw must be completed');
 
             // Obtener los números ganadores
@@ -423,13 +423,13 @@ mod Lottery {
                 startTime: get_block_timestamp(),
                 endTime: get_block_timestamp() + 604800 // 1 Week
             };
-            self.draws.write(drawId, newDraw);
+            self.draws.entry(drawId).write(newDraw);
             self.currentDrawId.write(drawId);
         }
 
         //OK
         fn GetDrawStatus(self: @ContractState, drawId: u64) -> bool {
-            self.draws.read(drawId).isActive
+            self.draws.entry(drawId).read().isActive
         }
 
         //=======================================================================================
@@ -437,14 +437,14 @@ mod Lottery {
             self: @ContractState, drawId: u64, player: ContractAddress,
         ) -> Array<felt252> {
             let mut userTickets = ArrayTrait::new();
-            let count = self.userTicketCount.read((player, drawId));
+            let count = self.userTicketCount.entry((player, drawId)).read();
 
             let mut i: u32 = 1;
             loop {
                 if i > count {
                     break;
                 }
-                let ticketId = self.userTicketIds.read((player, drawId, i));
+                let ticketId = self.userTicketIds.entry((player, drawId, i)).read();
                 userTickets.append(ticketId);
                 i += 1;
             };
@@ -456,7 +456,7 @@ mod Lottery {
         fn GetTicketInfo(
             self: @ContractState, drawId: u64, ticketId: felt252, player: ContractAddress,
         ) -> Ticket {
-            let ticket = self.tickets.read((drawId, ticketId));
+            let ticket = self.tickets.entry((drawId, ticketId)).read();
             // Verificar que el ticket pertenece al caller
             assert(ticket.player == player, 'Not ticket owner');
             ticket
@@ -469,7 +469,7 @@ mod Lottery {
 
         //=======================================================================================
         fn GetWinningNumbers(self: @ContractState, drawId: u64) -> Array<u16> {
-            let draw = self.draws.read(drawId);
+            let draw = self.draws.entry(drawId).read();
             assert(!draw.isActive, 'Draw must be completed');
 
             let mut numbers = ArrayTrait::new();
