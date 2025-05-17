@@ -58,11 +58,17 @@ jobs:
         run: cd packages/snfoundry && yarn install --immutable && yarn compile
 
       - name: Setup node env
+      
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
           cache: "yarn"
           #cache-dependency-path: packages/nextjs/yarn.lock
+
+      - name: Install system dependencies for Next.js build
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libvips-dev
 
       - name: Clear Yarn Cache
         run: yarn cache clean --all
@@ -99,3 +105,10 @@ jobs:
           set -x
           yarn build
         working-directory: ./packages/nextjs
+
+      - name: Upload Next.js build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: nextjs-build-log
+          path: /tmp/xfs-*/build.log # Usar un comodín para el directorio temporal específico
