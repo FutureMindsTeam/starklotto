@@ -19,71 +19,39 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [18]
+        node: [lts/*]
 
     steps:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Install scarb
-        run: curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh -s -- -v 2.9.2
-
-      - name: Verify scarb installation
-        run: |
-          scarb --version
-          echo "Scarb installation directory: $(which scarb)"
-
-      - name: Install snfoundryup
-        run: curl -L https://raw.githubusercontent.com/foundry-rs/starknet-foundry/master/scripts/install.sh | sh
-
-      - name: Install snforge
-        run: snfoundryup -v 0.34.0
-
-      - name: Verify snforge installation
-        run: |
-          snforge --version
-          echo "SNforge installation directory: $(which snforge)"
-
-      - name: Clear build cache
-        run: |
-          rm -rf ~/.cache/scarb
-          rm -rf ~/.cache/snfoundry
-          echo "Cleared build caches"
-
-      # - name: Run snforge tests
-      #   run: snforge test --coverage
-      #   working-directory: ./packages/snfoundry/contracts
-
-      - name: Build snfoundry dependencies
-        run: cd packages/snfoundry && yarn install --immutable && yarn compile
-
       - name: Setup node env
-      
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
           cache: "yarn"
           #cache-dependency-path: packages/nextjs/yarn.lock
 
-      - name: Install system dependencies for Next.js build
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential libvips-dev
-
-      - name: Clear Yarn Cache
-        run: yarn cache clean --all
-
       - name: Install dependencies (Next.js)
-        run: |
-          for i in {1..3}; do
-            yarn install --immutable --force && break
-            echo "Retrying yarn install (attempt $i of 3)..."
-            sleep 10
-          done
+        run: yarn install --immutable
         working-directory: ./packages/nextjs
 
-      - name: Install root dependencies
-        run: yarn install --immutable
+      - name: Install scarb
+        uses: software-mansion/setup-scarb@v1
+        with:
+          tool-versions: ./.tool-versions
+          scarb-lock: ./packages/snfoundry/contracts/Scarb.lock
+
+      - name: Install snfoundryup
+        uses: foundry-rs/setup-snfoundry@v3
+        with:
+          tool-versions: ./.tool-versions
+
+      - name: Build Contracts
+        run: yarn compile
+
+      - name: Run smart contract tests
+        run: yarn test
 
       - name: Check Code Format
         run: yarn format:check
@@ -101,30 +69,5 @@ jobs:
         working-directory: ./packages/nextjs
 
       - name: Build Next.js project
-        run: |
-          set -x
-          yarn build
+        run: yarn build
         working-directory: ./packages/nextjs
-
-      - name: Find Next.js build log
-        if: failure()
-        id: find_log # Damos un ID al paso por si se necesita referenciar outputs, aunque GITHUB_ENV es global al job
-        run: |
-          LOG_PATH=$(find /tmp -type f -name "build.log" -print -quit) # Busca el primer archivo llamado build.log
-          if [ -z "$LOG_PATH" ]; then
-            echo "::warning::Next.js build log (build.log) not found in /tmp or its subdirectories."
-            echo "Listing contents of /tmp for debugging:"
-            find /tmp -ls # <--- ESTA LÍNEA ES LA MODIFICACIÓN IMPORTANTE
-            echo "log_file_path=" >> $GITHUB_ENV # Establece una ruta vacía para que el siguiente paso no falle si el log no existe
-          else
-            echo "Found Next.js build log at: $LOG_PATH"
-            echo "log_file_path=$LOG_PATH" >> $GITHUB_ENV
-          fi
-
-      - name: Upload Next.js build log on failure
-        if: failure() && env.log_file_path != '' # Solo intentar subir si se encontró una ruta de log
-        uses: actions/upload-artifact@v3
-        with:
-          name: nextjs-build-log
-          path: ${{ env.log_file_path }}
-          if-no-files-found: warn # 'warn' si no se encuentra el archivo (útil si el paso anterior no encontró el log)
