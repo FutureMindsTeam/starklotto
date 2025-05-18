@@ -106,9 +106,26 @@ jobs:
           yarn build
         working-directory: ./packages/nextjs
 
-      - name: Upload Next.js build log on failure
+      - name: Find Next.js build log
         if: failure()
+        id: find_log # Damos un ID al paso por si se necesita referenciar outputs, aunque GITHUB_ENV es global al job
+        run: |
+          LOG_PATH=$(find /tmp -type f -name "build.log" -print -quit) # Busca el primer archivo llamado build.log
+          if [ -z "$LOG_PATH" ]; then
+            echo "::warning::Next.js build log (build.log) not found in /tmp or its subdirectories."
+            # Si necesitas depurar porque el log no se encuentra, puedes listar el contenido de /tmp:
+            # echo "Listing contents of /tmp:"
+            # find /tmp -ls
+            echo "log_file_path=" >> $GITHUB_ENV # Establece una ruta vacía para que el siguiente paso no falle si el log no existe
+          else
+            echo "Found Next.js build log at: $LOG_PATH"
+            echo "log_file_path=$LOG_PATH" >> $GITHUB_ENV
+          fi
+
+      - name: Upload Next.js build log on failure
+        if: failure() && env.log_file_path != '' # Solo intentar subir si se encontró una ruta de log
         uses: actions/upload-artifact@v3
         with:
           name: nextjs-build-log
-          path: /tmp/xfs-*/build.log # Usar un comodín para el directorio temporal específico
+          path: ${{ env.log_file_path }}
+          if-no-files-found: warn # 'warn' si no se encuentra el archivo (útil si el paso anterior no encontró el log)
