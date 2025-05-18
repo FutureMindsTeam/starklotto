@@ -124,7 +124,7 @@ jobs:
 
       - name: Upload Next.js build log on failure
         if: failure() && env.log_file_path != '' # Solo intentar subir si se encontró una ruta de log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.3
         with:
           name: nextjs-build-log
           path: ${{ env.log_file_path }}
