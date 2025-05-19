@@ -79,37 +79,37 @@ fn test_default_admin_set() {
 #[test]
 fn test_grant_minter_role() {
     let token_address = deploy_token();
-    let vault_address = deploy_vault(token_address);
+    let _vault_address = deploy_vault(token_address);
     let mintable = IMintableDispatcher { contract_address: token_address };
     let access_control = IAccessControlDispatcher { contract_address: token_address };
 
     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
-    mintable.grant_minter_role(vault_address);
+    mintable.grant_minter_role(_vault_address);
 
     assert(
-        access_control.has_role(selector!("MINTER_ROLE"), vault_address), 'Minter role not granted',
+        access_control.has_role(selector!("MINTER_ROLE"), _vault_address), 'Minter role not granted',
     );
     let authorized_minters = mintable.get_authorized_minters();
     assert(authorized_minters.len() == 1, 'Incorrect minters count');
-    assert(*authorized_minters.at(0) == vault_address, 'Vault not in minters list');
+    assert(authorized_minters.at(0) == _vault_address, 'Vault not in minters list');
 }
 
 
 #[test]
 fn test_revoke_minter_role() {
     let token_address = deploy_token();
-    let vault_address = deploy_vault(token_address);
+    let _vault_address = deploy_vault(token_address);
     let mintable = IMintableDispatcher { contract_address: token_address };
     let access_control = IAccessControlDispatcher { contract_address: token_address };
 
     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
-    mintable.grant_minter_role(vault_address);
+    mintable.grant_minter_role(_vault_address);
 
     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
-    mintable.revoke_minter_role(vault_address);
+    mintable.revoke_minter_role(_vault_address);
 
     assert(
-        !access_control.has_role(selector!("MINTER_ROLE"), vault_address),
+        !access_control.has_role(selector!("MINTER_ROLE"), _vault_address),
         'Minter role not revoked',
     );
     let authorized_minters = mintable.get_authorized_minters();
@@ -119,56 +119,55 @@ fn test_revoke_minter_role() {
 #[test]
 fn test_mint_tokens_directly() {
     let token_address = deploy_token();
-    let vault_address = deploy_vault(token_address);
+    let _vault_address = deploy_vault(token_address);
     let mintable = IMintableDispatcher { contract_address: token_address };
     let erc20 = IERC20Dispatcher { contract_address: token_address };
 
     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
-    mintable.grant_minter_role(vault_address);
-    mintable.set_minter_allowance(vault_address, 1000);
+    mintable.grant_minter_role(_vault_address);
+    mintable.set_minter_allowance(_vault_address, 1000);
 
-    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    cheat_caller_address(token_address, _vault_address, CheatSpan::TargetCalls(1));
     mintable.mint(USER(), 1000);
 
     assert(erc20.balance_of(USER()) == 1000, 'Incorrect balance after mint');
     assert(erc20.total_supply() == 1000, 'Incorrect total supply');
-    assert(mintable.get_minter_allowance(vault_address) == 0, 'Allowance not reduced');
+    assert(mintable.get_minter_allowance(_vault_address) == 0, 'Allowance not reduced');
 }
 
 #[test]
 fn test_grant_burner_role() {
     let token_address = deploy_token();
-    let vault_address = deploy_vault(token_address);
+    let _vault_address = deploy_vault(token_address);
     let burnable = IBurnableDispatcher { contract_address: token_address };
     let access_control = IAccessControlDispatcher { contract_address: token_address };
 
     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
-    burnable.grant_burner_role(vault_address);
+    burnable.grant_burner_role(_vault_address);
 
     assert(
-        access_control.has_role(selector!("BURNER_ROLE"), vault_address),
-        'Burner role not
-        granted',
+        access_control.has_role(selector!("BURNER_ROLE"), _vault_address),
+        'Burner role not granted',
     );
     let authorized_burners = burnable.get_authorized_burners();
     assert(authorized_burners.len() == 1, 'Incorrect burners count');
-    assert(*authorized_burners.at(0) == vault_address, 'Vault not in burners list');
+    assert(authorized_burners.at(0) == _vault_address, 'Vault not in burners list');
 }
 
 #[test]
 fn test_revoke_burner_role() {
     let token_address = deploy_token();
-    let vault_address = deploy_vault(token_address);
+    let _vault_address = deploy_vault(token_address);
     let burnable = IBurnableDispatcher { contract_address: token_address };
     let access_control = IAccessControlDispatcher { contract_address: token_address };
 
     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
-    burnable.grant_burner_role(vault_address);
+    burnable.grant_burner_role(_vault_address);
 
-    burnable.revoke_burner_role(vault_address);
+    burnable.revoke_burner_role(_vault_address);
 
     assert(
-        !access_control.has_role(selector!("BURNER_ROLE"), vault_address),
+        !access_control.has_role(selector!("BURNER_ROLE"), _vault_address),
         'Burner role not revoked',
     );
     let authorized_burners = burnable.get_authorized_burners();
@@ -179,66 +178,66 @@ fn test_revoke_burner_role() {
 #[test]
 fn test_burn_tokens() {
     let token_address = deploy_token();
-    let vault_address = deploy_vault(token_address);
+    let _vault_address = deploy_vault(token_address);
     let mintable = IMintableDispatcher { contract_address: token_address };
     let burnable = IBurnableDispatcher { contract_address: token_address };
     let erc20 = IERC20Dispatcher { contract_address: token_address };
 
     // Mint tokens
     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
-    mintable.grant_minter_role(vault_address);
-    mintable.set_minter_allowance(vault_address, 1000);
-    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    mintable.grant_minter_role(_vault_address);
+    mintable.set_minter_allowance(_vault_address, 1000);
+    cheat_caller_address(token_address, _vault_address, CheatSpan::TargetCalls(1));
     mintable.mint(USER(), 1000);
 
     // Grant BURNER_ROLE
     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
-    burnable.grant_burner_role(vault_address);
-    burnable.set_burner_allowance(vault_address, 500);
+    burnable.grant_burner_role(_vault_address);
+    burnable.set_burner_allowance(_vault_address, 500);
 
     // Burn tokens
-    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    cheat_caller_address(token_address, _vault_address, CheatSpan::TargetCalls(1));
     burnable.burn_from(USER(), 500);
 
     assert(erc20.balance_of(USER()) == 500, 'Incorrect balance after burn');
     assert(erc20.total_supply() == 500, 'Incorrect total supply');
-    assert(burnable.get_burner_allowance(vault_address) == 0, 'Allowance not reduced');
+    assert(burnable.get_burner_allowance(_vault_address) == 0, 'Allowance not reduced');
 }
 
 #[should_panic(expected: 'Caller is missing role')]
 #[test]
 fn test_non_admin_cannot_grant_minter_role() {
     let token_address = deploy_token();
-    let vault_address = deploy_vault(token_address);
+    let _vault_address = deploy_vault(token_address);
     let mintable = IMintableDispatcher { contract_address: token_address };
 
     cheat_caller_address(token_address, USER(), CheatSpan::TargetCalls(1));
-    mintable.grant_minter_role(vault_address);
+    mintable.grant_minter_role(_vault_address);
 }
 
 #[should_panic(expected: 'Caller is missing role')]
 #[test]
 fn test_non_admin_cannot_grant_burner_role() {
     let token_address = deploy_token();
-    let vault_address = deploy_vault(token_address);
+    let _vault_address = deploy_vault(token_address);
     let burnable = IBurnableDispatcher { contract_address: token_address };
 
     cheat_caller_address(token_address, USER(), CheatSpan::TargetCalls(1));
-    burnable.grant_burner_role(vault_address);
+    burnable.grant_burner_role(_vault_address);
 }
 
 #[should_panic(expected: 'Insufficient minter allowance')]
 #[test]
 fn test_mint_exceeds_allowance() {
     let token_address = deploy_token();
-    let vault_address = deploy_vault(token_address);
+    let _vault_address = deploy_vault(token_address);
     let mintable = IMintableDispatcher { contract_address: token_address };
 
     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
-    mintable.grant_minter_role(vault_address);
-    mintable.set_minter_allowance(vault_address, 500);
+    mintable.grant_minter_role(_vault_address);
+    mintable.set_minter_allowance(_vault_address, 500);
 
-    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    cheat_caller_address(token_address, _vault_address, CheatSpan::TargetCalls(1));
     mintable.mint(USER(), 1000);
 }
 
@@ -256,24 +255,24 @@ fn test_non_minter_cannot_mint() {
 #[test]
 fn test_burn_exceeds_allowance() {
     let token_address = deploy_token();
-    let vault_address = deploy_vault(token_address);
+    let _vault_address = deploy_vault(token_address);
     let mintable = IMintableDispatcher { contract_address: token_address };
     let burnable = IBurnableDispatcher { contract_address: token_address };
 
     // Mint tokens
     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
-    mintable.grant_minter_role(vault_address);
-    mintable.set_minter_allowance(vault_address, 1000);
-    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    mintable.grant_minter_role(_vault_address);
+    mintable.set_minter_allowance(_vault_address, 1000);
+    cheat_caller_address(token_address, _vault_address, CheatSpan::TargetCalls(1));
     mintable.mint(USER(), 1000);
 
     // Grant BURNER_ROLE
     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
-    burnable.grant_burner_role(vault_address);
-    burnable.set_burner_allowance(vault_address, 500);
+    burnable.grant_burner_role(_vault_address);
+    burnable.set_burner_allowance(_vault_address, 500);
 
     // Try to burn more
-    cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+    cheat_caller_address(token_address, _vault_address, CheatSpan::TargetCalls(1));
     burnable.burn_from(USER(), 1000);
 }
 
@@ -307,21 +306,21 @@ fn test_non_burner_cannot_burn() {
 // #[test]
 // fn test_mint_while_token_paused() {
 //     let token_address = deploy_token();
-//     let vault_address = deploy_vault(token_address);
+//     let _vault_address = deploy_vault(token_address);
 //     let mintable = IMintableDispatcher { contract_address: token_address };
 //     let pausable = IPausableDispatcher { contract_address: token_address };
 
 //     // Grant MINTER_ROLE
 //     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(2));
-//     mintable.grant_minter_role(vault_address);
-//     mintable.set_minter_allowance(vault_address, 1000);
+//     mintable.grant_minter_role(_vault_address);
+//     mintable.set_minter_allowance(_vault_address, 1000);
 
 //     // Pause token
 //     cheat_caller_address(token_address, ADMIN(), CheatSpan::TargetCalls(1));
 //     pausable.pause();
 
 //     // Try to mint
-//     cheat_caller_address(token_address, vault_address, CheatSpan::TargetCalls(1));
+//     cheat_caller_address(token_address, _vault_address, CheatSpan::TargetCalls(1));
 //     mintable.mint(USER(), 1000);
 // }
 
