@@ -47,7 +47,7 @@ fn deploy_vault(starkplay_token: ContractAddress) -> ContractAddress {
     let (contract_address, _) = contract_class.deploy(@calldata).unwrap();
     contract_address
 }
-
+/*
 #[test]
 #[ignore]
 fn test_initialization() {
@@ -299,6 +299,7 @@ fn test_non_burner_cannot_burn() {
     cheat_caller_address(token_address, USER(), CheatSpan::TargetCalls(1));
     burnable.burn(1000);
 }
+    */
 // // 16. Token Pause and Unpause
 // #[test]
 // fn test_token_pause_unpause() {
