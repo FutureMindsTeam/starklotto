@@ -1,6 +1,5 @@
-use contracts::StarkPlayERC20::{
+use contracts::StarkPlayERC20::StarkPlayERC20::{
     IBurnableDispatcher, IBurnableDispatcherTrait, IMintableDispatcher, IMintableDispatcherTrait,
-    StarkPlayERC20,
 };
 use openzeppelin_access::accesscontrol::interface::{
     IAccessControlDispatcher, IAccessControlDispatcherTrait,
