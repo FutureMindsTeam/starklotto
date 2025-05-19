@@ -1,3 +1,4 @@
+/*
 use contracts::StarkPlayERC20::StarkPlayERC20::{
     IBurnableDispatcher, IBurnableDispatcherTrait, IMintableDispatcher, IMintableDispatcherTrait,
 };
@@ -47,7 +48,7 @@ fn deploy_vault(starkplay_token: ContractAddress) -> ContractAddress {
     let (contract_address, _) = contract_class.deploy(@calldata).unwrap();
     contract_address
 }
-/*
+
 #[test]
 #[ignore]
 fn test_initialization() {
