@@ -57,16 +57,24 @@ const deployScript = async (): Promise<void> => {
     contractName: "StarkPlayERC20",
     constructorArgs: {
       recipient: deployer.address, // Assuming deployer is the initial recipient
-      admin: deployer.address,     // Assuming deployer is the admin
+      admin: deployer.address, // Assuming deployer is the admin
     },
   });
   const starkPlayERC20Address = starkPlayERC20DeploymentResult.address;
 
   // Basic check for a valid address
-  if (!starkPlayERC20Address || starkPlayERC20Address === "" || starkPlayERC20Address.startsWith("0x0000000000000000000000000000000000000000000000000000000000000000")) {
+  if (
+    !starkPlayERC20Address ||
+    starkPlayERC20Address === "" ||
+    starkPlayERC20Address.startsWith(
+      "0x0000000000000000000000000000000000000000000000000000000000000000"
+    )
+  ) {
     // StarkNet addresses are typically non-zero. Checking for a long string of zeros as a simple heuristic.
     // A more robust check might involve regex or library functions if available.
-    throw new Error(`Failed to deploy StarkPlayERC20 or address is invalid: ${starkPlayERC20Address}`);
+    throw new Error(
+      `Failed to deploy StarkPlayERC20 or address is invalid: ${starkPlayERC20Address}`
+    );
   }
 
   await deployContract({
@@ -85,7 +93,7 @@ const deployScript = async (): Promise<void> => {
     constructorArgs: {
       owner: deployer.address,
       name: "LottoTicket", // Example name
-      symbol: "LTT",      // Example symbol
+      symbol: "LTT", // Example symbol
       base_uri: "https://api.example.com/nft/", // Example base URI
     },
   });
@@ -98,7 +106,6 @@ const main = async (): Promise<void> => {
     exportDeployments();
 
     console.log(green("All Setup Done!"));
-		
   } catch (err) {
     console.log(err);
     process.exit(1); //exit with error so that non subsequent scripts are run
