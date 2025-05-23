@@ -1,4 +1,9 @@
 use starknet::ContractAddress;
+#[starknet::interface]
+trait ITestingHelpers<TContractState> {
+    fn getTotalSupply(self: @TContractState) -> u256;
+    fn getAllAllowances(self: @TContractState, account: ContractAddress) -> (u256, u256);
+}
 
 // SPDX-License-Identifier: MIT
 // Compatible with OpenZeppelin Contracts for Cairo ^0.20.0
@@ -54,7 +59,7 @@ pub mod StarkPlayERC20 {
     use starknet::{ClassHash, ContractAddress, get_caller_address};
     use super::{
         BURNER_ROLE, IBurnable, IMintable, IPrizeToken, MINTER_ROLE, PAUSER_ROLE,
-        PRIZE_ASSIGNER_ROLE,
+        PRIZE_ASSIGNER_ROLE,ITestingHelpers
     };
 
     component!(path: ERC20Component, storage: erc20, event: ERC20Event);
@@ -68,8 +73,7 @@ pub mod StarkPlayERC20 {
     #[abi(embed_v0)]
     impl PausableImpl = PausableComponent::PausableImpl<ContractState>;
     #[abi(embed_v0)]
-    impl AccessControlMixinImpl =
-        AccessControlComponent::AccessControlMixinImpl<ContractState>;
+    impl AccessControlMixinImpl = AccessControlComponent::AccessControlMixinImpl<ContractState>;
 
     impl ERC20InternalImpl = ERC20Component::InternalImpl<ContractState>;
     impl PausableInternalImpl = PausableComponent::InternalImpl<ContractState>;
@@ -168,8 +172,8 @@ pub mod StarkPlayERC20 {
         self.accesscontrol.initializer();
         self.accesscontrol._grant_role(DEFAULT_ADMIN_ROLE, admin);
         self.accesscontrol._grant_role(PAUSER_ROLE, admin);
-        // this is not minting any token initially
-    //self.erc20.mint(recipient, INITIAL_SUPPLY);
+        // Mint initial supply for testing
+        self.erc20.mint(recipient, 1000);
     }
 
     #[abi(embed_v0)]
@@ -363,6 +367,8 @@ pub mod StarkPlayERC20 {
         }
     }
 
+   
+
     fn is_contract(address: ContractAddress) -> bool {
         // Avoid zero address
         if address == zero_address_const() {
@@ -378,4 +384,19 @@ pub mod StarkPlayERC20 {
     fn zero_address_const() -> ContractAddress {
         '0x0'.try_into().unwrap()
     }
+    #[abi(embed_v0)]
+    impl TestingHelpers of ITestingHelpers<ContractState> {
+        fn getTotalSupply(self: @ContractState) -> u256 {
+            self.erc20.total_supply()
+        }
+
+        fn getAllAllowances(
+            self: @ContractState, account: ContractAddress
+        ) -> (u256, u256) {
+            let minter_allowance = self.minter_allowance.read(account);
+            let burner_allowance = self.burner_allowance.read(account);
+            (minter_allowance, burner_allowance)
+        }
+    }
 }
+
