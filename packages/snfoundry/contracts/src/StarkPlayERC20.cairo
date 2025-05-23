@@ -58,8 +58,8 @@ pub mod StarkPlayERC20 {
     };
     use starknet::{ClassHash, ContractAddress, get_caller_address};
     use super::{
-        BURNER_ROLE, IBurnable, IMintable, IPrizeToken, MINTER_ROLE, PAUSER_ROLE,
-        PRIZE_ASSIGNER_ROLE,ITestingHelpers
+        BURNER_ROLE, IBurnable, IMintable, IPrizeToken, ITestingHelpers, MINTER_ROLE, PAUSER_ROLE,
+        PRIZE_ASSIGNER_ROLE,
     };
 
     component!(path: ERC20Component, storage: erc20, event: ERC20Event);
@@ -73,7 +73,8 @@ pub mod StarkPlayERC20 {
     #[abi(embed_v0)]
     impl PausableImpl = PausableComponent::PausableImpl<ContractState>;
     #[abi(embed_v0)]
-    impl AccessControlMixinImpl = AccessControlComponent::AccessControlMixinImpl<ContractState>;
+    impl AccessControlMixinImpl =
+        AccessControlComponent::AccessControlMixinImpl<ContractState>;
 
     impl ERC20InternalImpl = ERC20Component::InternalImpl<ContractState>;
     impl PausableInternalImpl = PausableComponent::InternalImpl<ContractState>;
@@ -367,7 +368,6 @@ pub mod StarkPlayERC20 {
         }
     }
 
-   
 
     fn is_contract(address: ContractAddress) -> bool {
         // Avoid zero address
@@ -390,9 +390,7 @@ pub mod StarkPlayERC20 {
             self.erc20.total_supply()
         }
 
-        fn getAllAllowances(
-            self: @ContractState, account: ContractAddress
-        ) -> (u256, u256) {
+        fn getAllAllowances(self: @ContractState, account: ContractAddress) -> (u256, u256) {
             let minter_allowance = self.minter_allowance.read(account);
             let burner_allowance = self.burner_allowance.read(account);
             (minter_allowance, burner_allowance)
