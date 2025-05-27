@@ -6,8 +6,7 @@
 const deployedContracts = {
   devnet: {
     Lottery: {
-      address:
-        "0x58ec384e3a821f5d9096fb35ec7894a4eaef987ebf47e934eb816a6064b22b9",
+      address: "0x19f2682599ee7fd597187558d89c6aafabdfcd2969231aa706f4d4dc88d16d6",
       abi: [
         {
           type: "impl",
@@ -2657,6 +2656,9 @@ const deployedContracts = {
       ],
       classHash:
         "0x2d83b9d9cfae6a90d909c33a6211d367f29fe94cdee998bdb9083a333640471",
+=======
+        "0x2f1ed0054b4fea83d34a0bcedabea240800d13e0c5c303139ecd8ed18fc533a",
+>>>>>>> Stashed changes
     },
   },
 } as const;
