@@ -1692,7 +1692,7 @@ const deployedContracts = {
         },
       ],
       classHash:
-        "0xae628508c842bccc35f9b48f4139e1ea474d37e3f4e89c05ab00349efefced",
+        "0x2f1ed0054b4fea83d34a0bcedabea240800d13e0c5c303139ecd8ed18fc533a",
     },
     StarkPlayVault: {
       address:
@@ -2656,9 +2656,6 @@ const deployedContracts = {
       ],
       classHash:
         "0x2d83b9d9cfae6a90d909c33a6211d367f29fe94cdee998bdb9083a333640471",
-=======
-        "0x2f1ed0054b4fea83d34a0bcedabea240800d13e0c5c303139ecd8ed18fc533a",
->>>>>>> Stashed changes
     },
   },
 } as const;
