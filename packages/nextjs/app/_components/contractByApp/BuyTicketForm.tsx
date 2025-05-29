@@ -47,7 +47,6 @@ export const BuyTicketForm = ({
 
   const { sendAsync, error } = useSendTransaction({});
 
-  // side effect for error logging
   useEffect(() => {
     if (error) {
       console.error(error?.message);
@@ -61,8 +60,8 @@ export const BuyTicketForm = ({
       const tx = !!contractInstance
         ? [
             contractInstance.populate(
-              "BuyTicket", // Nombre de la función en el contrato
-              [2, selectedNumbers], // Usar datos del store
+              "BuyTicket",
+              [2, selectedNumbers],
             ),
           ]
         : [];
