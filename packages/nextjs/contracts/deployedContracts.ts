@@ -6,7 +6,8 @@
 const deployedContracts = {
   devnet: {
     Lottery: {
-      address: "0x19f2682599ee7fd597187558d89c6aafabdfcd2969231aa706f4d4dc88d16d6",
+      address:
+        "0x19f2682599ee7fd597187558d89c6aafabdfcd2969231aa706f4d4dc88d16d6",
       abi: [
         {
           type: "impl",

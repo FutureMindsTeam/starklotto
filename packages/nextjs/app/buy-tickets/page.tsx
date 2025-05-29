@@ -11,7 +11,9 @@ import Image from "next/image";
 export default function BuyTicketsPage() {
   const router = useRouter();
   const [ticketCount, setTicketCount] = useState(1);
-  const [selectedNumbers, setSelectedNumbers] = useState<Record<number, number[]>>({
+  const [selectedNumbers, setSelectedNumbers] = useState<
+    Record<number, number[]>
+  >({
     1: [],
   });
 
@@ -155,8 +157,10 @@ export default function BuyTicketsPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <h1 className="text-3xl font-bold text-purple-400 mb-6">Buy Tickets</h1>
-                
+                <h1 className="text-3xl font-bold text-purple-400 mb-6">
+                  Buy Tickets
+                </h1>
+
                 {/* Next Draw */}
                 <div className="mb-6">
                   <p className="text-gray-300 mb-1">Next Draw</p>
@@ -179,8 +183,12 @@ export default function BuyTicketsPage() {
                         initial="hidden"
                         animate="visible"
                       >
-                        <p className="text-purple-400 text-2xl font-bold">{value}</p>
-                        <p className="text-gray-400 text-sm capitalize">{key}</p>
+                        <p className="text-purple-400 text-2xl font-bold">
+                          {value}
+                        </p>
+                        <p className="text-gray-400 text-sm capitalize">
+                          {key}
+                        </p>
                       </motion.div>
                     ))}
                   </div>
@@ -233,7 +241,9 @@ export default function BuyTicketsPage() {
                         animate="visible"
                       >
                         <div className="flex justify-between items-center mb-4">
-                          <p className="text-white font-medium">Ticket #{ticketId}</p>
+                          <p className="text-white font-medium">
+                            Ticket #{ticketId}
+                          </p>
                           <motion.button
                             onClick={() => generateRandom(ticketId)}
                             className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-lg flex items-center gap-1"
@@ -248,7 +258,8 @@ export default function BuyTicketsPage() {
                         <div className="grid grid-cols-7 gap-2">
                           {Array.from({ length: 41 }).map((_, numIdx) => {
                             const num = numIdx;
-                            const isSelected = selectedNumbers[ticketId]?.includes(num);
+                            const isSelected =
+                              selectedNumbers[ticketId]?.includes(num);
                             return (
                               <motion.button
                                 key={num}
@@ -339,11 +350,15 @@ export default function BuyTicketsPage() {
                     </svg>
                   </div>
                   <p className="text-white">
-                    Balance: <span className="text-[#4ade80]">${balance} $tarkPlay</span>
+                    Balance:{" "}
+                    <span className="text-[#4ade80]">${balance} $tarkPlay</span>
                   </p>
                 </div>
                 <p className="text-white">
-                  Price per ticket: <span className="text-[#4ade80]">${ticketPrice} $tarkPlay</span>
+                  Price per ticket:{" "}
+                  <span className="text-[#4ade80]">
+                    ${ticketPrice} $tarkPlay
+                  </span>
                 </p>
               </motion.div>
 
@@ -373,7 +388,9 @@ export default function BuyTicketsPage() {
               >
                 <div className="flex justify-between items-center mb-6">
                   <p className="text-white font-medium">Total cost:</p>
-                  <p className="text-[#4ade80] font-medium">${totalCost} $tarkPlay</p>
+                  <p className="text-[#4ade80] font-medium">
+                    ${totalCost} $tarkPlay
+                  </p>
                 </div>
 
                 <GlowingButton
