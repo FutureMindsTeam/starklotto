@@ -99,11 +99,7 @@ export const Faucet = () => {
         <BanknotesIcon className="h-4 w-4 text-[#32BAC4]" />
         <span>Faucet</span>
       </label>
-      <GenericModal
-        modalId="faucet-modal"
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      >
+      <GenericModal modalId="faucet-modal" onClose={() => {}}>
         <>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-bold">Local Faucet</h3>

@@ -57,24 +57,19 @@ export const BuyTicketForm = ({
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (sendAsync) {
-      try {
-        const makeBuyTicketWithParams = () =>
-          sendAsync(
-            !!contractInstance
-              ? [
-                  contractInstance.populate(
-                    "BuyTicket", // Nombre de la función en el contrato
-                    [2, selectedNumbers], // Usar datos del store
-                  ),
-                ]
-              : [],
-          );
-        await writeTxn(makeBuyTicketWithParams);
-        onChange();
-      } catch (e: any) {
-        console.error("Error al comprar el ticket:", e.message);
-      }
+    try {
+      const tx = !!contractInstance
+        ? [
+            contractInstance.populate(
+              "BuyTicket", // Nombre de la función en el contrato
+              [2, selectedNumbers], // Usar datos del store
+            ),
+          ]
+        : [];
+      await writeTxn.writeTransaction(tx);
+      onChange();
+    } catch (e: any) {
+      console.error("Error al comprar el ticket:", e.message);
     }
   };
 

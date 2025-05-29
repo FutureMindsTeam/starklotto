@@ -47,11 +47,7 @@ export const BlockExplorer = () => {
         <MagnifyingGlassIcon className="h-4 w-4 text-[#32BAC4]" />
         <span>Block Explorer</span>
       </label>
-      <GenericModal
-        modalId="blockexplorer-modal"
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      >
+      <GenericModal modalId="blockexplorer-modal" onClose={() => {}}>
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-bold">Mainnet Block Explorers</h3>
           <button

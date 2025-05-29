@@ -16,6 +16,10 @@ interface HeroSectionProps {
   targetDate: Date;
   onBuyTicket: () => void;
   onToggleSecurityInfo: () => void;
+  showTicketSelector?: boolean;
+  selectedNumbers?: number[];
+  onSelectNumbers?: (numbers: number[]) => void;
+  onPurchase?: (quantity: number, totalPrice: number) => void;
 }
 
 export function HeroSection({

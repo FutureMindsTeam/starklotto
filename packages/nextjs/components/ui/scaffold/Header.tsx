@@ -10,7 +10,7 @@ import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectB
 import { useTheme } from "next-themes";
 import { useTargetNetwork } from "~~/hooks/scaffold-stark/useTargetNetwork";
 import { devnet } from "@starknet-react/chains";
-import { SwitchTheme } from "./SwitchTheme";
+import { SwitchTheme } from "~~/components/SwitchTheme";
 import { useAccount, useNetwork, useProvider } from "@starknet-react/core";
 import { BlockIdentifier } from "starknet";
 

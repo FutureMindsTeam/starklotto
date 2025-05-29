@@ -50,7 +50,7 @@ export const BlockExplorer = () => {
         id="blockexplorer-modal"
         className="modal-toggle"
       />
-      <GenericModal modalId="blockexplorer-modal">
+      <GenericModal modalId="blockexplorer-modal" onClose={() => {}}>
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-bold">Mainnet Block Explorers</h3>
           <label

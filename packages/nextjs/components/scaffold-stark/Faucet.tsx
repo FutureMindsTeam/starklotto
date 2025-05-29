@@ -99,7 +99,7 @@ export const Faucet = () => {
         <span>Faucet</span>
       </label>
       <input type="checkbox" id="faucet-modal" className="modal-toggle" />
-      <GenericModal modalId="faucet-modal">
+      <GenericModal modalId="faucet-modal" onClose={() => {}}>
         <>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-bold">Local Faucet</h3>
