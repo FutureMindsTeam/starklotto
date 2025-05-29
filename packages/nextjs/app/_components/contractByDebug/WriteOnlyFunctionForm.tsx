@@ -110,7 +110,9 @@ export const WriteOnlyFunctionForm = ({
   });
   useEffect(() => {
     if (txResult) {
-      setDisplayedTxResult(txResult as unknown as InvokeTransactionReceiptResponse);
+      setDisplayedTxResult(
+        txResult as unknown as InvokeTransactionReceiptResponse,
+      );
     }
   }, [txResult]);
 

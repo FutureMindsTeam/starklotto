@@ -264,7 +264,8 @@ const universalErc20Abi = [
 
 export const LAST_CONNECTED_TIME_LOCALSTORAGE_KEY = "lastConnectedTime";
 
-export const CONTACT_US_SHEET_SCRIPT = "https://script.google.com/macros/s/AKfycbzXXXXXXXXXXXXXXXXXXXXX/exec";
+export const CONTACT_US_SHEET_SCRIPT =
+  "https://script.google.com/macros/s/AKfycbzXXXXXXXXXXXXXXXXXXXXX/exec";
 export const LOTT_CONTRACT_NAME = "Lottery";
 
 export {
