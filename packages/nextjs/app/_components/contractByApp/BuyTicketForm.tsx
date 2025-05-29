@@ -58,12 +58,7 @@ export const BuyTicketForm = ({
     e.preventDefault();
     try {
       const tx = !!contractInstance
-        ? [
-            contractInstance.populate(
-              "BuyTicket",
-              [2, selectedNumbers],
-            ),
-          ]
+        ? [contractInstance.populate("BuyTicket", [2, selectedNumbers])]
         : [];
       await writeTxn.writeTransaction(tx);
       onChange();
