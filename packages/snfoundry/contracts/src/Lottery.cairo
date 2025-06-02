@@ -84,10 +84,10 @@ mod Lottery {
     use openzeppelin_access::ownable::OwnableComponent;
     use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
     use starknet::storage::{
-        Map, StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess,
+        Map,
     };
     use starknet::{
-        ContractAddress, contract_address_const, get_block_timestamp, get_caller_address,
+        ContractAddress, get_block_timestamp, get_caller_address,
         get_contract_address,
     };
     use super::{Draw, ILottery, Ticket};
@@ -211,13 +211,11 @@ mod Lottery {
 
             // Process the payment
             let strk_play_token_dispatcher = IERC20Dispatcher {
-                contract_address: contract_address_const::<STRK_PLAY_CONTRACT_ADDRESS>(),
+                contract_address: STRK_PLAY_CONTRACT_ADDRESS.try_into().unwrap(),
             };
 
             let buyer = get_caller_address();
-            let strk_play_token_vault_address: ContractAddress = contract_address_const::<
-                STRK_PLAY_VAULT_CONTRACT_ADDRESS,
-            >();
+            let strk_play_token_vault_address: ContractAddress = STRK_PLAY_VAULT_CONTRACT_ADDRESS.try_into().unwrap();
             let payment_amount = self.ticketPrice.read();
 
             assert(
@@ -375,7 +373,7 @@ mod Lottery {
             let mut matches: u8 = 0;
 
             // Para cada número del ticket
-            let mut i: usize = 0;
+            let mut _i: usize = 0;
             if number1 == winningNumber1 {
                 matches += 1;
             }

@@ -3,7 +3,7 @@ use snforge_std::{declare, ContractClassTrait, DeclareResultTrait};
 use snforge_std::{start_cheat_caller_address, stop_cheat_caller_address};
 
 // Import Starknet types
-use starknet::{ContractAddress, contract_address_const};
+use starknet::{ContractAddress};
 
 //=======================================================================================
 // HELPER FUNCTIONS
@@ -13,7 +13,7 @@ use starknet::{ContractAddress, contract_address_const};
 fn deploy_lottery() -> ContractAddress {
     let contract = declare("Lottery").unwrap().contract_class();
     
-    let owner: ContractAddress = contract_address_const::<'owner'>();
+    let owner: ContractAddress = 'owner'.try_into().unwrap();
     let constructor_calldata = array![owner.into()];
     
     let (contract_address, _) = contract.deploy(@constructor_calldata).unwrap();
@@ -43,13 +43,13 @@ fn test_deploy_lottery_basic() {
     // Test that we can deploy the Lottery contract
     let contract = declare("Lottery").unwrap().contract_class();
     
-    let owner: ContractAddress = contract_address_const::<'owner'>();
+    let owner: ContractAddress = 'owner'.try_into().unwrap();
     let constructor_calldata = array![owner.into()];
     
     let (contract_address, _) = contract.deploy(@constructor_calldata).unwrap();
     
     // Just verify that deployment worked by checking the address is not zero
-    let zero_address: ContractAddress = contract_address_const::<0>();
+    let zero_address: ContractAddress = 0.try_into().unwrap();
     assert(contract_address != zero_address, 'Contract deployed');
 }
 
@@ -58,12 +58,12 @@ fn test_buy_ticket_deployment_setup() {
     // Test 1: Users should be able to purchase tickets during an active period
     // This test verifies that the contract can be deployed and basic setup works
     
-    let _player: ContractAddress = contract_address_const::<'player'>();
-    let owner: ContractAddress = contract_address_const::<'owner'>();
+    let _player: ContractAddress = 'player'.try_into().unwrap();
+    let owner: ContractAddress = 'owner'.try_into().unwrap();
     let contract_address = deploy_lottery();
     
     // Verify deployment worked
-    let zero_address: ContractAddress = contract_address_const::<0>();
+    let zero_address: ContractAddress = 0.try_into().unwrap();
     assert(contract_address != zero_address, 'Contract deployed');
     
     // Test that we can interact with the contract as owner
@@ -79,8 +79,8 @@ fn test_buy_ticket_valid_numbers() {
     // Test 2: Valid ticket purchase with proper number validation
     // This tests the core buyTicket functionality with valid inputs
     
-    let _player: ContractAddress = contract_address_const::<'player'>();
-    let owner: ContractAddress = contract_address_const::<'owner'>();
+    let _player: ContractAddress = 'player'.try_into().unwrap();
+    let owner: ContractAddress = 'owner'.try_into().unwrap();
     let contract_address = deploy_lottery();
     
     // Initialize as owner first
@@ -117,8 +117,8 @@ fn test_buy_ticket_multiple_purchases() {
     // Test 3: Users should be able to make multiple purchases
     // This tests that the validation logic works for multiple ticket scenarios
     
-    let _player1: ContractAddress = contract_address_const::<'player1'>();
-    let _player2: ContractAddress = contract_address_const::<'player2'>();
+    let _player1: ContractAddress = 'player1'.try_into().unwrap();
+    let _player2: ContractAddress = 'player2'.try_into().unwrap();
     let _contract_address = deploy_lottery();
     
     // Test multiple valid number sets
@@ -184,7 +184,7 @@ fn test_buy_ticket_draw_state() {
     // Test 5: Draw state management - purchases outside active period should be rejected
     // This tests that the contract properly manages draw states
     
-    let _player: ContractAddress = contract_address_const::<'player'>();
+    let _player: ContractAddress = 'player'.try_into().unwrap();
     let _contract_address = deploy_lottery();
     
     // Test with valid numbers but no active draw
@@ -207,7 +207,7 @@ fn test_buy_ticket_event_emission() {
     // Test 6: TicketPurchased event must be emitted upon successful purchase
     // This tests the event structure and emission logic
     
-    let player: ContractAddress = contract_address_const::<'player'>();
+    let player: ContractAddress = 'player'.try_into().unwrap();
     let _contract_address = deploy_lottery();
     
     // Test event data structure
@@ -219,7 +219,7 @@ fn test_buy_ticket_event_emission() {
     assert(draw_id > 0, 'Draw ID positive');
     assert(numbers.len() == 5, 'Numbers array valid');
     assert(ticket_count > 0, 'Ticket count positive');
-    assert(player != contract_address_const::<0>(), 'Player valid');
+    assert(player != 0.try_into().unwrap(), 'Player valid');
     
     // Test that event structure is properly defined
     assert(true, 'Event structure valid');
@@ -230,7 +230,7 @@ fn test_buy_ticket_data_integrity() {
     // Test 7: Ticket details must be stored accurately
     // This tests data storage and retrieval integrity
     
-    let player: ContractAddress = contract_address_const::<'player'>();
+    let player: ContractAddress = 'player'.try_into().unwrap();
     let _contract_address = deploy_lottery();
     
     // Test data integrity for ticket information
@@ -246,7 +246,7 @@ fn test_buy_ticket_data_integrity() {
     assert(*numbers.at(4) == 35_u16, 'Fifth number 35');
     
     // Test that player address is properly stored
-    assert(player != contract_address_const::<0>(), 'Player valid');
+    assert(player != 0.try_into().unwrap(), 'Player valid');
     
     // Test that draw ID and ticket ID are properly formatted
     assert(draw_id > 0, 'Draw ID positive');
@@ -261,7 +261,7 @@ fn test_buy_ticket_payment_validation() {
     // Test 8: Payments using StarkPlay tokens should be validated and processed correctly
     // This tests the payment validation structure
     
-    let _player: ContractAddress = contract_address_const::<'player'>();
+    let _player: ContractAddress = 'player'.try_into().unwrap();
     let _contract_address = deploy_lottery();
     
     // Test payment amount validation
