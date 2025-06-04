@@ -84,11 +84,11 @@ mod Lottery {
     use openzeppelin_access::ownable::OwnableComponent;
     use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
     use starknet::storage::{
-        Map,
+        Map, StoragePathEntry,
+        StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{
         ContractAddress, get_block_timestamp, get_caller_address,
-        get_contract_address,
     };
     use super::{Draw, ILottery, Ticket};
 
