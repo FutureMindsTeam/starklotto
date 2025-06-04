@@ -15,10 +15,12 @@ import {
 } from "~~/components/sections";
 import { useAccount } from "@starknet-react/core";
 import BuyTicketsModal from "~~/components/BuyTicketsModal";
+import { LastDrawResults } from "~~/components/LastDrawResults";
 
 export default function Home() {
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 500], [0, -150]);
+  const lastDrawY = useTransform(scrollY, [300, 800], [0, -100]);
   const featuresY = useTransform(scrollY, [500, 1000], [0, -150]);
   const howItWorksY = useTransform(scrollY, [1000, 1500], [0, -150]);
   const faqY = useTransform(scrollY, [1500, 2000], [0, -150]);
@@ -83,12 +85,7 @@ export default function Home() {
       <FloatingCoins />
 
       {/* Navigation */}
-      <Navbar
-        onBuyTicket={handleBuyTicket}
-        onNavigate={function (sectionId: string): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
+      <Navbar onBuyTicket={handleBuyTicket} onNavigate={handleScroll} />
 
       {/* Notification */}
       {notification && (
@@ -107,15 +104,16 @@ export default function Home() {
           targetDate={targetDate}
           onBuyTicket={handleBuyTicket}
           onToggleSecurityInfo={() => setShowSecurityInfo(!showSecurityInfo)}
-          showTicketSelector={false}
-          selectedNumbers={[]}
-          onSelectNumbers={function (numbers: number[]): void {
-            throw new Error("Function not implemented.");
-          }}
-          onPurchase={function (quantity: number, totalPrice: number): void {
-            throw new Error("Function not implemented.");
-          }}
+          showTicketSelector={showTicketSelector}
+          selectedNumbers={selectedNumbers}
+          onSelectNumbers={handleSelectNumbers}
+          onPurchase={handlePurchase}
         />
+
+        {/* Last Draw Results Section - Added after Hero */}
+        <div className="container mx-auto px-4 relative z-20">
+          <LastDrawResults />
+        </div>
 
         <FeaturesSection featuresY={featuresY} />
         <HowItWorksSection howItWorksY={howItWorksY} />
