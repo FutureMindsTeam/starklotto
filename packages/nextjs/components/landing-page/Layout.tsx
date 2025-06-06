@@ -24,12 +24,13 @@ import Faq from "./Faq";
 import Community from "./Community";
 import Footer from "./Footer";
 import { FloatingCoins } from "../floating-coins";
+import Testimonial from "./Testimonial";
 
 export default function StarkLottoLanding() {
   const [currentJackpot, setCurrentJackpot] = useState(251612);
 
   return (
-    <div className="min-h-screen bg-black/25 relative overflow-hidden">
+    <div className="min-h-screen bg-black/30 relative overflow-hidden">
 
 
       {/* Scattered Chain Icons Background */}
@@ -47,7 +48,7 @@ export default function StarkLottoLanding() {
       </div>
 
       {/* Navigation */}
-      <NavBar />
+      {/* <NavBar /> */}
 
       {/* Hero Section */}
       <Hero currentJackpot={currentJackpot} />
@@ -121,8 +122,8 @@ export default function StarkLottoLanding() {
               },
             ].map((item, index) => (
               <FadeInSection key={index} delay={index * 0.2}>
-                <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/50 transition-all duration-300 group">
-                  <div className="text-center">
+                <Card className="bg-gray-900/50 p-3 border-gray-700 backdrop-blur-sm hover:bg-gray-800/50 transition-all duration-300 group">
+                  <div className="text-center ">
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
                       transition={{
@@ -130,7 +131,7 @@ export default function StarkLottoLanding() {
                         stiffness: 400,
                         damping: 10,
                       }}
-                      className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4"
+                      className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 space-y-3"
                     >
                       <item.icon className="w-8 h-8 text-white" />
                     </motion.div>
@@ -140,7 +141,7 @@ export default function StarkLottoLanding() {
                     <h1 className="text-white text-xl">{item.title}</h1>
                   </div>
                   <div>
-                    <div className="text-gray-400 text-center">
+                    <div className="text-gray-400 mb-2 text-center">
                       {item.description}
                     </div>
                   </div>
@@ -151,7 +152,7 @@ export default function StarkLottoLanding() {
 
           <FadeInSection delay={0.6}>
             <div className="text-center mt-12">
-              <button className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-black font-semibold hover:scale-105 transition-transform">
+              <button className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 py-2 rounded-md px-4 text-black font-semibold hover:scale-105 transition-transform">
                 View Detailed Tutorial
               </button>
             </div>
@@ -193,7 +194,7 @@ export default function StarkLottoLanding() {
               { title: "Gnosis Safe Integration", icon: Lock, color: "purple" },
             ].map((item, index) => (
               <FadeInSection key={index} delay={index * 0.1}>
-                <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm text-center hover:bg-gray-800/50 transition-all duration-300">
+                <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm text-center hover:bg-gray-800/50 pb-3 transition-all duration-300">
                   <div className="pt-6">
                     <div className="w-16 h-16 bg-green-500/20 border border-green-500/30 rounded-full flex items-center justify-center mx-auto mb-4">
                       <item.icon className="w-8 h-8 text-green-400" />
@@ -233,7 +234,7 @@ export default function StarkLottoLanding() {
                   ${currentJackpot.toLocaleString()}{" "}
                   <span className="text-2xl text-gray-400">StarkPlay</span>
                 </div>
-                <button className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-cyan-400">
+                <button className="border-gray-600 bg-black px-4 py-2 border mx-auto flex items-center rounded-md text-gray-300 hover:bg-gray-800 hover:text-cyan-400">
                   View Complete History
                   <ExternalLink className="w-4 h-4 ml-2" />
                 </button>
@@ -243,9 +244,9 @@ export default function StarkLottoLanding() {
 
           {/* Recent Drawings Table */}
           <FadeInSection delay={0.4}>
-            <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm">
-              <div>
-                <h1 className="text-white flex items-center justify-between">
+            <Card className="bg-gray-900/50 px-6 py-4 border-gray-700 backdrop-blur-sm">
+              <div className="mb-6">
+                <h1 className="text-white text-xl flex items-center justify-between">
                   Recent Drawings
                   <Button
                     variant="outline"
@@ -327,9 +328,9 @@ export default function StarkLottoLanding() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <FadeInSection delay={0.1}>
-                <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm">
+                <Card className="bg-gray-900/50 py-5 px-7 border-gray-700 backdrop-blur-sm">
                   <div>
-                    <h1 className="text-white">
+                    <h1 className="text-white text-3xl mb-5 font-semibold">
                       Fund Distribution Explanation
                     </h1>
                   </div>
@@ -400,6 +401,7 @@ export default function StarkLottoLanding() {
       {/* Community & Transparency */}
       <Community />
       {/* Testimonials & System Statistics */}
+      <Testimonial/>
 
       {/* Final Call to Action */}
       <section className="py-20 px-4 bg-gradient-to-r from-cyan-500/10 to-purple-600/10 border-y border-gray-800 relative z-10">
@@ -412,7 +414,7 @@ export default function StarkLottoLanding() {
               Join the future of gaming where every ticket makes a difference.
               Experience true decentralization with social impact.
             </p>
-            <button className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-black font-semibold text-lg px-12 py-6 hover:scale-105 transition-transform">
+            <button className="bg-gradient-to-r flex items-center rounded-md from-cyan-500 to-cyan-600 mx-auto hover:from-cyan-600 hover:to-cyan-700 text-black font-semibold text-lg px-12 py-6 hover:scale-105 transition-transform">
               <Play className="w-6 h-6 mr-2" />
               Start Playing Now
             </button>

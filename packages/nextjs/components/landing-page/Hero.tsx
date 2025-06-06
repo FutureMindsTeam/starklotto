@@ -101,7 +101,7 @@ function Hero({ currentJackpot }: HeroProps) {
                 <Play className="w-5 h-5 mr-2" />
                 Start Playing!
               </button>
-              <button className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-cyan-400 text-lg px-8 py-4 hover:scale-105 transition-transform">
+              <button className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-cyan-400 text-lg px-8 py-4 rounded-md border hover:scale-105 transition-transform">
                 Learn How It Works
               </button>
             </motion.div>

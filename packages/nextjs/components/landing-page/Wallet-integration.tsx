@@ -44,7 +44,7 @@ function WalletIntegration() {
           ].map((step, index) => (
             <FadeInSection key={index} delay={index * 0.1}>
               <div className="relative">
-                <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/50 transition-all duration-300 group">
+                <Card className="bg-gray-900/50 px-6 py-4 border-gray-700 backdrop-blur-sm hover:bg-gray-800/50 transition-all duration-300 group">
                   <div className="text-center">
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
@@ -57,10 +57,10 @@ function WalletIntegration() {
                     >
                       <step.icon className="w-8 h-8 text-white" />
                     </motion.div>
-                    <div className="absolute -top-4 -right-4 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                    <div className="absolute -top-4 -right-2 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
                       {index + 1}
                     </div>
-                    <h1 className="text-white">{step.title}</h1>
+                    <h1 className="text-white my-4 leading-normal text-xl">{step.title}</h1>
                   </div>
                   <div>
                     <div className="text-gray-400 text-center">

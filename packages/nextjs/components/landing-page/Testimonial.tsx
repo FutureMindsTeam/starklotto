@@ -79,7 +79,7 @@ function Testimonial() {
         <div className="grid lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <FadeInSection key={index} delay={index * 0.1}>
-              <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm">
+              <Card className="bg-gray-900/50 px-5 py-3 border-gray-700 backdrop-blur-sm">
                 <div className="pt-6">
                   <div className="flex items-center mb-4">
                     <div className="w-10 h-10 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full mr-3"></div>

@@ -1,9 +1,13 @@
+"use client";
+
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import { FadeInSection } from "./motion";
 
 type Question = {
-  question: String;
-  answer: String;
+  question: string;
+  answer: string;
 };
 
 function Faq() {
@@ -56,22 +60,42 @@ function Faq() {
         </FadeInSection>
 
         <FadeInSection delay={0.2}>
-          {questions.map((faq, index) => (
-            <div
-              key={index}
-              className="bg-gray-900/50 border border-gray-700 rounded-lg"
-            >
-              <button
-                onClick={() => toggleIndex(index)}
-                className="w-full text-left px-6 py-4 text-white hover:text-cyan-400"
+          {questions.map((faq, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <div
+                key={index}
+                className="bg-gray-900/50 border border-gray-700 rounded-lg overflow-hidden mb-4"
               >
-                {faq.question}
-              </button>
-              {openIndex === index && (
-                <div className="px-6 pb-4 text-gray-400">{faq.answer}</div>
-              )}
-            </div>
-          ))}
+                <button
+                  onClick={() => toggleIndex(index)}
+                  className="w-full px-6 py-4 flex items-center justify-between text-white hover:text-cyan-400 hover:underline"
+                >
+                  <span>{faq.question}</span>
+                  <motion.span
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ChevronDown className="w-5 h-5" />
+                  </motion.span>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="px-6 pb-4 text-gray-400"
+                    >
+                      {faq.answer}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
         </FadeInSection>
       </div>
     </section>

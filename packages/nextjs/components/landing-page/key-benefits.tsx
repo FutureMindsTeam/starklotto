@@ -64,8 +64,8 @@ function Benefits() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {benefits.map((benefit, index) => (
             <FadeInSection key={index} delay={index * 0.1}>
-              <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/50 transition-all duration-300 group">
-                <div>
+              <Card className="bg-gray-900/50 p-4 border-gray-700 backdrop-blur-sm space-y-4 hover:bg-gray-800/50 transition-all duration-300 group">
+                <div className="space-y-3">
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
