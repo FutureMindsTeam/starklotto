@@ -4,7 +4,7 @@ mod StarkPlayVault {
     //imports
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     use crate::StarkPlayERC20::{
-        IBurnable, IMintable, IMintableDispatcher, IMintableDispatcherTrait,
+        IMintableDispatcher, IMintableDispatcherTrait,
     };
     use openzeppelin_access::ownable::OwnableComponent;
     use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
@@ -26,6 +26,7 @@ mod StarkPlayVault {
     const TOKEN_STRK_ADDRESS: felt252 =
         0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d;
     const Initial_Fee_Percentage: u64 = 5;
+    const INITIAL_FEE_PERCENTAGE_PRIZES_CONVERTED: u64 = 3;
     const DECIMALS_FACTOR: u256 = 1_000_000_000_000_000_000; // 10^18
     const MAX_MINT_AMOUNT: u256 = 1_000_000 * 1_000_000_000_000_000_000; // 1 millón de tokens
     const MAX_BURN_AMOUNT: u256 = 1_000_000 * 1_000_000_000_000_000_000; // 1 millón de tokens
@@ -43,6 +44,7 @@ mod StarkPlayVault {
         totalStarkPlayBurned: u256,
         starkPlayToken: ContractAddress,
         feePercentage: u64,
+        feePercentagePrizesConverted: u64,
         owner: ContractAddress,
         paused: bool,
         mintLimit: u256,
@@ -67,6 +69,7 @@ mod StarkPlayVault {
         self.strkToken.write(TOKEN_STRK_ADDRESS);
         self.starkPlayToken.write(starkPlayToken);
         self.feePercentage.write(feePercentage);
+        self.feePercentagePrizesConverted.write(INITIAL_FEE_PERCENTAGE_PRIZES_CONVERTED);
         self.owner.write(starknet::get_caller_address());
         self.ownable.initializer(owner);
         self.mintLimit.write(MAX_MINT_AMOUNT);
@@ -142,6 +145,18 @@ mod StarkPlayVault {
         amount: u256,
     }
 
+    #[derive(Drop, starknet::Event)]
+    struct FeePercentageUpdated {
+        #[key]
+        new_fee: u64,
+    }
+
+    #[derive(Drop, starknet::Event)]
+    struct FeePercentagePrizesConvertedUpdated {
+        #[key]
+        new_fee: u64,
+    }
+
     #[event]
     #[derive(Drop, starknet::Event)]
     enum Event {
@@ -155,6 +170,8 @@ mod StarkPlayVault {
         Unpaused: Unpaused,
         StarkPlayBurnedByOwner: StarkPlayBurnedByOwner,
         FeeCollected: FeeCollected,
+        FeePercentageUpdated: FeePercentageUpdated,
+        FeePercentagePrizesConvertedUpdated: FeePercentagePrizesConvertedUpdated,
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -297,18 +314,31 @@ mod StarkPlayVault {
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    //fn setFee(ref self: ContractState, new_fee: u64) -> bool {
-//    self.assert_only_owner();
-//   assert(new_fee <= 10000, 'Fee too high'); // Máximo 100%
-//   self.feePercentage.write(new_fee);
-//    true
-//}
+    #[external(v0)]
+    fn setFee(ref self: ContractState, new_fee: u64) {
+        self.ownable.assert_only_owner();
+        assert(new_fee <= 100, 'Fee too high'); // Maximum 100%
+        self.feePercentage.write(new_fee);
+        self.emit(FeePercentageUpdated { new_fee });
+    }
 
-    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    #[external(v0)]
+    fn setFeePercentagePrizesConverted(ref self: ContractState, new_fee: u64) {
+        self.ownable.assert_only_owner();
+        assert(new_fee <= 100, 'Fee too high'); // Maximum 100%
+        self.feePercentagePrizesConverted.write(new_fee);
+        self.emit(FeePercentagePrizesConvertedUpdated { new_fee });
+    }
 
-    //fn setFee(u64): bool{
+    #[external(v0)]
+    fn get_fee_percentage(self: @ContractState) -> u64 {
+        self.feePercentage.read()
+    }
 
-    //}
+    #[external(v0)]
+    fn get_fee_percentage_prizes_converted(self: @ContractState) -> u64 {
+        self.feePercentagePrizesConverted.read()
+    }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
