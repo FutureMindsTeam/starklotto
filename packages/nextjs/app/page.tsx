@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useScroll, useTransform } from "framer-motion";
+import { useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Navbar } from "~~/components/Navbar";
 import { AnimatedBackground } from "~~/components/animated-background";
 import { FloatingCoins } from "~~/components/floating-coins";
@@ -14,87 +14,41 @@ import {
   CTASection,
 } from "~~/components/sections";
 import { useAccount } from "@starknet-react/core";
+import { useRouter } from "next/navigation";
 import BuyTicketsModal from "~~/components/BuyTicketsModal";
 import { LastDrawResults } from "~~/components/LastDrawResults";
 
 export default function Home() {
+  const router = useRouter();
   const { scrollY } = useScroll();
-  const heroY = useTransform(scrollY, [0, 500], [0, -150]);
-  const lastDrawY = useTransform(scrollY, [300, 800], [0, -100]);
-  const featuresY = useTransform(scrollY, [500, 1000], [0, -150]);
-  const howItWorksY = useTransform(scrollY, [1000, 1500], [0, -150]);
-  const faqY = useTransform(scrollY, [1500, 2000], [0, -150]);
+  const { status } = useAccount();
 
+  const heroY = useTransform(scrollY, [0, 500], [0, -100]);
+  const featuresY = useTransform(scrollY, [0, 1000], [0, -50]);
+  const howItWorksY = useTransform(scrollY, [0, 1500], [0, -50]);
+  const faqY = useTransform(scrollY, [0, 2000], [0, -50]);
+
+  const [showSecurityInfo, setShowSecurityInfo] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notification, setNotification] = useState<{
     message: string;
     type: "success" | "error" | "info";
   } | null>(null);
-  const [jackpot, setJackpot] = useState(250000);
-  const [showSecurityInfo, setShowSecurityInfo] = useState(false);
-  const [showTicketSelector, setShowTicketSelector] = useState(false);
-  const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
 
-  const { status } = useAccount();
-
-  // Set target date for countdown (24 hours from now)
+  const jackpot = 250295;
   const targetDate = new Date();
-  targetDate.setHours(targetDate.getHours() + 24);
-
-  // Simulate jackpot increasing over time
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setJackpot((prev) => prev + Math.floor(Math.random() * 100));
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
+  targetDate.setDate(targetDate.getDate() + 1);
 
   const handleBuyTicket = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleSelectNumbers = (numbers: number[]) => {
-    setSelectedNumbers(numbers);
-  };
-
-  const handlePurchase = (quantity: number, totalPrice: number) => {
-    setNotification({
-      message: `Successfully purchased ${quantity} ticket${quantity > 1 ? "s" : ""} for $${totalPrice} USDC!`,
-      type: "success",
-    });
-    setShowTicketSelector(false);
-    setSelectedNumbers([]);
-  };
-
-  const handleScroll = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      const offset = section.offsetTop - 100; // Adjust offset for header height
-      window.scrollTo({
-        top: offset,
-        behavior: "smooth",
-      });
-    }
+    router.push("/buy-tickets");
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground overflow-x-hidden">
-      {/* Background Elements */}
+    <div className="min-h-screen bg-gradient-to-br from-[#111827] to-[#0f172a] text-white">
       <AnimatedBackground />
       <FloatingCoins />
 
-      {/* Navigation */}
       <Navbar onBuyTicket={handleBuyTicket} onNavigate={handleScroll} />
-
-      {/* Notification */}
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
 
       <main className="flex-1 pt-16 relative z-10">
         <HeroSection
@@ -110,7 +64,6 @@ export default function Home() {
           onPurchase={handlePurchase}
         />
 
-        {/* Last Draw Results Section - Added after Hero */}
         <div className="container mx-auto px-4 relative z-20">
           <LastDrawResults />
         </div>
@@ -120,20 +73,6 @@ export default function Home() {
         <FAQSection faqY={faqY} />
         <CTASection onBuyTicket={handleBuyTicket} />
       </main>
-
-      <BuyTicketsModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        jackpotAmount={`$${jackpot.toLocaleString()} USDC`}
-        countdown={{
-          days: "00",
-          hours: "23",
-          minutes: "59",
-          seconds: "58",
-        }}
-        balance={1000}
-        ticketPrice={10}
-      />
     </div>
   );
 }
