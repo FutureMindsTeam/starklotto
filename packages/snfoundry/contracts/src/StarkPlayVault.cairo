@@ -6,14 +6,13 @@ mod StarkPlayVault {
     use openzeppelin_access::ownable::OwnableComponent;
     use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
     use starknet::storage::{
-        Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePathEntry,
         StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{
-        ContractAddress, contract_address_const, get_caller_address, get_contract_address,
+        ContractAddress, get_caller_address, get_contract_address,
     };
     use crate::StarkPlayERC20::{
-        IBurnableDispatcher, IBurnableDispatcherTrait, IMintable, IMintableDispatcher,
+        IBurnableDispatcher, IBurnableDispatcherTrait, IMintableDispatcher,
         IMintableDispatcherTrait, IPrizeTokenDispatcher, IPrizeTokenDispatcherTrait,
     };
 
@@ -208,7 +207,7 @@ mod StarkPlayVault {
     //private functions
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     fn _check_user_balance(self: @ContractState, user: ContractAddress, amountSTRK: u256) -> bool {
-        let strk_contract_address = contract_address_const::<TOKEN_STRK_ADDRESS>();
+        let strk_contract_address: ContractAddress = TOKEN_STRK_ADDRESS.try_into().unwrap();
         let strk_dispatcher = IERC20Dispatcher { contract_address: strk_contract_address };
         let balance = strk_dispatcher.balance_of(user);
 
@@ -227,7 +226,7 @@ mod StarkPlayVault {
     }
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     fn _transfer_strk(self: @ContractState, user: ContractAddress, amountSTRK: u256) -> bool {
-        let strk_contract_address = contract_address_const::<TOKEN_STRK_ADDRESS>();
+        let strk_contract_address: ContractAddress = TOKEN_STRK_ADDRESS.try_into().unwrap();
         let strk_dispatcher = IERC20Dispatcher { contract_address: strk_contract_address };
         strk_dispatcher.transfer_from(user, get_contract_address(), amountSTRK);
         true
@@ -304,7 +303,7 @@ mod StarkPlayVault {
         burnDispatcher.burn_from(user, amount);
         self.totalStarkPlayBurned.write(self.totalStarkPlayBurned.read() + amount);
         self.emit(StarkPlayBurned { user, amount });
-        let strk_contract_address = contract_address_const::<TOKEN_STRK_ADDRESS>();
+        let strk_contract_address: ContractAddress = TOKEN_STRK_ADDRESS.try_into().unwrap();
         let strk_dispatcher = IERC20Dispatcher { contract_address: strk_contract_address };
         strk_dispatcher.transfer(user, amount);
         self.totalSTRKStored.write(self.totalSTRKStored.read() - amount);
