@@ -60,9 +60,12 @@ trait ILottery<TContractState> {
     fn GetAccumulatedPrize(self: @TContractState) -> u256;
     fn GetFixedPrize(self: @TContractState, matches: u8) -> u256;
     fn GetDrawStatus(self: @TContractState, drawId: u64) -> bool;
-    fn GetUserTickets(
+    fn GetUserTicketIds( // Renamed from GetUserTickets
         self: @TContractState, drawId: u64, player: ContractAddress,
     ) -> Array<felt252>;
+    fn GetUserTickets( // New function
+        ref self: TContractState, drawId: u64, player: ContractAddress,
+    ) -> Array<Ticket>;
     fn GetUserTicketsCount(self: @TContractState, drawId: u64, player: ContractAddress) -> u32;
     fn GetTicketInfo(
         self: @TContractState, drawId: u64, ticketId: felt252, player: ContractAddress,
@@ -112,6 +115,7 @@ mod Lottery {
         TicketPurchased: TicketPurchased,
         DrawCompleted: DrawCompleted,
         PrizeClaimed: PrizeClaimed,
+        UserTicketsInfo: UserTicketsInfo, // Added new event
     }
 
     #[derive(Drop, starknet::Event)]
@@ -138,6 +142,14 @@ mod Lottery {
         player: ContractAddress,
         ticketId: felt252,
         prizeAmount: u256,
+    }
+
+    #[derive(Drop, starknet::Event)]
+    struct UserTicketsInfo {
+        #[key]
+        player: ContractAddress,
+        drawId: u64,
+        tickets: Array<Ticket>,
     }
 
     //=======================================================================================
@@ -394,10 +406,10 @@ mod Lottery {
         }
 
         //=======================================================================================
-        fn GetUserTickets(
+        fn GetUserTicketIds(
             self: @ContractState, drawId: u64, player: ContractAddress,
         ) -> Array<felt252> {
-            let mut userTickets = ArrayTrait::new();
+            let mut userTicket_ids = ArrayTrait::new();
             let count = self.userTicketCount.read((player, drawId));
 
             let mut i: u32 = 1;
@@ -406,11 +418,33 @@ mod Lottery {
                     break;
                 }
                 let ticketId = self.userTicketIds.read((player, drawId, i));
-                userTickets.append(ticketId);
+                userTicket_ids.append(ticketId);
                 i += 1;
             };
 
-            userTickets
+            userTicket_ids
+        }
+
+        //=======================================================================================
+        fn GetUserTickets(
+            ref self: ContractState, drawId: u64, player: ContractAddress,
+        ) -> Array<Ticket> {
+            let ticket_ids = self.GetUserTicketIds(drawId, player);
+            let mut user_tickets_data = ArrayTrait::new();
+            let mut i: usize = 0;
+            loop {
+                if i >= ticket_ids.len() {
+                    break;
+                }
+                let ticket_id = *ticket_ids.at(i);
+                let ticket_info = self.tickets.read((drawId, ticket_id));
+                assert(ticket_info.player == player, 'Ticket not owned by player');
+                user_tickets_data.append(ticket_info);
+                i += 1;
+            };
+
+            self.emit(UserTicketsInfo { player, drawId, tickets: user_tickets_data.clone() });
+            user_tickets_data
         }
 
         //=======================================================================================
