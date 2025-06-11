@@ -112,6 +112,7 @@ mod Lottery {
         TicketPurchased: TicketPurchased,
         DrawCompleted: DrawCompleted,
         PrizeClaimed: PrizeClaimed,
+        JackpotIncreased: JackpotIncreased,
     }
 
     #[derive(Drop, starknet::Event)]
@@ -138,6 +139,15 @@ mod Lottery {
         player: ContractAddress,
         ticketId: felt252,
         prizeAmount: u256,
+    }
+
+    #[derive(Drop, starknet::Event)]
+    struct JackpotIncreased {
+        #[key]
+        drawId: u64,
+        previousAmount: u256,
+        newAmount: u256,
+        timestamp: u64,
     }
 
     //=======================================================================================
