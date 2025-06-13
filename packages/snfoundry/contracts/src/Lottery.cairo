@@ -482,7 +482,7 @@ mod Lottery {
                 assert(ticket_info.player == player, 'Ticket not owned by player');
                 user_tickets_data.append(ticket_info);
                 i += 1;
-            };
+            }
 
             self.emit(UserTicketsInfo { player, drawId, tickets: user_tickets_data.clone() });
             user_tickets_data
@@ -586,7 +586,7 @@ mod Lottery {
         let mut count = 0;
         let mut usedNumbers: Felt252Dict<bool> = Default::default();
 
-        while count != 5{
+        while count != 5 {
             let number = (blockTimestamp + count) % (MaxNumber.into() + 1);
             let number_u16: u16 = number.try_into().unwrap();
 
