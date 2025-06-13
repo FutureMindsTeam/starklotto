@@ -61,9 +61,12 @@ trait ILottery<TContractState> {
     fn GetAccumulatedPrize(self: @TContractState) -> u256;
     fn GetFixedPrize(self: @TContractState, matches: u8) -> u256;
     fn GetDrawStatus(self: @TContractState, drawId: u64) -> bool;
-    fn GetUserTickets(
+    fn GetUserTicketIds(
         self: @TContractState, drawId: u64, player: ContractAddress,
     ) -> Array<felt252>;
+    fn GetUserTickets(
+        ref self: TContractState, drawId: u64, player: ContractAddress,
+    ) -> Array<Ticket>;
     fn GetUserTicketsCount(self: @TContractState, drawId: u64, player: ContractAddress) -> u32;
     fn GetTicketInfo(
         self: @TContractState, drawId: u64, ticketId: felt252, player: ContractAddress,
@@ -88,7 +91,6 @@ mod Lottery {
     };
     use starknet::{
         ContractAddress, contract_address_const, get_block_timestamp, get_caller_address,
-        get_contract_address,
     };
     use super::{Draw, ILottery, Ticket};
 
@@ -119,6 +121,7 @@ mod Lottery {
         TicketPurchased: TicketPurchased,
         DrawCompleted: DrawCompleted,
         PrizeClaimed: PrizeClaimed,
+        UserTicketsInfo: UserTicketsInfo,
     }
 
     #[derive(Drop, starknet::Event)]
@@ -148,6 +151,14 @@ mod Lottery {
         player: ContractAddress,
         ticketId: felt252,
         prizeAmount: u256,
+    }
+
+    #[derive(Drop, starknet::Event)]
+    struct UserTicketsInfo {
+        #[key]
+        player: ContractAddress,
+        drawId: u64,
+        tickets: Array<Ticket>,
     }
 
     //=======================================================================================
@@ -375,7 +386,7 @@ mod Lottery {
             let mut matches: u8 = 0;
 
             // Para cada número del ticket
-            let mut i: usize = 0;
+            let mut _i: usize = 0;
             if number1 == winningNumber1 {
                 matches += 1;
             }
@@ -442,23 +453,39 @@ mod Lottery {
         }
 
         //=======================================================================================
-        fn GetUserTickets(
+        fn GetUserTicketIds(
             self: @ContractState, drawId: u64, player: ContractAddress,
         ) -> Array<felt252> {
-            let mut userTickets = ArrayTrait::new();
+            let mut userTicket_ids = ArrayTrait::new();
             let count = self.userTicketCount.entry((player, drawId)).read();
 
             let mut i: u32 = 1;
-            loop {
-                if i > count {
-                    break;
-                }
+            while i != count {
                 let ticketId = self.userTicketIds.entry((player, drawId, i)).read();
-                userTickets.append(ticketId);
+                userTicket_ids.append(ticketId);
                 i += 1;
             }
 
-            userTickets
+            userTicket_ids
+        }
+
+        //=======================================================================================
+        fn GetUserTickets(
+            ref self: ContractState, drawId: u64, player: ContractAddress,
+        ) -> Array<Ticket> {
+            let ticket_ids = self.GetUserTicketIds(drawId, player);
+            let mut user_tickets_data = ArrayTrait::new();
+            let mut i: usize = 0;
+            while i != ticket_ids.len() {
+                let ticket_id = *ticket_ids.at(i);
+                let ticket_info = self.tickets.entry((drawId, ticket_id)).read();
+                assert(ticket_info.player == player, 'Ticket not owned by player');
+                user_tickets_data.append(ticket_info);
+                i += 1;
+            };
+
+            self.emit(UserTicketsInfo { player, drawId, tickets: user_tickets_data.clone() });
+            user_tickets_data
         }
 
         //=======================================================================================
@@ -559,10 +586,7 @@ mod Lottery {
         let mut count = 0;
         let mut usedNumbers: Felt252Dict<bool> = Default::default();
 
-        loop {
-            if count >= 5 {
-                break;
-            }
+        while count != 5{
             let number = (blockTimestamp + count) % (MaxNumber.into() + 1);
             let number_u16: u16 = number.try_into().unwrap();
 
